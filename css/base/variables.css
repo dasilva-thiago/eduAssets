@@ -1,0 +1,48 @@
+:root {
+  /* --- CORES PRINCIPAIS (Extraídas de image_4014a8.png) --- */
+  --primary-color: #1a36b2;       /* Azul Real base do logotipo */
+  --primary-light: #3b57d8;       /* Azul mais claro para variações */
+  --primary-dark: #0f227a;        /* Azul escuro para contrastes e títulos */
+  
+  --secondary-color: #f8f9fa;     /* Branco Off-White extraído da estampa */
+  --white: #ffffff;               /* Branco puro para fundos limpos */
+
+  /* --- NEUTROS (Para superfícies, bordas e fundos) --- */
+  --bg-light: #f4f6f9;            /* Fundo geral da página */
+  --surface-white: #ffffff;       /* Fundo de cards, containers e menus */
+  --border-color: #dcdfe6;        /* Bordas sutis e divisórias */
+  
+  /* --- TIPOGRAFIA (Cores de Fonte) --- */
+  --text-primary: #1f2d3d;        /* Texto principal (alta legibilidade) */
+  --text-secondary: #5a6a85;      /* Textos secundários, subtítulos e datas */
+  --text-on-primary: #ffffff;     /* Texto sobre o fundo azul principal */
+  --text-muted: #8492a6;          /* Textos desativados ou placeholders */
+
+  /* --- ESTADOS INTERATIVOS (Hover, Active, Focus) --- */
+  --hover-primary: #2747d6;       /* Mudança ao passar o mouse no botão principal */
+  --hover-light: #edf0f7;         /* Mudança ao passar o mouse em itens claros/listas */
+  --active-primary: #132a93;      /* Clique/Toque no botão principal */
+  --focus-ring: rgba(26, 54, 178, 0.4); /* Outline translúcido para acessibilidade (:focus) */
+
+  /* --- FEEDBACK MESSAGES (Alertas e Mensagens do Sistema) --- */
+  /* Sucesso (Matrículas abertas, formulário enviado) */
+  --success-color: #2e7d32;
+  --success-bg: #e8f5e9;
+  
+  /* Alerta (Prazos finais, Avisos importantes) */
+  --warning-color: #d84315;
+  --warning-bg: #fbe9e7;
+  
+  /* Erro (Campos inválidos, Falha no sistema) */
+  --error-color: #c62828;
+  --error-bg: #ffebee;
+  
+  /* Informativo (Comunicados gerais) */
+  --info-color: #0277bd;
+  --info-bg: #e1f5fe;
+
+  /* --- SOMBRAS (Shadows para profundidade e elevação) --- */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
