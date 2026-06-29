@@ -9,3 +9,11 @@ html {
     scroll-behavior: smooth;
     overflow-anchor: none;
 }
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
