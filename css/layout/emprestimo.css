@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     background-color: var(--bg-light);
-    height: 90vh;
+    height: 80vh;
 }
 
 .conteudo-container {
@@ -25,7 +25,7 @@
 .form-group label {
     margin-bottom: 6px; 
     font-size: 0.9rem;
-    color: var(--text-dark); 
+    color: var(--text-secondary); 
     text-transform: uppercase;
     font-weight: 500;
 }
@@ -72,5 +72,10 @@
     font-weight: bold;
     transition: background-color 0.3s ease;
     text-transform: uppercase;
+}
+
+.registrar-emprestimo:hover {
+    background-color: var(--hover-primary);
+    transform: translateY(-2px);
 }
 
