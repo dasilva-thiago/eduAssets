@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,50 +8,92 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" type="image/x-icon" href="assets/icons/school.ico">
 </head>
+
 <body>
 
-<div class="app-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="brand-section">
-            <div class="brand-title">EduAssets</div>
-            <div class="brand-subtitle">Controle de Equipamentos</div>
-        </div>
-        
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <span class="nav-section-title">Diário</span>
-                <ul class="nav-menu">
-                    <li><a href="#" class="nav-link active">Novo empréstimo</a></li>
-                    <li><a href="#" class="nav-link">Devoluções</a></li>
-                </ul>
-            </div>
-            
-            <div class="nav-section">
-                <span class="nav-section-title">Gestão</span>
-                <ul class="nav-menu">
-                    <li><a href="#" class="nav-link">Dashboard</a></li>
-                    <li><a href="#" class="nav-link">Exportar</a></li>
-                </ul>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand-section">
+                <div class="brand-title">EduAssets</div>
+                <div class="brand-subtitle">Controle de Equipamentos</div>
             </div>
 
-            <div class="nav-section">
-                <span class="nav-section-title">Sistema</span>
-                <ul class="nav-menu">
-                    <li><a href="#" class="nav-link">Configurações</a></li>
-                    <li><a href="#" class="nav-link">Sobre</a></li>
-                </ul>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">Diário</span>
+                    <ul class="nav-menu">
+                        <li><a href="#" class="nav-link active">Novo empréstimo</a></li>
+                        <li><a href="#" class="nav-link">Devoluções</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Gestão</span>
+                    <ul class="nav-menu">
+                        <li><a href="#" class="nav-link">Dashboard</a></li>
+                        <li><a href="#" class="nav-link">Exportar</a></li>
+                    </ul>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Sistema</span>
+                    <ul class="nav-menu">
+                        <li><a href="#" class="nav-link">Configurações</a></li>
+                        <li><a href="#" class="nav-link">Sobre</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                v0.1 · EduAssets | Thiago da Silva
             </div>
-        </nav>
+        </aside>
 
-        <div class="sidebar-footer">
-            v0.1 · EduAssets | Thiago da Silva
-        </div>
-    </aside>
+        <main class="main-content">
+            <div class="emprestimo-container">
+                <div class="conteudo-container">
+                    <h2>Novo Empréstimo</h2>
+                    <form>
+                        <div class="aluno-professor">
+                            <div class="form-group">
+                                <label for="professor">Professor:</label>
+                                <select name="professor" id="professor" required>
+                                    <option value="">Selecione um professor</option>
+                                    <option value="prof1">Prof. João</option>
+                                    <option value="prof2">Prof. Maria</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="aluno">Aluno:</label>
+                                <input list="alunos" id="aluno" name="aluno" required>
+                                <datalist id="alunos">
+                                    <option value="aluno1">Aluno 1</option>
+                                    <option value="aluno2">Aluno 2</option>
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="aluno-professor">
+                            <div class="form-group">
+                                <label for="equipamento">Equipamento:</label>
+                                <select name="equipamento" id="equipamento" required>
+                                    <option value="">Selecione um equipamento</option>
+                                    <option value="eq1">Equipamento 1</option>
+                                    <option value="eq2">Equipamento 2</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="data-emprestimo">Data do Empréstimo:</label>
+                                <input type="date" id="data-emprestimo" name="data-emprestimo" required>
+                            </div>
+                        </div>
+                        <button class="registrar-emprestimo" type="submit">Registrar Empréstimo</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
 
-    <main class="main-content">
-    </main>
-</div>
-    
 </body>
+
 </html>
