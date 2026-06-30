@@ -23,24 +23,25 @@
                 <div class="nav-section">
                     <span class="nav-section-title">Diário</span>
                     <ul class="nav-menu">
-                        <li><a href="#" class="nav-link active">Novo empréstimo</a></li>
-                        <li><a href="#" class="nav-link">Devoluções</a></li>
+                        <!-- data-panel aponta para o id do painel que deve abrir -->
+                        <li><a href="#" class="nav-link active" data-panel="panel-emprestimo">Novo empréstimo</a></li>
+                        <li><a href="#" class="nav-link" data-panel="panel-devolucao">Devoluções</a></li>
                     </ul>
                 </div>
 
                 <div class="nav-section">
                     <span class="nav-section-title">Gestão</span>
                     <ul class="nav-menu">
-                        <li><a href="#" class="nav-link">Dashboard</a></li>
-                        <li><a href="#" class="nav-link">Exportar</a></li>
+                        <li><a href="#" class="nav-link" data-panel="panel-dashboard">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-panel="panel-exportar">Exportar</a></li>
                     </ul>
                 </div>
 
                 <div class="nav-section">
                     <span class="nav-section-title">Sistema</span>
                     <ul class="nav-menu">
-                        <li><a href="#" class="nav-link">Configurações</a></li>
-                        <li><a href="#" class="nav-link">Sobre</a></li>
+                        <li><a href="#" class="nav-link" data-panel="panel-config">Configurações</a></li>
+                        <li><a href="#" class="nav-link" data-panel="panel-sobre">Sobre</a></li>
                     </ul>
                 </div>
             </nav>
@@ -51,61 +52,96 @@
         </aside>
 
         <main class="main-content">
-            <div class="emprestimo-container">
-                <div class="conteudo-container">
-                    <h2>Novo Empréstimo</h2>
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="aluno">Solicitante</label>
-                                <input list="solicitante" id="solicitante" name="solicitante" required>
-                                <datalist id="solicitante">
-                                    <option value="aluno1">Aluno 1</option>
-                                    <option value="aluno2">Aluno 2</option>
-                                </datalist>
-                            </div>
-                            <div class="form-group">
-                                <label for="responsavel">Responsável</label>
-                                <select name="responsavel" id="responsavel" required>
-                                    <option value="" disabled selected hidden>Responsável por empréstimo</option>
-                                    <option value="resp1">Thiago da Silva</option>
-                                    <option value="resp2">Prof. Maria</option>
-                                    <option value="resp3">Prof. João</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="equipamento">Equipamento</label>
-                                <select name="equipamento" id="equipamento" required>
-                                    <option value="" disabled selected hidden>Selecionar equipamento</option>
-                                    <option value="eq1">Notebook</option>
-                                    <option value="eq2">Tablet</option>
-                                    <option value="eq3">Fone de ouvido</option>
-                                    <option value="eq4">Fonte de carregamento</option>
-                                    <option value="eq5">Carregador USB</option>
-                                </select>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="quantidade">Quantidade</label>
-                                <input type="number" id="quantidade" name="quantidade" min="1" value="1" required>
+            <!-- PAINEL 1: Novo empréstimo  -->
+            <section class="panel active" id="panel-emprestimo">
+                <div class="emprestimo-container">
+                    <div class="conteudo-container">
+                        <h2>Novo Empréstimo</h2>
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="aluno">Solicitante</label>
+                                    <input list="solicitante" id="solicitante" name="solicitante" required>
+                                    <datalist id="solicitante">
+                                        <option value="aluno1">Aluno 1</option>
+                                        <option value="aluno2">Aluno 2</option>
+                                    </datalist>
+                                </div>
+                                <div class="form-group">
+                                    <label for="responsavel">Responsável</label>
+                                    <select name="responsavel" id="responsavel" required>
+                                        <option value="" disabled selected hidden>Responsável por empréstimo</option>
+                                        <option value="resp1">Thiago da Silva</option>
+                                        <option value="resp2">Prof. Maria</option>
+                                        <option value="resp3">Prof. João</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="data-emprestimo">Data</label>
-                                <input type="date" id="data-emprestimo" name="data-emprestimo" required>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="equipamento">Equipamento</label>
+                                    <select name="equipamento" id="equipamento" required>
+                                        <option value="" disabled selected hidden>Selecionar equipamento</option>
+                                        <option value="eq1">Notebook</option>
+                                        <option value="eq2">Tablet</option>
+                                        <option value="eq3">Fone de ouvido</option>
+                                        <option value="eq4">Fonte de carregamento</option>
+                                        <option value="eq5">Carregador USB</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quantidade">Quantidade</label>
+                                    <input type="number" id="quantidade" name="quantidade" min="1" value="1" required>
+                                </div>
                             </div>
-                        </div>
-                        <button class="registrar-emprestimo" type="submit">Registrar Empréstimo</button>
-                    </form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="data-emprestimo">Data</label>
+                                    <input type="date" id="data-emprestimo" name="data-emprestimo" required>
+                                </div>
+                            </div>
+                            <button class="registrar-emprestimo" type="submit">Registrar Empréstimo</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- PAINEL 2: Devoluções -->
+            <section class="panel" id="panel-devolucao">
+                <h2>Devoluções</h2>
+                <p>Conteúdo do formulário de devolução vem aqui.</p>
+            </section>
+
+            <!-- PAINEL 3: Dashboard -->
+            <section class="panel" id="panel-dashboard">
+                <h2>Dashboard</h2>
+                <p>Estatísticas e últimos registros vêm aqui.</p>
+            </section>
+
+            <!-- PAINEL 4: Exportar -->
+            <section class="panel" id="panel-exportar">
+                <h2>Exportar</h2>
+                <p>Filtros de exportação vêm aqui.</p>
+            </section>
+
+            <!-- PAINEL 5: Configurações -->
+            <section class="panel" id="panel-config">
+                <h2>Configurações</h2>
+                <p>Cadastros vêm aqui.</p>
+            </section>
+
+            <!-- PAINEL 6: Sobre -->
+            <section class="panel" id="panel-sobre">
+                <h2>Sobre</h2>
+                <p>Informações do sistema.</p>
+            </section>
+
         </main>
     </div>
 
+    <!-- script para mudar panel -->
+    <script src="js/navigation.js"></script>
 </body>
 
 </html>

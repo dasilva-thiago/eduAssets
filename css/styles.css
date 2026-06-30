@@ -1,5 +1,6 @@
 @import "base/reset.css";
 @import "base/variables.css";
 @import "layout/footer.css";
-@import "layout/header.css";
+@import "layout/sidebar.css";
 @import "layout/emprestimo.css";
+@import "layout/panels.css";
