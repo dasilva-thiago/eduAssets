@@ -55,35 +55,47 @@
                 <div class="conteudo-container">
                     <h2>Novo Empréstimo</h2>
                     <form>
-                        <div class="aluno-professor">
+                        <div class="form-row">
                             <div class="form-group">
-                                <label for="professor">Professor:</label>
-                                <select name="professor" id="professor" required>
-                                    <option value="">Selecione um professor</option>
-                                    <option value="prof1">Prof. João</option>
-                                    <option value="prof2">Prof. Maria</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="aluno">Aluno:</label>
-                                <input list="alunos" id="aluno" name="aluno" required>
-                                <datalist id="alunos">
+                                <label for="aluno">Solicitante</label>
+                                <input list="solicitante" id="solicitante" name="solicitante" required>
+                                <datalist id="solicitante">
                                     <option value="aluno1">Aluno 1</option>
                                     <option value="aluno2">Aluno 2</option>
                                 </datalist>
                             </div>
-                        </div>
-                        <div class="aluno-professor">
                             <div class="form-group">
-                                <label for="equipamento">Equipamento:</label>
-                                <select name="equipamento" id="equipamento" required>
-                                    <option value="">Selecione um equipamento</option>
-                                    <option value="eq1">Equipamento 1</option>
-                                    <option value="eq2">Equipamento 2</option>
+                                <label for="responsavel">Responsável</label>
+                                <select name="responsavel" id="responsavel" required>
+                                    <option value="" disabled selected hidden>Responsável por empréstimo</option>
+                                    <option value="resp1">Thiago da Silva</option>
+                                    <option value="resp2">Prof. Maria</option>
+                                    <option value="resp3">Prof. João</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group">
-                                <label for="data-emprestimo">Data do Empréstimo:</label>
+                                <label for="equipamento">Equipamento</label>
+                                <select name="equipamento" id="equipamento" required>
+                                    <option value="" disabled selected hidden>Selecionar equipamento</option>
+                                    <option value="eq1">Notebook</option>
+                                    <option value="eq2">Tablet</option>
+                                    <option value="eq3">Fone de ouvido</option>
+                                    <option value="eq4">Fonte de carregamento</option>
+                                    <option value="eq5">Carregador USB</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quantidade">Quantidade</label>
+                                <input type="number" id="quantidade" name="quantidade" min="1" value="1" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="data-emprestimo">Data</label>
                                 <input type="date" id="data-emprestimo" name="data-emprestimo" required>
                             </div>
                         </div>
