@@ -1,4 +1,4 @@
-.lista-devolucoes{
+.lista-devolucoes {
     display: flex;
     flex-direction: column;
     height: 70vh;
@@ -9,7 +9,7 @@
     justify-content: center;
 }
 
-.devolucao-item{
+.devolucao-item {
     background-color: var(--surface-white);
     border-radius: 8px;
     margin: 5px 0;
@@ -21,71 +21,49 @@
     justify-content: space-between;
     align-items: center;
     width: 70%;
-    padding: 16px;
+    padding: 26px;
 }
 
-.button-arrow::before{
-    content: '';
-    display: inline-block;
-    box-sizing: border-box;
-    width: 0.5rem;
-    height: 0.5rem;
-    border: 0.3rem solid transparent;
-    border-left: 0.9rem solid var(--primary-color);
-    transform: translateX(6px);
-    vertical-align: middle;
+.devolucao-info {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 12px;
+    row-gap: 6px;
+    align-items: center;
+    justify-items: center;
 }
 
-.info-data .info-value + .info-value::before {
-    content: '';
-    display: inline-block;
+.seta-svg {
+    width: 26px;
+    height: 12px;
+    color: var(--primary-color);
+    justify-self: center;
+}
+
+.info-dot {
     width: 5px;
     height: 5px;
     border-radius: 50%;
     background-color: var(--primary-color);
-    margin-right: 8px;
-    vertical-align: middle;
+    justify-self: center; 
 }
 
-.info-names {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.seta::before {
-    content: '';
-    display: block;
-    width: 10px;
-    height: 10px;
-    border-top: 2px solid var(--primary-color);
-    border-right: 2px solid var(--primary-color);
-    transform: rotate(45deg);
-}
-
-.info-data {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-}
-
-.info-value{
+.info-value {
     font-size: 0.9rem;
     color: var(--text-primary);
     font-weight: 500;
     display: inline-block;
 }
 
-.info-resp{
+.info-resp {
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: var(--primary-dark);
     display: inline-block;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
 }
 
-.devolver-btn{
+.devolver-btn {
     padding: 6px 12px;
     background-color: var(--primary-color);
     color: var(--text-on-primary);
