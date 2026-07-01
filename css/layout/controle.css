@@ -46,3 +46,63 @@
     align-items: center;
     justify-content: center;
 }
+
+.controle-cards span:hover{
+    background-color: var(--primary-color);
+    color: var(--surface-white);
+    transform: translateY(-4px);
+}
+
+.controle-actions {
+    width: 100%;
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+}
+
+.controle-row{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:12px 8px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.controle-row .row-text{
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: transform 0.3s ease-in-out;
+}
+
+.controle-row .icon-add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--text-primary);
+    background-color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+/* hover effects */
+.controle-row:hover {
+    border-bottom-color: var(--primary-color);
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+.controle-row:hover .row-text {
+    transform: translateX(8px);
+    color: var(--primary-color);
+}
+
+.controle-row:hover .icon-add {
+    background-color: var(--primary-color);
+    color: var(--surface-white);
+    transform: rotate(90deg);
+}
