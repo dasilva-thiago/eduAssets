@@ -26,14 +26,15 @@
                         <!-- data-panel aponta para o id do painel que deve abrir -->
                         <li><a href="#" class="nav-link active" data-panel="panel-emprestimo">Novo empréstimo</a></li>
                         <li><a href="#" class="nav-link" data-panel="panel-devolucao">Devoluções</a></li>
-                        <li><a href="#" class="nav-link" data-panel="panel-controle">Controle</a></li>
+
+                        <li><a href="#" class="nav-link" data-panel="panel-dashboard">Dashboard</a></li>
                     </ul>
                 </div>
 
                 <div class="nav-section">
                     <span class="nav-section-title">Gestão</span>
                     <ul class="nav-menu">
-                        <li><a href="#" class="nav-link" data-panel="panel-dashboard">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-panel="panel-controle">Controle</a></li>
                         <li><a href="#" class="nav-link" data-panel="panel-exportar">Exportar</a></li>
                         <li><a href="#" class="nav-link" data-panel="panel-gerenciar">Gerenciar</a></li>
                     </ul>
@@ -117,6 +118,7 @@
                 <h2 class="panel-title">Devoluções</h2>
                 <p class="panel-subtitle">Empréstimos em aberto aguardando devolução.</p>
                 <div class="lista-devolucoes">
+                    <h2 class="devolucao-title">Empréstimos em aberto</h2>
                     <div class="devolucao-item">
                         <div class="devolucao-info">
                             <span class="info-resp">Thiago da Silva</span>
@@ -185,16 +187,28 @@
                 </div>
             </section>
 
-            <!-- PAINEL 3: Controle -->
-            <section class="panel" id="panel-controle">
-                <h2 class="panel-title">Controle</h2>
-                <p class="panel-subtitle">Gerenciamento e registro de aparelhos eletrônicos.</p>
-            </section>
-
-            <!-- PAINEL 4: Dashboard -->
+            <!-- PAINEL 3: Dashboard -->
             <section class="panel" id="panel-dashboard">
                 <h2 class="panel-title">Dashboard</h2>
                 <p class="panel-subtitle">Visão geral do estoque com estatísticas e últimos registros</p>
+            </section>
+
+            <!-- PAINEL 4: Controle -->
+            <section class="panel" id="panel-controle">
+                <h2 class="panel-title">Controle</h2>
+                <p class="panel-subtitle">Gerenciamento e registro de aparelhos eletrônicos.</p>
+                <div class="controle-container">
+                    <div class="controle-conteudo">
+                        <h2 class="controle-title">Controle de equipamentos</h2>
+                        <div class="controle-grid">
+                            <div class="controle-cards">
+                                <span>Observações</span>
+                                <span>Manutenção</span>
+                                <span>Quebrados</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- PAINEL 5: Gerenciar -->
@@ -207,6 +221,35 @@
             <section class="panel" id="panel-exportar">
                 <h2 class="panel-title">Exportar</h2>
                 <p class="panel-subtitle">Filtre os dados para visualização e exportação.</p>
+                <div class="exportar-container">
+                    <h2 class="exportar-title">Exportar dados</h2>
+                    <div class="exportar-conteudo">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="data-inicial">Data Inicial</label>
+                                    <input type="date" id="data-inicial" name="data-inicial" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="data-final">Data Final</label>
+                                    <input type="date" id="data-final" name="data-final" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="exportar-formato">Formato de Exportação</label>
+                                    <select name="exportar-formato" id="exportar-formato" required>
+                                        <option value="" disabled selected hidden>Selecionar formato</option>
+                                        <option value="csv">CSV</option>
+                                        <option value="excel">Excel</option>
+                                        <option value="pdf">PDF</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="exportar-btn" type="submit">Exportar</button>
+                        </form>
+                    </div>
+                </div>
             </section>
 
             <!-- PAINEL 7: Configurações -->

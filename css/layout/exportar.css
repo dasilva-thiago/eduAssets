@@ -1,0 +1,39 @@
+.exportar-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    height: 80vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.exportar-conteudo {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+    padding: 20px;
+}
+
+.exportar-title {
+    margin-bottom: 40px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.exportar-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: var(--surface-white);
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+}

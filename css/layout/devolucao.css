@@ -1,12 +1,18 @@
 .lista-devolucoes {
     display: flex;
     flex-direction: column;
-    height: 70vh;
+    height: 80vh;
     width: 100%;
     max-width: 680px;
     margin: 0 auto;
     align-items: center;
     justify-content: center;
+}
+
+.devolucao-title {
+    margin-bottom: 40px;
+    color: var(--text-primary);
+    text-transform: uppercase;
 }
 
 .devolucao-item {
