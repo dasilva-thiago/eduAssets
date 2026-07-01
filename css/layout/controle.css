@@ -18,20 +18,20 @@
     text-transform: uppercase;
 }
 
-.controle-grid{
+.controle-grid {
     width: 60%;
 }
 
 .controle-cards {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     width: 100%;
     gap: 20px;
 }
 
-.controle-cards span{
+.controle-cards span {
     background-color: var(--surface-white);
-    border:1px solid var(--border-color);
+    border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
     border-radius: 8px;
     padding: 32px 16px;
@@ -47,7 +47,7 @@
     justify-content: center;
 }
 
-.controle-cards span:hover{
+.controle-cards span:hover {
     background-color: var(--primary-color);
     color: var(--surface-white);
     transform: translateY(-4px);
@@ -60,17 +60,17 @@
     flex-direction: column;
 }
 
-.controle-row{
-    display:flex;
+.controle-row {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    padding:12px 8px;
+    padding: 12px 8px;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
 
-.controle-row .row-text{
+.controle-row .row-text {
     font-size: 0.95rem;
     color: var(--text-primary);
     font-weight: 600;
@@ -105,4 +105,43 @@
     background-color: var(--primary-color);
     color: var(--surface-white);
     transform: rotate(90deg);
+}
+
+/* controle registros */
+.controle-registros {
+    width: 100%;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border: 1px solid var(--border-color);
+    padding: 26px;
+    border-radius: 8px;
+}
+
+.controle-registros h4 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    text-align: left;
+    margin: 0;
+}
+
+.registro-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 0px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.registro-usuario {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-data {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
 }
