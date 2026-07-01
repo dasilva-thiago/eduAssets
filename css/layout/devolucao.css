@@ -51,7 +51,16 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    justify-content: space-between;
+}
+
+.seta::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid var(--primary-color);
+    border-right: 2px solid var(--primary-color);
+    transform: rotate(45deg);
 }
 
 .info-data {
