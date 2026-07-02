@@ -1,0 +1,124 @@
+.sobre-container {
+    width: 100%;
+    max-width: 780px;
+    justify-content: left;
+    text-align: left;
+    margin-top: 28px;
+}
+
+.sobre-conteudo {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 28px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.sobre-conteudo h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: var(--primary-dark);
+}
+
+.dev-by {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-top: 15px;
+}
+
+.skill-icon-wrap {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.skill-icon-wrap svg {
+    width: 48px;
+    height: 48px;
+    color: var(--primary-color);
+    opacity: 0.8;
+}
+
+.skill-icon-card:hover .skill-icon-wrap svg {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.skill-icon-card:hover .skill-icon-wrap {
+    border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
+}
+
+.skill-icon-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.skill-icon-card:hover .skill-icon-name {
+    color: var(--primary-color);
+}
+
+
+
+.skills-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 12px;
+    margin-top: 32px;
+}
+
+/* individual card */
+.skill-icon-card {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 10px 14px;
+    background-color: var(--white);
+    border: 0.5px solid var(--border-color);
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+/* shimmer sweep on hover */
+.skill-icon-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        130deg,
+        transparent 35%,
+        color-mix(in srgb, var(--primary-color) 8%, transparent) 55%,
+        transparent 75%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+
+.skill-icon-card:hover {
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
+    box-shadow:
+        0 10px 30px color-mix(in srgb, var(--primary-color) 12%, transparent),
+        0 2px 8px color-mix(in srgb, var(--primary-color) 8%, transparent);
+}
