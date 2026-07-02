@@ -190,7 +190,13 @@
             <!-- PAINEL 3: Dashboard -->
             <section class="panel" id="panel-dashboard">
                 <h2 class="panel-title">Dashboard</h2>
-                <p class="panel-subtitle">Visão geral do estoque com estatísticas e últimos registros</p>
+                <p class="panel-subtitle">Visão geral do estoque</p>
+                <div class="dashboard-container">
+                    <div class="dashboard-conteudo">
+                        <h3>Resumo do Estoque</h3>
+                        <div></div>
+                    </div>
+                </div>
             </section>
 
             <!-- PAINEL 4: Controle -->
@@ -250,7 +256,7 @@
                             </div>
                         </div>
                         <div class="controle-registros">
-                            <h4>Últimos registros</h4>
+                            <h4>Últimos Registros</h4>
 
                             <div class="registro-item">
                                 <div class="registro-usuario">
@@ -335,6 +341,16 @@
                     <div class="exportar-conteudo">
                         <form>
                             <div class="form-row">
+                                <div class="form-group">
+                                    <label for="tipo-dados">Tipo de Dados</label>
+                                    <select name="tipo-dados" id="tipo-dados" required>
+                                        <option value="" disabled selected hidden>Selecionar tipo de dados</option>
+                                        <option value="devolucoes">Empréstimos e Devoluções</option>
+                                        <option value="equipamentos">Equipamentos</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" form-row">
                                 <div class="form-group">
                                     <label for="data-inicial">Data Inicial</label>
                                     <input type="date" id="data-inicial" name="data-inicial" required>
