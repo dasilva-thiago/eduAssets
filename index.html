@@ -199,6 +199,38 @@
                 <h2 class="panel-title">Dashboard</h2>
                 <p class="panel-subtitle">Visão geral do estoque com estatísticas e últimos registros</p>
 
+                <div class="modal-overlay" id="modal-editar-estoque">
+                    <div class="modal-box">
+                        <div class="modal-header">
+                            <h3>Editar categoria</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="modal-categoria">Categoria</label>
+                                <input type="text" id="modal-categoria" disabled>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="modal-total">Total</label>
+                                    <input type="number" id="modal-total" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-disponivel">Disponível</label>
+                                    <input type="number" id="modal-disponivel" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-quebrado">Quebrado</label>
+                                    <input type="number" id="modal-quebrado" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-warning" id="modal-limpar">Limpar</button>
+                            <button class="btn btn-success" id="modal-salvar">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="dashboard-container">
 
                     <div class="dashboard-toolbar">
@@ -220,7 +252,8 @@
                             <span>Quebrado</span>
                         </div>
 
-                        <div class="estoque-row">
+                        <div class="estoque-row" data-id="notebook" data-categoria="Notebook" data-total="40"
+                            data-disponivel="28" data-quebrado="2">
                             <div class="estoque-checkbox-wrap">
                                 <input type="checkbox" class="estoque-checkbox" data-id="notebook">
                             </div>
@@ -230,7 +263,8 @@
                             <span>2</span>
                         </div>
 
-                        <div class="estoque-row">
+                        <div class="estoque-row" data-id="tablet" data-categoria="Tablet" data-total="20"
+                            data-disponivel="15" data-quebrado="1">
                             <div class="estoque-checkbox-wrap">
                                 <input type="checkbox" class="estoque-checkbox" data-id="tablet">
                             </div>
@@ -497,6 +531,7 @@
 
     <!-- script para mudar panel -->
     <script src="js/navigation.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 
 </html>

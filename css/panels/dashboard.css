@@ -14,11 +14,6 @@
     border-bottom: 1px solid var(--border-color);
 }
 
-.toolbar-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
 /* Tabs internas: Estoque | Registros */
 .dashboard-tabs {
     display: flex;
