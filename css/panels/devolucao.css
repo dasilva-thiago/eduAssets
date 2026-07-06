@@ -1,7 +1,7 @@
 .lista-devolucoes {
     display: flex;
     flex-direction: column;
-    height: 80vh;
+    height: 70vh;
     width: 100%;
     max-width: 680px;
     margin: 0 auto;
@@ -51,7 +51,7 @@
     height: 5px;
     border-radius: 50%;
     background-color: var(--primary-color);
-    justify-self: center; 
+    justify-self: center;
 }
 
 .info-value {

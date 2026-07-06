@@ -1,0 +1,75 @@
+.dashboard-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Toolbar */
+.dashboard-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 12px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.toolbar-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Tabs internas: Estoque | Registros */
+.dashboard-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dashboard-tab-link {
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.dashboard-tab-link.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* Grid - Estoque*/
+.estoque-header,
+.estoque-row {
+    display: grid;
+    grid-template-columns: 32px 2fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+}
+
+.estoque-header {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.estoque-row {
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.estoque-row:hover {
+    background-color: var(--hover-light);
+}
+
+.estoque-checkbox-wrap {
+    width: 18px;
+    height: 18px;
+}
