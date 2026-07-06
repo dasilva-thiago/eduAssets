@@ -63,7 +63,7 @@
                     eletrônico.</p>
                 <div class="emprestimo-container">
                     <div class="conteudo-container">
-                        <h2>Novo Empréstimo</h2>
+                        <!-- <h2>Novo Empréstimo</h2> -->
                         <form>
                             <div class="form-row">
                                 <div class="form-group">
@@ -77,7 +77,7 @@
                                 <div class="form-group">
                                     <label for="responsavel">Responsável</label>
                                     <select name="responsavel" id="responsavel" required>
-                                        <option value="" disabled selected hidden>Responsável por empréstimo</option>
+                                        <option value="" disabled selected hidden>Responsável pelo empréstimo</option>
                                         <option value="resp1">Thiago da Silva</option>
                                         <option value="resp2">Prof. Maria</option>
                                         <option value="resp3">Prof. João</option>
@@ -110,10 +110,12 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="observacao">Observação</label>
-                                    <textarea id="observacao" name="observacao" rows="4" placeholder="Adicione observações sobre o empréstimo..."></textarea>
+                                    <textarea id="observacao" name="observacao" rows="4"
+                                        placeholder="Adicione observações sobre o empréstimo..."></textarea>
                                 </div>
                             </div>
-                            <button class="registrar-emprestimo" type="submit">Registrar Empréstimo</button>
+                            <button class="btn btn-primary btn-block registrar-emprestimo" type="submit">Registrar
+                                Empréstimo</button>
                         </form>
                     </div>
                 </div>
@@ -144,7 +146,7 @@
 
                             <span class="info-value">Hoje às 08:30</span>
                         </div>
-                        <button class="devolver-btn" data-id="1">Devolver</button>
+                        <button class="btn btn-primary btn-sm devolver-btn" data-id="1">Devolver</button>
                     </div>
 
                     <div class="devolucao-item">
@@ -166,7 +168,7 @@
 
                             <span class="info-value">Hoje às 08:30</span>
                         </div>
-                        <button class="devolver-btn" data-id="1">Devolver</button>
+                        <button class="btn btn-primary btn-sm devolver-btn" data-id="1">Devolver</button>
                     </div>
 
                     <div class="devolucao-item">
@@ -188,7 +190,7 @@
 
                             <span class="info-value">Hoje às 08:30</span>
                         </div>
-                        <button class="devolver-btn" data-id="1">Devolver</button>
+                        <button class="btn btn-primary btn-sm devolver-btn" data-id="1">Devolver</button>
                     </div>
                 </div>
             </section>
@@ -196,12 +198,54 @@
             <!-- PAINEL 3: Dashboard -->
             <section class="panel" id="panel-dashboard">
                 <h2 class="panel-title">Dashboard</h2>
-                <p class="panel-subtitle">Visão geral do estoque</p>
+                <p class="panel-subtitle">Visão geral do estoque com estatísticas e últimos registros</p>
+
                 <div class="dashboard-container">
-                    <div class="dashboard-conteudo">
-                        <h3>Resumo do Estoque</h3>
-                        <div></div>
+
+                    <div class="dashboard-toolbar">
+                        <button class="btn btn-neutral" id="btn-editar" disabled>Editar</button>
+                        <button class="btn btn-danger" id="btn-deletar" disabled>Deletar</button>
                     </div>
+
+                    <div class="dashboard-tabs">
+                        <span class="dashboard-tab-link active" data-tab="estoque">Estoque</span>
+                        <span class="dashboard-tab-link" data-tab="registros">Registros</span>
+                    </div>
+
+                    <div class="dashboard-tab-content active" id="tab-estoque">
+                        <div class="estoque-header">
+                            <span></span>
+                            <span>Categoria</span>
+                            <span>Total</span>
+                            <span>Disponível</span>
+                            <span>Quebrado</span>
+                        </div>
+
+                        <div class="estoque-row">
+                            <div class="estoque-checkbox-wrap">
+                                <input type="checkbox" class="estoque-checkbox" data-id="notebook">
+                            </div>
+                            <span>Notebook</span>
+                            <span>40</span>
+                            <span>28</span>
+                            <span>2</span>
+                        </div>
+
+                        <div class="estoque-row">
+                            <div class="estoque-checkbox-wrap">
+                                <input type="checkbox" class="estoque-checkbox" data-id="tablet">
+                            </div>
+                            <span>Tablet</span>
+                            <span>20</span>
+                            <span>15</span>
+                            <span>1</span>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-tab-content" id="tab-registros">
+                        <!-- vem depois -->
+                    </div>
+
                 </div>
             </section>
 
@@ -377,7 +421,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <button class="exportar-btn" type="submit">Exportar</button>
+                            <button class="btn btn-primary btn-block" type="submit">Exportar</button>
                         </form>
                     </div>
                 </div>

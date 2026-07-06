@@ -1,10 +1,19 @@
+/* base */
 @import "base/reset.css";
 @import "base/variables.css";
+
+/* components */
+@import "components/forms.css";
+@import "components/buttons.css";
+
+/* layout */
 @import "layout/footer.css";
 @import "layout/sidebar.css";
-@import "layout/emprestimo.css";
-@import "layout/panels.css";
-@import "layout/devolucao.css";
-@import "layout/exportar.css";
-@import "layout/controle.css";
-@import "layout/sobre.css";
+@import "layout/panels-shell.css";
+
+@import "panels/controle.css";
+@import "panels/dashboard.css";
+@import "panels/devolucao.css";
+@import "panels/emprestimo.css";
+@import "panels/exportar.css";
+@import "panels/sobre.css";
