@@ -37,13 +37,10 @@
 }
 
 .form-group input::placeholder,
-.form-group textarea::placeholder {
+.form-group textarea::placeholder, .form-group select:invalid {
     color: var(--text-secondary);
-    opacity: 1;
-}
-
-.form-group select:invalid {
-    color: var(--text-secondary);
+    opacity: 0.7;
+    font-size: 0.9rem;
 }
 
 .form-group select option {
