@@ -31,28 +31,74 @@
                 <div class="nav-section">
                     <span class="nav-section-title">Diário</span>
                     <ul class="nav-menu">
-                        <!-- data-panel aponta para o id do painel que deve abrir -->
-                        <li><a href="#" class="nav-link active" data-panel="panel-emprestimo">Novo empréstimo</a></li>
-                        <li><a href="#" class="nav-link" data-panel="panel-devolucao">Devoluções</a></li>
 
-                        <li><a href="#" class="nav-link" data-panel="panel-dashboard">Dashboard</a></li>
+                        <li>
+                            <a href="#" class="nav-link active" data-panel="panel-inicio">
+                                <span class="material-symbols-outlined">home</span>
+                                <span>Início</span>
+                            </a>
+                        </li>
+                        <!-- data-panel aponta para o id do painel que deve abrir -->
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-emprestimo">
+                                <span class="material-symbols-outlined">open_in_new</span>
+                                <span>Novo empréstimo</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-devolucao">
+                                <span class="material-symbols-outlined">assignment_return</span>
+                                <span>Devoluções</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-dashboard">
+                                <span class="material-symbols-outlined">dashboard</span>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
                 <div class="nav-section">
                     <span class="nav-section-title">Gestão</span>
                     <ul class="nav-menu">
-                        <li><a href="#" class="nav-link" data-panel="panel-controle">Controle</a></li>
-                        <li><a href="#" class="nav-link" data-panel="panel-exportar">Exportar</a></li>
-                        <li><a href="#" class="nav-link" data-panel="panel-gerenciar">Gerenciar</a></li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-controle">
+                                <span class="material-symbols-outlined">inventory</span>
+                                <span>Controle</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-exportar">
+                                <span class="material-symbols-outlined">download</span>
+                                <span>Exportar</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-gerenciar">
+                                <span class="material-symbols-outlined">settings</span>
+                                <span>Gerenciar</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
 
                 <div class="nav-section">
                     <span class="nav-section-title">Sistema</span>
                     <ul class="nav-menu">
-                        <li><a href="#" class="nav-link" data-panel="panel-config">Configurações</a></li>
-                        <li><a href="#" class="nav-link" data-panel="panel-sobre">Sobre</a></li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-config">
+                                <span class="material-symbols-outlined">settings</span>
+                                <span>Configurações</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-sobre">
+                                <span class="material-symbols-outlined">info</span>
+                                <span>Sobre</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -64,8 +110,14 @@
 
         <main class="main-content">
 
+            <!-- PAINEL 0: Início -->
+            <section class="panel active" id="panel-inicio">
+                <h2 class="panel-title">Bem-vindo ao EduAssets</h2>
+                <p class="panel-subtitle">Sistema de gestão de equipamentos eletrônicos para instituições de ensino.</p>
+            </section>
+
             <!-- PAINEL 1: Novo empréstimo  -->
-            <section class="panel active" id="panel-emprestimo">
+            <section class="panel" id="panel-emprestimo">
                 <h2 class="panel-title">Registrar novos empréstimos</h2>
                 <p class="panel-subtitle">Preencha o formulário para registrar um novo empréstimo de equipamento
                     eletrônico.</p>
@@ -242,8 +294,8 @@
                 <div class="dashboard-container">
 
                     <div class="dashboard-toolbar">
-                        <button class="btn btn-neutral" id="btn-editar" disabled>Editar</button>
-                        <button class="btn btn-danger" id="btn-deletar" disabled>Deletar</button>
+                        <button class="btn btn-neutral" id="btn-editar" disabled> <span class="material-symbols-outlined">edit</span>Editar</button>
+                        <button class="btn btn-danger" id="btn-deletar" disabled> <span class="material-symbols-outlined">delete</span>Deletar</button>
                     </div>
 
                     <div class="dashboard-tabs">
