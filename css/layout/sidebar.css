@@ -57,7 +57,6 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .nav-link {
@@ -65,19 +64,21 @@
     text-decoration: none;
     font-size: 1rem;
     font-weight: 500;
-    padding: 10px 12px;
-    border-radius: 4px;
+    padding: 10px 16px;
+    margin: 0 -16px;
+    border-radius: 0px;
     display: block;
     transition: all 0.2s ease-in-out;
 }
 
 .nav-link:hover {
-    background-color: var(--hover-primary);
+    background-color: var(--primary-400);
 }
 
 .nav-link.active {
     background-color: var(--primary-dark);
     color: var(--white);
+    border-left: 3px solid var(--primary-300);
 }
 
 .sidebar-footer {
@@ -92,4 +93,17 @@
     padding: 32px;
     overflow-y: auto;
     background-color: var(--bg-light); 
+     position: relative;
+}
+
+.main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 32px;
+    background: linear-gradient(90deg, var(--slate-950) 0%, transparent 100%);
+    opacity: 0.05; 
+    pointer-events: none; 
 }
