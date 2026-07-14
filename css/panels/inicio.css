@@ -1,3 +1,10 @@
+.welcome {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-700, var(--primary-dark));
+    margin-bottom: 28px;
+}
+
 .inicio-content {
     display: flex;
     flex-direction: column;
@@ -8,10 +15,10 @@
 }
 
 .home-logo {
-    width: 350px;
+    width: 550px;
     max-width: 80%;
     height: auto;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
 }
 
 .logo-subtitle {
@@ -20,6 +27,17 @@
     font-style: italic;
     font-weight: 500;
     margin-bottom: 32px;
+}
+
+.inicio-divider {
+    width: 80px;
+    height: 3px;
+    border-radius: 50px;
+    background: linear-gradient(90deg,
+            transparent,
+            var(--primary-color),
+            transparent);
+    margin: 12px 0 30px;
 }
 
 .inicio-descricao {
@@ -38,21 +56,21 @@
     gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
-    
+
 }
 
 .nav-link.instrucao-exemplo {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin: 0;                
-    padding: 6px 14px;         
+    margin: 0;
+    padding: 6px 14px;
     background-color: var(--primary-color);
     color: var(--text-on-primary);
     border-radius: 4px;
     font-weight: 600;
     font-size: 1rem;
-    margin-top: 25px;
+    margin-top: 32px;
 }
 
 .nav-link.instrucao-exemplo:hover {
