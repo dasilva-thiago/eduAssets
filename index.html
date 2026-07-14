@@ -497,7 +497,70 @@
             <!-- PAINEL 5: Cadastros -->
             <section class="panel" id="panel-cadastros">
                 <h2 class="panel-title">Cadastros</h2>
-                <p class="panel-subtitle">Gerencie os cadastros de usuários e equipamentos</p>
+                <p class="panel-subtitle"></p>
+
+                <div class="modal-overlay" id="modal-cadastro">
+                    <div class="modal-box">
+                        <div class="modal-header">
+                            <h3 id="cadastro-modal-title">Título</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div id="cadastro-modal-fields"></div>
+
+                            <div class="cadastro-modal-list-wrap">
+                                <span class="cadastro-modal-list-title">Cadastrados</span>
+                                <div class="cadastro-modal-list" id="cadastro-modal-list"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-neutral" id="cadastro-modal-cancelar" type="button">Cancelar</button>
+                            <button class="btn btn-success" id="cadastro-modal-salvar" type="button">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cadastros-container">
+                    <p class="cadastros-intro">
+                        Selecione um módulo abaixo para visualizar, adicionar ou editar informações.
+                    </p>
+
+                    <div class="cadastros-grid">
+                        <a href="#" class="cadastro-card" data-cadastro="equipamentos">
+                            <span class="cadastro-card-icon">
+                                <span class="material-symbols-outlined">devices</span>
+                            </span>
+                            <h3 class="cadastro-card-title">Equipamentos</h3>
+                            <p class="cadastro-card-desc">Cadastre e gerencie os equipamentos eletrônicos disponíveis
+                                para empréstimo.</p>
+                        </a>
+
+                        <a href="#" class="cadastro-card" data-cadastro="responsaveis">
+                            <span class="cadastro-card-icon">
+                                <span class="material-symbols-outlined">badge</span>
+                            </span>
+                            <h3 class="cadastro-card-title">Responsáveis</h3>
+                            <p class="cadastro-card-desc">Professores e funcionários autorizados a realizar empréstimos.
+                            </p>
+                        </a>
+
+                        <a href="#" class="cadastro-card" data-cadastro="usuarios">
+                            <span class="cadastro-card-icon">
+                                <span class="material-symbols-outlined">admin_panel_settings</span>
+                            </span>
+                            <h3 class="cadastro-card-title">Usuários</h3>
+                            <p class="cadastro-card-desc">Administradores e pessoas autorizadas a acessar e alterar o
+                                sistema.</p>
+                        </a>
+
+                        <a href="#" class="cadastro-card" data-cadastro="categorias">
+                            <span class="cadastro-card-icon">
+                                <span class="material-symbols-outlined">category</span>
+                            </span>
+                            <h3 class="cadastro-card-title">Categorias</h3>
+                            <p class="cadastro-card-desc">Organize os equipamentos por categorias e tipos.</p>
+                        </a>
+                    </div>
+                </div>
             </section>
 
             <!-- PAINEL 6: Exportar -->
