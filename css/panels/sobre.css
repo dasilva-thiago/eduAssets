@@ -15,10 +15,16 @@
     border-radius: 8px;
 }
 
-.sobre-conteudo h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: var(--primary-dark);
+.sobre-logo {
+    width: 180px;
+    height: auto;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.sobre-logo:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
 }
 
 .dev-by {
