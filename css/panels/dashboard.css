@@ -1,6 +1,6 @@
 .dashboard-container {
     width: 100%;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -67,4 +67,10 @@
 .estoque-checkbox-wrap {
     width: 18px;
     height: 18px;
+}
+
+.dashboard-toolbar button {
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    color: var(--text-primary);
 }

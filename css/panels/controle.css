@@ -1,6 +1,6 @@
 .controle-container {
     width: 100%;
-    max-width: 780px;
+    max-width: 1200px; /* igual ao dashboard-container, conforme decidido */
     margin: 0 auto;
 }
 
@@ -53,95 +53,141 @@
     transform: translateY(-4px);
 }
 
-.controle-actions {
+/* Registros de Controle */
+
+.controle-registros-container {
     width: 100%;
     margin-top: 48px;
     display: flex;
     flex-direction: column;
-}
-
-.controle-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 8px;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-}
-
-.controle-row .row-text {
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    transition: transform 0.3s ease-in-out;
-}
-
-.controle-row .icon-add {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: var(--text-primary);
-    background-color: transparent;
-    transition: all 0.3s ease-in-out;
-}
-
-/* hover effects */
-.controle-row:hover {
-    border-bottom-color: var(--primary-color);
-    background-color: rgba(5, 11, 28, 0.02);
-}
-
-.controle-row:hover .row-text {
-    transform: translateX(8px);
-    color: var(--primary-color);
-}
-
-.controle-row:hover .icon-add {
-    background-color: var(--primary-color);
-    color: var(--surface-white);
-    transform: rotate(90deg);
-}
-
-/* controle registros */
-.controle-registros {
-    width: 100%;
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
     border: 1px solid var(--border-color);
     padding: 26px;
     border-radius: 8px;
 }
 
-.controle-registros h4 {
+.controle-registros-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.controle-registros-header-row h4 {
     font-size: 1.1rem;
     color: var(--text-primary);
-    text-align: left;
     margin: 0;
 }
 
-.registro-item {
+.controle-registros-toolbar {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 8px 0px;
+    gap: 12px;
+}
+
+/* Dropdown "+Novo" */
+.novo-registro-dropdown {
+    position: relative;
+}
+
+.novo-registro-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 160px;
+    background-color: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    z-index: 20;
+}
+
+.novo-registro-menu.active {
+    display: block;
+}
+
+.novo-registro-opcao {
+    display: block;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.novo-registro-opcao:hover {
+    background-color: var(--hover-light);
+    color: var(--primary-color);
+}
+
+/* Tabs internas: Observação | Manutenção | Quebrado | Resolvidos */
+.controle-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
     border-bottom: 1px solid var(--border-color);
 }
 
-.registro-usuario {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+.controle-tab-link {
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
 }
 
-.info-data {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 500;
+.controle-tab-link.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.controle-tab-content {
+    display: none;
+}
+
+.controle-tab-content.active {
+    display: block;
+}
+
+/* Tabela padrão (Observação, Manutenção, Quebrado) */
+.registros-header,
+.registros-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+}
+
+/* Tabela de Resolvidos (2 colunas a mais: Resolvido em, Medidas tomadas) */
+.registros-header-resolvidos,
+.registros-row-resolvidos {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1.6fr 0.9fr 1.6fr;
+}
+
+.registros-header {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.registros-row {
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.registros-row:hover {
+    background-color: var(--hover-light);
+}
+
+.registros-row.selected {
+    background-color: color-mix(in srgb, var(--primary-color) 8%, transparent);
+    border-left: 3px solid var(--primary-color);
 }
