@@ -2,6 +2,11 @@
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
+    height: 80vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .cadastros-intro {
@@ -9,12 +14,15 @@
     color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 32px;
+    text-align: center;
 }
 
 .cadastros-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, 290px);
+    justify-content: center;
     gap: 20px;
+    width: 100%;
 }
 
 .cadastro-card {
