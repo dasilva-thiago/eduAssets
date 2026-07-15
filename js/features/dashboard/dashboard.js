@@ -1,10 +1,11 @@
+import { openModal, closeModal } from '../modal/modal.js';
+
 export function initDashboard() {
     const estoqueContainer = document.getElementById('tab-estoque');
-    if (!estoqueContainer) return; 
+    if (!estoqueContainer) return;
 
     const btnEditar = document.getElementById('btn-editar');
     const btnDeletar = document.getElementById('btn-deletar');
-    const modal = document.getElementById('modal-editar-estoque');
 
     const selecionados = new Set();
     let editandoId = null;
@@ -27,7 +28,7 @@ export function initDashboard() {
             editandoId = [...selecionados][0];
             const row = estoqueContainer.querySelector(`.estoque-row[data-id="${editandoId}"]`);
             preencherModal(row);
-            if (modal) modal.classList.add('active');
+            openModal('modal-editar-estoque');
         });
     }
 
@@ -73,7 +74,7 @@ export function initDashboard() {
                 spans[3].textContent = novoQuebrado;
             }
 
-            if (modal) modal.classList.remove('active');
+            closeModal('modal-editar-estoque');
             editandoId = null;
         });
     }

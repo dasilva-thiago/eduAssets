@@ -1,3 +1,5 @@
+import { openModal, closeModal } from '../modal/modal.js';
+
 export function initCadastros() {
     const cards = document.querySelectorAll('.cadastro-card');
     const modal = document.getElementById('modal-cadastro');
@@ -77,16 +79,9 @@ export function initCadastros() {
 
         listaWrap.innerHTML = `<div class="cadastro-modal-empty">Nenhum registro cadastrado.</div>`;
 
-        modal.classList.add('active');
+        openModal('modal-cadastro');
     }
 
-    function fecharModal() {
-        modal.classList.remove('active');
-    }
-
-    if (btnCancelar) btnCancelar.addEventListener('click', fecharModal);
-    if (btnSalvar) btnSalvar.addEventListener('click', fecharModal);
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) fecharModal();
-    });
+    if (btnCancelar) btnCancelar.addEventListener('click', () => closeModal('modal-cadastro'));
+    if (btnSalvar) btnSalvar.addEventListener('click', () => closeModal('modal-cadastro'));
 }
