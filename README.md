@@ -1,4 +1,4 @@
-# EduAssets
+# eduAssets
 
 <div align="center">
 
@@ -10,7 +10,7 @@
 
 ## Overview
 
-EduAssets is a school equipment loan and inventory management system built as a portfolio project. It targets daily operational use by a small group of users (a system administrator and a handful of teachers), and its design decisions favor low-friction, high-frequency workflows over granular per-unit asset tracking, which is planned for a future version.
+eduAssets is a school equipment loan and inventory management system built as a portfolio project. It targets daily operational use by a small group of users (a system administrator and a handful of teachers), and its design decisions favor low-friction, high-frequency workflows over granular per-unit asset tracking, which is planned for a future version.
 
 The system covers four core operations:
 
