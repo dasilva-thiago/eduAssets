@@ -64,7 +64,7 @@
 }
 
 .form-group input.input-auto {
-    background-color: var(--slate-100);
+    background-color: var(--slate-200);
     color: var(--text-secondary);
     font-style: italic;
     cursor: pointer;
