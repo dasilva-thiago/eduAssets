@@ -16,8 +16,8 @@
     margin-bottom: 40px;
     color: var(--text-primary);
     text-transform: uppercase;
+    font-family: var(--font-heading);
 }
-
 .controle-grid {
     width: 60%;
 }
@@ -76,6 +76,8 @@
     font-size: 1.1rem;
     color: var(--text-primary);
     margin: 0;
+    font-family: var(--font-heading);
+    font-weight: 600;
 }
 
 .controle-registros-toolbar {

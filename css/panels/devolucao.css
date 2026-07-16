@@ -13,6 +13,7 @@
     margin-bottom: 40px;
     color: var(--text-primary);
     text-transform: uppercase;
+    font-family: var(--font-heading);
 }
 
 .devolucao-item {
@@ -91,28 +92,24 @@
 }
 
 .devolucao-vazia-logo {
-    width: 240px;
+    width: 340px;
     height: auto;
-    opacity: 0.5;
-    filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.6)) drop-shadow(-1px -1px 1px rgba(5, 11, 28, 0.12));
-}
-
-/* .devolucao-vazia-logo{
-    width:240px;
-    opacity:.45;
+    opacity: .45;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
 
     filter:
-        drop-shadow(1px 1px 0 rgba(255,255,255,.75))
-        drop-shadow(-1px -1px 1px rgba(5,11,28,.12));
-} */
+        drop-shadow(1px 1px 0 rgba(255, 255, 255, .75)) drop-shadow(-1px -1px 1px rgba(5, 11, 28, .12));
+}
 
 .devolucao-vazia-texto {
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--slate-400);
-    text-transform: uppercase;
     letter-spacing: 0.04em;
+    opacity: 0.75;
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7), -1px -1px 1px rgba(5, 11, 28, 0.1);
+    font-family: var(--font-heading);
 }
 
 .devolucao-vazia-sub {

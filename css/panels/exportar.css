@@ -21,6 +21,7 @@
     margin-bottom: 30px;
     color: var(--text-primary);
     text-transform: uppercase;
+    font-family: var(--font-heading);
 }
 
 .exportar-btn {

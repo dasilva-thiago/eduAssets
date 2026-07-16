@@ -3,6 +3,7 @@
     font-weight: 600;
     color: var(--primary-700, var(--primary-dark));
     margin-bottom: 28px;
+    font-family: var(--font-heading);
 }
 
 .inicio-content {
@@ -27,6 +28,7 @@
     font-style: italic;
     font-weight: 500;
     margin-bottom: 32px;
+    font-family: var(--font-heading);
 }
 
 .inicio-divider {

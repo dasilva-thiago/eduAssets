@@ -58,6 +58,7 @@
     border-bottom: 1px solid var(--border-color);
     font-size: 0.95rem;
     color: var(--text-primary);
+    cursor:pointer;
 }
 
 .estoque-row:hover {
