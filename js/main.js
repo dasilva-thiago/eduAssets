@@ -9,13 +9,23 @@ import { initExportar } from './features/exportar/exportar.js';
 import { initConfig } from './features/config/config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    initNavigation();
-    initModals();
-    initDashboard();
-    initControle();
-    initCadastros();
-    initEmprestimo();
-    initDevolucao();
-    initExportar();
-    initConfig();
+    const inits = [
+        initNavigation,
+        initModals,
+        initDashboard,
+        initControle,
+        initCadastros,
+        initEmprestimo,
+        initDevolucao,
+        initExportar,
+        initConfig
+    ];
+
+    inits.forEach((fn) => {
+        try {
+            fn();
+        } catch (err) {
+            console.error(`[eduAssets] Falha ao inicializar "${fn.name}":`, err);
+        }
+    });
 });

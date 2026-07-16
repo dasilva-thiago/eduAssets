@@ -82,6 +82,7 @@ function abrirDetalhe(id) {
 
     document.getElementById('detalhe-emprestimo-resp').textContent = `Responsável: ${loan.responsavel}`;
     document.getElementById('detalhe-emprestimo-aluno').textContent = `Solicitante: ${loan.aluno}`;
+    document.getElementById('detalhe-emprestimo-data').textContent = `${loan.data}`;
 
     document.getElementById('detalhe-emprestimo-lista').innerHTML = loan.itens.map((item) => `
         <li><span class="material-symbols-outlined">check_circle</span>${item.quantidade}x ${item.nome}</li>

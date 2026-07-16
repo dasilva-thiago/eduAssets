@@ -17,7 +17,7 @@ export function initEmprestimo() {
     const itensList = document.getElementById('itens-emprestimo-list');
     const modalItensLista = document.getElementById('modal-itens-emprestimo-lista');
 
-    const picker = criarDataPicker(dataInput);
+    const picker = criarDataAutoPicker(dataInput);
     let itens = [];
 
     btnAdicionar.addEventListener('click', () => {
@@ -119,15 +119,4 @@ function renderItemRow(item) {
             </button>
         </div>
     `;
-}
-
-function criarDataPicker(input) {
-    return flatpickr(input, {
-        enableTime: true,
-        time_24hr: true,
-        dateFormat: 'd/m/Y à\\s H:i',
-        locale: 'pt',
-        defaultDate: new Date(),
-        onChange: () => input.classList.remove('input-auto')
-    });
 }
