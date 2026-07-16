@@ -97,6 +97,15 @@
     filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.6)) drop-shadow(-1px -1px 1px rgba(5, 11, 28, 0.12));
 }
 
+/* .devolucao-vazia-logo{
+    width:240px;
+    opacity:.45;
+
+    filter:
+        drop-shadow(1px 1px 0 rgba(255,255,255,.75))
+        drop-shadow(-1px -1px 1px rgba(5,11,28,.12));
+} */
+
 .devolucao-vazia-texto {
     font-size: 1.1rem;
     font-weight: 700;
