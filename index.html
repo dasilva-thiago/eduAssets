@@ -175,10 +175,12 @@
                     <div class="conteudo-container">
                         <!-- <h2>Novo Empréstimo</h2> -->
                         <form>
+
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="aluno">Solicitante</label>
-                                    <input list="solicitante" id="solicitante" name="solicitante" required>
+                                    <label for="solicitante">Solicitante</label>
+                                    <input list="solicitante" id="solicitante" name="solicitante"
+                                        placeholder="Nome do aluno..." required>
                                     <datalist id="solicitante">
                                         <option value="aluno1">Aluno 1</option>
                                         <option value="aluno2">Aluno 2</option>
@@ -193,7 +195,15 @@
                                         <option value="resp3">Prof. João</option>
                                     </select>
                                 </div>
+
+                                <div class="form-group col-md">
+                                    <label for="data-emprestimo">Data e Hora</label>
+                                    <input type="text" id="data-emprestimo" name="data-emprestimo" class="input-auto"
+                                        required>
+                                    <span class="form-hint">Clique para alterar</span>
+                                </div>
                             </div>
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="equipamento">Equipamento</label>
@@ -206,13 +216,15 @@
                                         <option value="eq5">Carregador USB</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="quantidade">Quantidade</label>
+
+                                <div class="form-group col-sm">
+                                    <label for="quantidade">Qtd.</label>
                                     <input type="number" id="quantidade" name="quantidade" min="1" value="1">
                                 </div>
+
                                 <div class="form-group form-group-align-btn">
-                                    <label for="btn-adicionar-item">Adicionar</label>
-                                    <button type="button" class="btn btn-neutral btn-block" id="btn-adicionar-item">
+                                    <label class="invisible-label">Ação</label>
+                                    <button type="button" class="btn btn-neutral" id="btn-adicionar-item">
                                         <span class="material-symbols-outlined">add</span> Adicionar
                                     </button>
                                 </div>
@@ -222,21 +234,16 @@
 
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="data-emprestimo">Data e Hora</label>
-                                    <input type="text" id="data-emprestimo" name="data-emprestimo" class="input-auto"
-                                        required>
-                                    <span class="form-hint">Preenchido automaticamente — clique para alterar</span>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
                                     <label for="observacao">Observação</label>
-                                    <textarea id="observacao" name="observacao" rows="4"
+                                    <textarea id="observacao" name="observacao" rows="3"
                                         placeholder="Adicione observações sobre o empréstimo..."></textarea>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-block registrar-emprestimo" type="submit">Registrar
-                                Empréstimo</button>
+
+                            <div class="form-actions">
+                                <button class="btn btn-primary registrar-emprestimo" type="submit">Registrar
+                                    Empréstimo</button>
+                            </div>
                         </form>
                     </div>
                 </div>
