@@ -1,12 +1,79 @@
 import { addLoan } from '../../core/state/loans.js';
 import { showToast } from '../../core/toast/toast.js';
+import { openModal } from '../../core/modal/modal.js';
+import { criarDataAutoPicker } from '../../core/datepicker/datepicker.js';
+
+
+const LIMITE_ITENS_FORM = 3;
 
 export function initEmprestimo() {
     const form = document.querySelector('#panel-emprestimo form');
     if (!form) return;
 
     const dataInput = document.getElementById('data-emprestimo');
+    const equipamentoSelect = document.getElementById('equipamento');
+    const quantidadeInput = document.getElementById('quantidade');
+    const btnAdicionar = document.getElementById('btn-adicionar-item');
+    const itensList = document.getElementById('itens-emprestimo-list');
+    const modalItensLista = document.getElementById('modal-itens-emprestimo-lista');
+
     const picker = criarDataPicker(dataInput);
+    let itens = [];
+
+    btnAdicionar.addEventListener('click', () => {
+        if (!equipamentoSelect.value) {
+            equipamentoSelect.reportValidity();
+            return;
+        }
+
+        const quantidade = Number(quantidadeInput.value) || 1;
+        const nome = equipamentoSelect.options[equipamentoSelect.selectedIndex].text;
+        const existente = itens.find((item) => item.id === equipamentoSelect.value);
+
+        existente ? existente.quantidade += quantidade : itens.push({ id: equipamentoSelect.value, nome, quantidade });
+
+        renderItens();
+        equipamentoSelect.value = '';
+        quantidadeInput.value = 1;
+    });
+
+    itensList.addEventListener('click', (e) => {
+        if (e.target.closest('.itens-emprestimo-mais')) {
+            modalItensLista.innerHTML = itens.map(renderItemRow).join('');
+            openModal('modal-itens-emprestimo');
+            return;
+        }
+
+        const btnRemover = e.target.closest('.item-emprestimo-remover');
+        if (btnRemover) removerItem(btnRemover.dataset.id);
+    });
+
+    modalItensLista.addEventListener('click', (e) => {
+        const btnRemover = e.target.closest('.item-emprestimo-remover');
+        if (!btnRemover) return;
+        removerItem(btnRemover.dataset.id);
+        modalItensLista.innerHTML = itens.map(renderItemRow).join('');
+    });
+
+    function removerItem(id) {
+        itens = itens.filter((item) => item.id !== id);
+        renderItens();
+    }
+
+    function renderItens() {
+        if (!itens.length) {
+            itensList.innerHTML = `<p class="itens-emprestimo-vazio">Nenhum equipamento adicionado ainda.</p>`;
+            return;
+        }
+
+        const visiveis = itens.slice(0, LIMITE_ITENS_FORM);
+        const restantes = itens.length - LIMITE_ITENS_FORM;
+
+        itensList.innerHTML = visiveis.map(renderItemRow).join('') +
+            (restantes > 0 ? `<button type="button" class="itens-emprestimo-mais">+${restantes} outro${restantes > 1 ? 's' : ''}</button>` : '');
+    }
+
+    renderItens();
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -16,14 +83,17 @@ export function initEmprestimo() {
             return;
         }
 
+        if (!itens.length) {
+            showToast('Adicione ao menos um equipamento ao empréstimo', 'error');
+            return;
+        }
+
         const responsavelSelect = document.getElementById('responsavel');
-        const equipamentoSelect = document.getElementById('equipamento');
 
         addLoan({
             aluno: document.getElementById('solicitante').value,
             responsavel: responsavelSelect.options[responsavelSelect.selectedIndex].text,
-            equipamento: equipamentoSelect.options[equipamentoSelect.selectedIndex].text,
-            quantidade: document.getElementById('quantidade').value,
+            itens,
             data: dataInput.value,
             observacao: document.getElementById('observacao').value
         });
@@ -32,7 +102,23 @@ export function initEmprestimo() {
         form.reset();
         picker.setDate(new Date(), false);
         dataInput.classList.add('input-auto');
+        itens = [];
+        renderItens();
     });
+}
+
+function renderItemRow(item) {
+    return `
+        <div class="item-emprestimo-row">
+            <div class="item-emprestimo-info">
+                <span class="item-emprestimo-qtd">${item.quantidade}x</span>
+                <span>${item.nome}</span>
+            </div>
+            <button type="button" class="item-emprestimo-remover" data-id="${item.id}" aria-label="Remover">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+    `;
 }
 
 function criarDataPicker(input) {

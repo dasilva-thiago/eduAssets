@@ -159,6 +159,18 @@
                 <h2 class="panel-title">Registrar novos empréstimos</h2>
                 <p class="panel-subtitle">Preencha o formulário para registrar um novo empréstimo de equipamento
                     eletrônico.</p>
+
+                <div class="modal-overlay" id="modal-itens-emprestimo">
+                    <div class="modal-box">
+                        <div class="modal-header">
+                            <h3>Itens do Empréstimo</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="itens-emprestimo-list" id="modal-itens-emprestimo-lista"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="emprestimo-container">
                     <div class="conteudo-container">
                         <!-- <h2>Novo Empréstimo</h2> -->
@@ -185,7 +197,7 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="equipamento">Equipamento</label>
-                                    <select name="equipamento" id="equipamento" required>
+                                    <select name="equipamento" id="equipamento">
                                         <option value="" disabled selected hidden>Selecionar equipamento</option>
                                         <option value="eq1">Notebook</option>
                                         <option value="eq2">Tablet</option>
@@ -196,9 +208,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="quantidade">Quantidade</label>
-                                    <input type="number" id="quantidade" name="quantidade" min="1" value="1" required>
+                                    <input type="number" id="quantidade" name="quantidade" min="1" value="1">
                                 </div>
+                                <div class="form-group form-group-align-btn">
+                                    <label for="btn-adicionar-item">Adicionar</label>
+                                    <button type="button" class="btn btn-neutral btn-block" id="btn-adicionar-item">
+                                        <span class="material-symbols-outlined">add</span> Adicionar
+                                    </button>
+                                </div>
+                            </div>
 
+                            <div class="itens-emprestimo-list" id="itens-emprestimo-list"></div>
+
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label for="data-emprestimo">Data e Hora</label>
                                     <input type="text" id="data-emprestimo" name="data-emprestimo" class="input-auto"
@@ -224,6 +246,43 @@
             <section class="panel" id="panel-devolucao">
                 <h2 class="panel-title">Devoluções</h2>
                 <p class="panel-subtitle">Empréstimos em aberto aguardando devolução.</p>
+
+                <!-- Modal: Devoluções -->
+                <div class="modal-overlay" id="modal-detalhe-emprestimo">
+                    <div class="modal-box">
+                        <div class="modal-header">
+                            <h3>Itens do Empréstimo</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="detalhe-emprestimo-meta">
+                                <span id="detalhe-emprestimo-resp"></span>
+                                <span id="detalhe-emprestimo-aluno"></span>
+                            </div>
+                            <ul class="detalhe-emprestimo-lista" id="detalhe-emprestimo-lista"></ul>
+                            <div class="detalhe-emprestimo-obs" id="detalhe-emprestimo-obs"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal: Confirmar Devolução -->
+                <div class="modal-overlay" id="modal-confirmar-devolucao">
+                    <div class="modal-box">
+                        <div class="modal-header">
+                            <h3>Confirmar Devolução</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="modal-devolucao-data">Data e Hora da Devolução</label>
+                                <input type="text" id="modal-devolucao-data" class="input-auto">
+                                <span class="form-hint">Preenchido automaticamente — clique para alterar</span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" id="btn-confirmar-devolucao">Confirmar Devolução</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="lista-devolucoes">
                     <h2 class="devolucao-title"></h2>
                     <div id="lista-devolucoes-items"></div>
