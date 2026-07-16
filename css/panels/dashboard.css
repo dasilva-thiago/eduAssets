@@ -74,3 +74,12 @@
     font-size: 0.8rem;
     color: var(--text-primary);
 }
+
+/* Tab content - Estoque | Registros */
+.dashboard-tab-content {
+    display: none;
+}
+
+.dashboard-tab-content.active {
+    display: block;
+}

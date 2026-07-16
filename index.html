@@ -310,7 +310,6 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-warning" id="modal-limpar">Limpar</button>
                             <button class="btn btn-success" id="modal-salvar">Salvar</button>
                         </div>
                     </div>
@@ -374,6 +373,47 @@
                 <h2 class="panel-title">Controle</h2>
                 <p class="panel-subtitle">Gerenciamento e registro de aparelhos eletrônicos.</p>
 
+                <div class="modal-overlay" id="modal-controle-novo">
+                    <div class="modal-box">
+                        <div class="modal-header">
+                            <h3 id="controle-modal-title">Novo Registro</h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="controle-modal-categoria">Categoria</label>
+                                    <input type="text" id="controle-modal-categoria" placeholder="Ex: Notebook">
+                                </div>
+                                <div class="form-group">
+                                    <label for="controle-modal-modelo">Modelo</label>
+                                    <input type="text" id="controle-modal-modelo" placeholder="Ex: Multilaser">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="controle-modal-numero">Número</label>
+                                    <input type="text" id="controle-modal-numero" placeholder="Ex: NB-014">
+                                </div>
+                                <div class="form-group">
+                                    <label for="controle-modal-problema">Problema</label>
+                                    <input type="text" id="controle-modal-problema" placeholder="Ex: Tela, Bateria...">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="controle-modal-descricao">Descrição</label>
+                                    <textarea id="controle-modal-descricao" rows="3"
+                                        placeholder="Descreva o ocorrido..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-neutral" id="controle-modal-cancelar" type="button">Cancelar</button>
+                            <button class="btn btn-success" id="controle-modal-salvar" type="button">Salvar</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="controle-container">
                     <div class="controle-conteudo">
                         <h2 class="controle-title">Controle de equipamentos</h2>
@@ -388,7 +428,7 @@
 
                         <div class="controle-registros-container">
                             <div class="controle-registros-header-row">
-                                <h4>Registros de Controle de Equipamentos</h4>
+                                <h4>Registros</h4>
 
                                 <div class="controle-registros-toolbar">
                                     <div class="novo-registro-dropdown">
@@ -611,7 +651,7 @@
             <!-- PAINEL 7: Configurações -->
             <section class="panel" id="panel-config">
                 <h2 class="panel-title">Configurações</h2>
-                <p class="panel-subtitle">Configure preferências, cadastre novas informações e usuários.</p>
+                <p class="panel-subtitle">Configure preferências do sistema.</p>
             </section>
 
             <!-- PAINEL 8: Sobre -->

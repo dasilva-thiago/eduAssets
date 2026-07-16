@@ -17,6 +17,16 @@ export function initDashboard() {
         atualizarToolbar();
     });
 
+    estoqueContainer.addEventListener('click', (e) => {
+        const row = e.target.closest('.estoque-row');
+        if (!row) return;
+        if (e.target.closest('.estoque-checkbox-wrap')) return; // checkbox cuida da seleção, não do modal
+
+        editandoId = row.dataset.id;
+        preencherModal(row);
+        openModal('modal-editar-estoque');
+    });
+
     function atualizarToolbar() {
         if (btnEditar) btnEditar.disabled = selecionados.size !== 1;
         if (btnDeletar) btnDeletar.disabled = selecionados.size === 0;
@@ -45,13 +55,13 @@ export function initDashboard() {
         if (quebrado) quebrado.value = row.dataset.quebrado || '';
     }
 
-    const btnLimpar = document.getElementById('modal-limpar');
-    if (btnLimpar) {
-        btnLimpar.addEventListener('click', () => {
-            const row = estoqueContainer.querySelector(`.estoque-row[data-id="${editandoId}"]`);
-            if (row) preencherModal(row);
-        });
-    }
+    // const btnLimpar = document.getElementById('modal-limpar');
+    // if (btnLimpar) {
+    //     btnLimpar.addEventListener('click', () => {
+    //         const row = estoqueContainer.querySelector(`.estoque-row[data-id="${editandoId}"]`);
+    //         if (row) preencherModal(row);
+    //     });
+    // }
 
     const btnSalvar = document.getElementById('modal-salvar');
     if (btnSalvar) {

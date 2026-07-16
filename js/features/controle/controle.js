@@ -1,3 +1,5 @@
+import { openModal, closeModal } from '../modal/modal.js';
+
 export function initControle() {
     const registrosContainer = document.querySelector('.controle-registros-container');
     if (!registrosContainer) return;
@@ -23,7 +25,6 @@ export function initControle() {
         });
     });
 
-    /* ===== Dropdown "+Novo" ===== */
     if (btnNovo && menuNovo) {
         btnNovo.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -45,8 +46,39 @@ export function initControle() {
         });
     }
 
+    const TITULOS_POR_TIPO = {
+        observacao: 'Nova Observação',
+        manutencao: 'Nova Manutenção',
+        quebrado: 'Registrar Quebra'
+    };
+
+    const modalTitle = document.getElementById('controle-modal-title');
+    const campoCategoria = document.getElementById('controle-modal-categoria');
+    const campoModelo = document.getElementById('controle-modal-modelo');
+    const campoNumero = document.getElementById('controle-modal-numero');
+    const campoProblema = document.getElementById('controle-modal-problema');
+    const campoDescricao = document.getElementById('controle-modal-descricao');
+    const btnModalCancelar = document.getElementById('controle-modal-cancelar');
+    const btnModalSalvar = document.getElementById('controle-modal-salvar');
+
     function abrirNovoRegistro(tipo) {
-        console.log('Novo registro:', tipo);
+        if (modalTitle) modalTitle.textContent = TITULOS_POR_TIPO[tipo] || 'Novo Registro';
+
+        [campoCategoria, campoModelo, campoNumero, campoProblema, campoDescricao].forEach((campo) => {
+            if (campo) campo.value = '';
+        });
+
+        openModal('modal-controle-novo');
+    }
+
+    if (btnModalCancelar) {
+        btnModalCancelar.addEventListener('click', () => closeModal('modal-controle-novo'));
+    }
+
+    if (btnModalSalvar) {
+        btnModalSalvar.addEventListener('click', () => {
+            closeModal('modal-controle-novo');
+        });
     }
 
     registrosContainer.addEventListener('click', (e) => {
