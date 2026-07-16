@@ -219,3 +219,43 @@
     color: var(--text-primary);
     line-height: 1.5;
 }
+
+/* editing */
+
+.detalhe-emprestimo-item-edit {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.detalhe-item-qtd {
+    width: 56px;
+    padding: 6px;
+    border: 1.5px solid var(--border-color);
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.detalhe-item-remover {
+    margin-left: auto;
+    position: static; 
+}
+
+.detalhe-emprestimo-item-edit .detalhe-item-remover {
+    margin-left: auto;
+    position: static;
+}
+
+.detalhe-emprestimo-edit .form-row:first-child {
+    margin-bottom: 12px;
+}
+
+.detalhe-emprestimo-edit .form-row:last-child {
+    margin-bottom: 20px;
+}
+
+.detalhe-qtd-group {
+    flex: 0 0 90px;
+}
