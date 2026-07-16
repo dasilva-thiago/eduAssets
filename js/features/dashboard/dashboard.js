@@ -1,4 +1,4 @@
-import { openModal, closeModal } from '../modal/modal.js';
+import { openModal, closeModal } from '../../core/modal/modal.js';
 
 export function initDashboard() {
     const estoqueContainer = document.getElementById('tab-estoque');

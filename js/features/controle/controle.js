@@ -1,4 +1,4 @@
-import { openModal, closeModal } from '../modal/modal.js';
+import { openModal, closeModal } from '../../core/modal/modal.js';
 
 export function initControle() {
     const registrosContainer = document.querySelector('.controle-registros-container');
