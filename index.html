@@ -247,7 +247,7 @@
                 <h2 class="panel-title">Devoluções</h2>
                 <p class="panel-subtitle">Empréstimos em aberto aguardando devolução.</p>
 
-                <!-- Modal: Devoluções -->
+                <!-- Modal: Detalhes Devoluções -->
                 <div class="modal-overlay" id="modal-detalhe-emprestimo">
                     <div class="modal-box">
                         <div class="modal-header">
@@ -259,8 +259,45 @@
                                 <span id="detalhe-emprestimo-aluno"></span>
                                 <span id="detalhe-emprestimo-data"></span>
                             </div>
+
                             <ul class="detalhe-emprestimo-lista" id="detalhe-emprestimo-lista"></ul>
+
+                            <div class="detalhe-emprestimo-edit" id="detalhe-emprestimo-edit" style="display:none;">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="detalhe-equipamento">Equipamento</label>
+                                        <select id="detalhe-equipamento">
+                                            <option value="" disabled selected hidden>Selecionar equipamento</option>
+                                            <option value="eq1">Notebook</option>
+                                            <option value="eq2">Tablet</option>
+                                            <option value="eq3">Fone de ouvido</option>
+                                            <option value="eq4">Fonte de carregamento</option>
+                                            <option value="eq5">Carregador USB</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group detalhe-qtd-group">
+                                        <label for="detalhe-quantidade">Quantidade</label>
+                                        <input type="number" id="detalhe-quantidade" min="1" value="1">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <button type="button" class="btn btn-neutral btn-block"
+                                        id="btn-detalhe-adicionar-item">
+                                        <span class="material-symbols-outlined">add</span> Adicionar
+                                    </button>
+                                </div>
+
+                            </div>
+
                             <div class="detalhe-emprestimo-obs" id="detalhe-emprestimo-obs"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-neutral" id="btn-detalhe-editar">
+                                <span class="material-symbols-outlined">edit</span> Editar
+                            </button>
+                            <button class="btn btn-success" id="btn-detalhe-salvar" style="display:none;">Salvar
+                                Alterações</button>
                         </div>
                     </div>
                 </div>

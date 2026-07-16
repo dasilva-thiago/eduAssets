@@ -15,6 +15,11 @@ export function getLoans() {
     return loans;
 }
 
+export function updateLoan(id, updates) {
+    loans = loans.map((loan) => loan.id === id ? { ...loan, ...updates } : loan);
+    notify();
+}
+
 export function subscribe(callback) {
     listeners.push(callback);
     return () => {
