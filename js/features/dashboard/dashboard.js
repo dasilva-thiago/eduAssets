@@ -20,7 +20,7 @@ export function initDashboard() {
     estoqueContainer.addEventListener('click', (e) => {
         const row = e.target.closest('.estoque-row');
         if (!row) return;
-        if (e.target.closest('.estoque-checkbox-wrap')) return; // checkbox cuida da seleção, não do modal
+        if (e.target.closest('.estoque-checkbox-wrap')) return;
 
         editandoId = row.dataset.id;
         preencherModal(row);
@@ -55,13 +55,10 @@ export function initDashboard() {
         if (quebrado) quebrado.value = row.dataset.quebrado || '';
     }
 
-    // const btnLimpar = document.getElementById('modal-limpar');
-    // if (btnLimpar) {
-    //     btnLimpar.addEventListener('click', () => {
-    //         const row = estoqueContainer.querySelector(`.estoque-row[data-id="${editandoId}"]`);
-    //         if (row) preencherModal(row);
-    //     });
-    // }
+    function setCol(row, col, value) {
+        const el = row.querySelector(`[data-col="${col}"]`);
+        if (el) el.textContent = value;
+    }
 
     const btnSalvar = document.getElementById('modal-salvar');
     if (btnSalvar) {
@@ -77,12 +74,9 @@ export function initDashboard() {
             row.dataset.disponivel = novoDisponivel;
             row.dataset.quebrado = novoQuebrado;
 
-            const spans = row.querySelectorAll('span');
-            if (spans.length >= 4) {
-                spans[1].textContent = novoTotal;
-                spans[2].textContent = novoDisponivel;
-                spans[3].textContent = novoQuebrado;
-            }
+            setCol(row, 'total', novoTotal);
+            setCol(row, 'disponivel', novoDisponivel);
+            setCol(row, 'quebrado', novoQuebrado);
 
             closeModal('modal-editar-estoque');
             editandoId = null;

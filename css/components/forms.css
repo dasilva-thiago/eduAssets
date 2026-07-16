@@ -50,3 +50,23 @@
 .form-group input[type="date"]:invalid {
     color: var(--text-secondary);
 }
+
+.input-auto {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    display: block;
+}
+
+.form-group input.input-auto {
+    background-color: var(--slate-100);
+    color: var(--text-secondary);
+    font-style: italic;
+    cursor: pointer;
+    border: 1.5px dashed var(--slate-400);
+}

@@ -5,6 +5,8 @@ import { initControle } from './features/controle/controle.js';
 import { initCadastros } from './features/cadastros/cadastros.js';
 import { initEmprestimo } from './features/emprestimo/emprestimo.js';
 import { initDevolucao } from './features/devolucao/devolucao.js';
+import { initExportar } from './features/exportar/exportar.js';
+import { initConfig } from './features/config/config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initNavigation();
@@ -14,4 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCadastros();
     initEmprestimo();
     initDevolucao();
+    initExportar();
+    initConfig();
 });

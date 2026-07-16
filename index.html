@@ -20,6 +20,12 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/pt.js"></script>
+
     <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -194,8 +200,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="data-emprestimo">Data</label>
-                                    <input type="date" id="data-emprestimo" name="data-emprestimo" required>
+                                    <label for="data-emprestimo">Data e Hora</label>
+                                    <input type="text" id="data-emprestimo" name="data-emprestimo" class="input-auto"
+                                        required>
+                                    <span class="form-hint">Preenchido automaticamente — clique para alterar</span>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -286,10 +294,10 @@
                             <div class="estoque-checkbox-wrap">
                                 <input type="checkbox" class="estoque-checkbox" data-id="notebook">
                             </div>
-                            <span>Notebook</span>
-                            <span>40</span>
-                            <span>28</span>
-                            <span>2</span>
+                            <span data-col="categoria">Notebook</span>
+                            <span data-col="total">40</span>
+                            <span data-col="disponivel">28</span>
+                            <span data-col="quebrado">2</span>
                         </div>
 
                         <div class="estoque-row" data-id="tablet" data-categoria="Tablet" data-total="20"
@@ -297,10 +305,10 @@
                             <div class="estoque-checkbox-wrap">
                                 <input type="checkbox" class="estoque-checkbox" data-id="tablet">
                             </div>
-                            <span>Tablet</span>
-                            <span>20</span>
-                            <span>15</span>
-                            <span>1</span>
+                            <span data-col="categoria">Tablet</span>
+                            <span data-col="total">20</span>
+                            <span data-col="disponivel">15</span>
+                            <span data-col="quebrado">1</span>
                         </div>
                     </div>
 
@@ -594,7 +602,44 @@
             <!-- PAINEL 7: Configurações -->
             <section class="panel" id="panel-config">
                 <h2 class="panel-title">Configurações</h2>
-                <p class="panel-subtitle">Configure preferências do sistema.</p>
+                <p class="panel-subtitle">Preferências gerais do sistema.</p>
+
+                <div class="config-container">
+                    <div class="config-card">
+                        <h4 class="config-card-title">Aparência</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="config-tema">Tema</label>
+                                <select id="config-tema">
+                                    <option value="claro" selected>Claro</option>
+                                    <option value="escuro">Escuro (em breve)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-card">
+                        <h4 class="config-card-title">Notificações</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="config-notif-emprestimo">Alertas de empréstimo</label>
+                                <select id="config-notif-emprestimo">
+                                    <option value="ativado" selected>Ativado</option>
+                                    <option value="desativado">Desativado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="config-notif-devolucao">Alertas de devolução</label>
+                                <select id="config-notif-devolucao">
+                                    <option value="ativado" selected>Ativado</option>
+                                    <option value="desativado">Desativado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="config-salvar">Salvar Configurações</button>
+                </div>
             </section>
 
             <!-- PAINEL 8: Sobre -->

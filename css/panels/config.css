@@ -1,0 +1,29 @@
+.config-container {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    gap: 20px;
+    height: 80vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.config-card {
+    background-color: var(--surface-white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    padding: 24px;
+    justify-content: center;
+    align-items: center;
+}
+
+.config-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    font-family: var(--font-heading);
+}

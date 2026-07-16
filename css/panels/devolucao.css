@@ -9,6 +9,13 @@
     justify-content: center;
 }
 
+#lista-devolucoes-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .devolucao-title {
     margin-bottom: 40px;
     color: var(--text-primary);
@@ -118,3 +125,4 @@
     text-align: center;
     max-width: 320px;
 }
+

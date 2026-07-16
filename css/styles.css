@@ -21,3 +21,5 @@
 @import "panels/sobre.css";
 @import "panels/inicio.css";
 @import "panels/cadastros.css";
+@import "panels/config.css";
+@import "components/toast.css";
