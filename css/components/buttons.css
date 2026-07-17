@@ -6,8 +6,7 @@
     border: none;
     border-radius: 4px;
     font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
+    font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease, filter 0.2s ease;
 }
