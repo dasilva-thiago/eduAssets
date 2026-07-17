@@ -1,7 +1,7 @@
 .emprestimo-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items:center;
     justify-content: center;
     background-color: var(--bg-light);
     height: 80vh;
@@ -13,7 +13,13 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 800px;
+    max-width: 1000px;
+}
+
+.registrar-emprestimo .material-symbols-outlined {
+    font-size: 1.2rem;
+    vertical-align: middle;
+    margin-right: 6px;
 }
 
 .registrar-emprestimo {
@@ -145,6 +151,8 @@
     height: 42px; 
     padding: 0 20px;
     white-space: nowrap;
+    color: var(--primary-color);
+    border: 0.5px solid var(--primary-color);
 }
 
 #panel-emprestimo .form-actions {

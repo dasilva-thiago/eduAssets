@@ -86,15 +86,15 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link" data-panel="panel-exportar">
-                                <span class="material-symbols-outlined">download</span>
-                                <span>Exportar</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="#" class="nav-link" data-panel="panel-cadastros">
                                 <span class="material-symbols-outlined">list_alt</span>
                                 <span>Cadastros</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link" data-panel="panel-exportar">
+                                <span class="material-symbols-outlined">download</span>
+                                <span>Exportar</span>
                             </a>
                         </li>
                     </ul>
@@ -156,10 +156,11 @@
 
             <!-- PAINEL 1: Novo empréstimo  -->
             <section class="panel" id="panel-emprestimo">
-                <h2 class="panel-title">Registrar novos empréstimos</h2>
-                <p class="panel-subtitle">Preencha o formulário para registrar um novo empréstimo de equipamento
-                    eletrônico.</p>
+                <h2 class="panel-title"><span class="material-symbols-outlined">new_label</span>Registrar Empréstimo
+                </h2>
+                <p class="panel-subtitle">Preencha os dados abaixo para registrar um novo empréstimo.</p>
 
+                <!-- modal de itens do empréstimo -->
                 <div class="modal-overlay" id="modal-itens-emprestimo">
                     <div class="modal-box">
                         <div class="modal-header">
@@ -174,13 +175,16 @@
                 <div class="emprestimo-container">
                     <div class="conteudo-container">
                         <!-- <h2>Novo Empréstimo</h2> -->
-                        <form>
+                        <form id="form-emprestimo" class="form-emprestimo">
 
+                            <p class="form-label"><span class="material-symbols-outlined">person</span>Dados do
+                                Empréstimo</p>
+                            <span class="form-label-description">Informe os detalhes gerais do empréstimo</span>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="solicitante">Solicitante</label>
                                     <input list="solicitante" id="solicitante" name="solicitante"
-                                        placeholder="Nome do aluno..." required>
+                                        placeholder="Solicitante do empréstimo" required>
                                     <datalist id="solicitante">
                                         <option value="aluno1">Aluno 1</option>
                                         <option value="aluno2">Aluno 2</option>
@@ -204,6 +208,12 @@
                                 </div>
                             </div>
 
+                            <div class="form-actions"></div>
+
+                            <p class="form-label"><span class="material-symbols-outlined">inventory_2</span>Itens do
+                                Empréstimo</p>
+                            <span class="form-label-description">Selecione os equipamentos e quantidades e adicione à
+                                lista</span>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="equipamento">Equipamento</label>
@@ -232,16 +242,20 @@
 
                             <div class="itens-emprestimo-list" id="itens-emprestimo-list"></div>
 
+                            <div class="form-actions"></div>
+                            <p class="form-label"><span class="material-symbols-outlined">notes</span>Observação</p>
+                            <span class="form-label-description">Adicione observações sobre o empréstimo...</span>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label for="observacao">Observação</label>
+                                    <label for="observacao"></label>
                                     <textarea id="observacao" name="observacao" rows="3"
                                         placeholder="Adicione observações sobre o empréstimo..."></textarea>
                                 </div>
                             </div>
 
                             <div class="form-actions">
-                                <button class="btn btn-primary registrar-emprestimo" type="submit">Registrar
+                                <button class="btn btn-primary registrar-emprestimo" type="submit"> <span
+                                        class="material-symbols-outlined">check</span>Registrar
                                     Empréstimo</button>
                             </div>
                         </form>
@@ -251,7 +265,7 @@
 
             <!-- PAINEL 2: Devoluções -->
             <section class="panel" id="panel-devolucao">
-                <h2 class="panel-title">Devoluções</h2>
+                <h2 class="panel-title"> <span class="material-symbols-outlined">replay</span>Devoluções</h2>
                 <p class="panel-subtitle">Empréstimos em aberto aguardando devolução.</p>
 
                 <!-- Modal: Detalhes Devoluções -->
@@ -336,7 +350,7 @@
 
             <!-- PAINEL 3: Dashboard -->
             <section class="panel" id="panel-dashboard">
-                <h2 class="panel-title">Dashboard</h2>
+                <h2 class="panel-title"><span class="material-symbols-outlined">dashboard_customize</span>Dashboard</h2>
                 <p class="panel-subtitle">Visão geral do estoque com estatísticas e últimos registros</p>
 
                 <div class="modal-overlay" id="modal-editar-estoque">
@@ -425,7 +439,7 @@
 
             <!-- PAINEL 4: Controle -->
             <section class="panel" id="panel-controle">
-                <h2 class="panel-title">Controle</h2>
+                <h2 class="panel-title"><span class="material-symbols-outlined">browse_activity</span>Controle</h2>
                 <p class="panel-subtitle">Gerenciamento e registro de aparelhos eletrônicos.</p>
 
                 <div class="modal-overlay" id="modal-controle-novo">
@@ -591,7 +605,7 @@
 
             <!-- PAINEL 5: Cadastros -->
             <section class="panel" id="panel-cadastros">
-                <h2 class="panel-title">Cadastros</h2>
+                <h2 class="panel-title"><span class="material-symbols-outlined">list_alt</span>Cadastros</h2>
                 <p class="panel-subtitle"></p>
 
                 <div class="modal-overlay" id="modal-cadastro">
@@ -660,7 +674,7 @@
 
             <!-- PAINEL 6: Exportar -->
             <section class="panel" id="panel-exportar">
-                <h2 class="panel-title">Exportar</h2>
+                <h2 class="panel-title"><span class="material-symbols-outlined">download</span>Exportar</h2>
                 <p class="panel-subtitle">Filtre os dados para visualização e exportação.</p>
                 <div class="exportar-container">
                     <h2 class="exportar-title">Exportar dados</h2>
@@ -705,7 +719,7 @@
 
             <!-- PAINEL 7: Configurações -->
             <section class="panel" id="panel-config">
-                <h2 class="panel-title">Configurações</h2>
+                <h2 class="panel-title"><span class="material-symbols-outlined">settings</span>Configurações</h2>
                 <p class="panel-subtitle">Preferências gerais do sistema.</p>
 
                 <div class="config-container">

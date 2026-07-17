@@ -13,7 +13,6 @@
     margin-bottom: 6px; 
     font-size: 0.9rem;
     color: var(--text-primary); 
-    text-transform: uppercase;
     font-weight: 500;
 }
 
@@ -69,4 +68,23 @@
     font-style: italic;
     cursor: pointer;
     border: 1.5px dashed var(--slate-400);
+}
+
+section .form-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-color); 
+}
+
+section .form-label .material-symbols-outlined {
+    font-size: 2rem;
+    vertical-align: middle;
+    margin-right: 8px;
+    color: var(--primary-color)
+}
+
+section .form-label-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
 }
