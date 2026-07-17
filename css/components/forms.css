@@ -67,7 +67,18 @@
     color: var(--text-secondary);
     font-style: italic;
     cursor: pointer;
-    border: 1.5px dashed var(--slate-400);
+    border: 1px dashed var(--slate-400);
+}
+
+.form-group input.input-auto:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-group input.input-auto:hover {
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+    box-shadow: 0 0 1px var(--primary-color);
 }
 
 section .form-label {

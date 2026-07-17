@@ -3,7 +3,22 @@ import { showToast } from '../../core/toast/toast.js';
 import { openModal, closeModal } from '../../core/modal/modal.js';
 import { criarDataAutoPicker } from '../../core/datepicker/datepicker.js';
 
-const LIMITE_ITENS_CARD = 2;
+const LIMITE_ICONES_CARD = 3;
+
+const PAPEL_ICONS = {
+    administrador: 'admin_panel_settings',
+    editor: 'edit',
+    usuario: 'person',
+    convidado: 'person_outline'
+};
+
+const EQUIPAMENTO_ICONS = {
+    eq1: 'laptop',
+    eq2: 'tablet',
+    eq3: 'headphones',
+    eq4: 'bolt',
+    eq5: 'usb'
+};
 
 export function initDevolucao() {
     const lista = document.getElementById('lista-devolucoes-items');
@@ -14,17 +29,25 @@ export function initDevolucao() {
     const devolucaoPicker = criarDataAutoPicker(devolucaoDataInput);
     let idPendente = null;
 
-    // --- elementos do modal de detalhes / edição ---
+    // --- elementos do painel de detalhes ---
+    const detalheEmpty = document.getElementById('devolucao-detalhe-empty');
+    const detalheConteudo = document.getElementById('devolucao-detalhe-conteudo');
+    const detalhePapelIcon = document.getElementById('detalhe-papel-icon');
     const detalheLista = document.getElementById('detalhe-emprestimo-lista');
+    const detalheItensContagem = document.getElementById('detalhe-itens-contagem');
     const detalheEditWrap = document.getElementById('detalhe-emprestimo-edit');
     const detalheEquipamentoSelect = document.getElementById('detalhe-equipamento');
     const detalheQuantidadeInput = document.getElementById('detalhe-quantidade');
     const btnDetalheAdicionarItem = document.getElementById('btn-detalhe-adicionar-item');
     const btnDetalheEditar = document.getElementById('btn-detalhe-editar');
     const btnDetalheSalvar = document.getElementById('btn-detalhe-salvar');
+    const btnDetalheFechar = document.getElementById('btn-detalhe-fechar');
+    const btnDetalheCancelar = document.getElementById('btn-detalhe-cancelar');
+    const btnConfirmarDevolucaoPainel = document.getElementById('btn-confirmar-devolucao-painel');
 
     let idDetalheAberto = null;
     let itensEditando = [];
+    let modoEdicaoAtivo = false;
 
     render(getLoans());
     subscribe(render);
@@ -32,10 +55,7 @@ export function initDevolucao() {
     lista.addEventListener('click', (e) => {
         const btnDevolver = e.target.closest('.devolver-btn');
         if (btnDevolver) {
-            idPendente = btnDevolver.dataset.id;
-            devolucaoPicker.setDate(new Date(), false);
-            devolucaoDataInput.classList.add('input-auto');
-            openModal('modal-confirmar-devolucao');
+            abrirModalConfirmacao(btnDevolver.dataset.id);
             return;
         }
 
@@ -52,7 +72,27 @@ export function initDevolucao() {
         idPendente = null;
     });
 
-    // --- editing: modal ---
+    btnConfirmarDevolucaoPainel.addEventListener('click', () => {
+        if (!idDetalheAberto) return;
+        abrirModalConfirmacao(idDetalheAberto);
+    });
+
+    // --- fechar / cancelar painel ---
+
+    btnDetalheFechar.addEventListener('click', fecharDetalhe);
+
+    btnDetalheCancelar.addEventListener('click', () => {
+        if (modoEdicaoAtivo) {
+            const loan = getLoans().find((l) => l.id === idDetalheAberto);
+            itensEditando = loan ? loan.itens.map((item) => ({ ...item })) : [];
+            setModoEdicao(false);
+            renderDetalheItens(itensEditando, false);
+            return;
+        }
+        fecharDetalhe();
+    });
+
+    // --- editing ---
 
     btnDetalheEditar.addEventListener('click', () => {
         setModoEdicao(true);
@@ -103,16 +143,32 @@ export function initDevolucao() {
         renderDetalheItens(itensEditando, false);
     });
 
+    function abrirModalConfirmacao(id) {
+        idPendente = id;
+        devolucaoPicker.setDate(new Date(), false);
+        devolucaoDataInput.classList.add('input-auto');
+        openModal('modal-confirmar-devolucao');
+    }
+
     function setModoEdicao(ativo) {
+        modoEdicaoAtivo = ativo;
         detalheEditWrap.style.display = ativo ? 'block' : 'none';
         btnDetalheEditar.style.display = ativo ? 'none' : 'inline-flex';
         btnDetalheSalvar.style.display = ativo ? 'inline-flex' : 'none';
+        btnConfirmarDevolucaoPainel.style.display = ativo ? 'none' : 'inline-flex';
+        btnDetalheCancelar.textContent = ativo ? 'Cancelar edição' : 'Cancelar';
     }
 
     function renderDetalheItens(itens, editMode) {
+        detalheItensContagem.textContent = `(${itens.length})`;
+
         if (!editMode) {
             detalheLista.innerHTML = itens.map((item) => `
-                <li><span class="material-symbols-outlined">check_circle</span>${item.quantidade}x ${item.nome}</li>
+                <li>
+                    <span class="material-symbols-outlined">${EQUIPAMENTO_ICONS[item.id] || 'devices_other'}</span>
+                    <span class="detalhe-item-nome">${item.quantidade}x ${item.nome}</span>
+                    <span class="detalhe-item-status">Pendente</span>
+                </li>
             `).join('');
             return;
         }
@@ -135,9 +191,13 @@ export function initDevolucao() {
         idDetalheAberto = id;
         itensEditando = loan.itens.map((item) => ({ ...item }));
 
-        document.getElementById('detalhe-emprestimo-resp').textContent = `Responsável: ${loan.responsavel}`;
-        document.getElementById('detalhe-emprestimo-aluno').textContent = `Solicitante: ${loan.aluno}`;
-        document.getElementById('detalhe-emprestimo-data').textContent = `Data: ${loan.data}`;
+        const papel = loan.papel || 'usuario';
+        detalhePapelIcon.dataset.papel = papel;
+        detalhePapelIcon.querySelector('.material-symbols-outlined').textContent = PAPEL_ICONS[papel] || PAPEL_ICONS.usuario;
+
+        document.getElementById('detalhe-emprestimo-resp').textContent = loan.responsavel;
+        document.getElementById('detalhe-emprestimo-aluno').textContent = loan.aluno;
+        document.getElementById('detalhe-emprestimo-data').textContent = `Empréstimo realizado em ${loan.data}`;
 
         setModoEdicao(false);
         renderDetalheItens(itensEditando, false);
@@ -151,7 +211,24 @@ export function initDevolucao() {
             obsEl.innerHTML = '';
         }
 
-        openModal('modal-detalhe-emprestimo');
+        detalheEmpty.style.display = 'none';
+        detalheConteudo.style.display = 'flex';
+        marcarLinhaSelecionada(id);
+    }
+
+    function fecharDetalhe() {
+        idDetalheAberto = null;
+        itensEditando = [];
+        setModoEdicao(false);
+        detalheConteudo.style.display = 'none';
+        detalheEmpty.style.display = 'flex';
+        marcarLinhaSelecionada(null);
+    }
+
+    function marcarLinhaSelecionada(id) {
+        lista.querySelectorAll('.devolucao-item').forEach((el) => {
+            el.classList.toggle('selected', el.dataset.id === id);
+        });
     }
 
     function render(loans) {
@@ -163,11 +240,15 @@ export function initDevolucao() {
                     <p class="devolucao-vazia-sub">Registre um novo empréstimo para começar a acompanhar as devoluções.</p>
                 </div>
             `;
+            fecharDetalhe();
             return;
         }
 
         lista.innerHTML = loans.map((loan) => `
             <div class="devolucao-item" data-id="${loan.id}">
+                <span class="devolucao-papel-icon devolucao-papel-icon-sm" data-papel="${loan.papel || 'usuario'}">
+                    <span class="material-symbols-outlined">${PAPEL_ICONS[loan.papel] || PAPEL_ICONS.usuario}</span>
+                </span>
                 <div class="devolucao-info">
                     <div class="devolucao-linha-principal">
                         <span class="info-resp">${loan.responsavel}</span>
@@ -177,7 +258,7 @@ export function initDevolucao() {
                         </svg>
                         <span class="info-value">${loan.aluno}</span>
                     </div>
-                    <div class="devolucao-linha-itens">${formatarItensResumo(loan.itens)}</div>
+                    <div class="devolucao-itens-icons">${renderItensIcons(loan.itens)}</div>
                     <div class="devolucao-linha-hora">
                         <span class="material-symbols-outlined">schedule</span>
                         <span>${formatarHora(loan.createdAt)}</span>
@@ -187,16 +268,34 @@ export function initDevolucao() {
                 <button class="btn btn-primary btn-sm devolver-btn" data-id="${loan.id}">Devolver</button>
             </div>
         `).join('');
+
+        if (idDetalheAberto) {
+            const aindaExiste = loans.some((l) => l.id === idDetalheAberto);
+            aindaExiste ? marcarLinhaSelecionada(idDetalheAberto) : fecharDetalhe();
+        }
     }
 }
 
-function formatarItensResumo(itens) {
-    const visiveis = itens.slice(0, LIMITE_ITENS_CARD).map((item) => `${item.quantidade}x ${item.nome}`);
-    const restantes = itens.length - LIMITE_ITENS_CARD;
+function renderItensIcons(itens) {
+    if (itens.length <= LIMITE_ICONES_CARD) {
+        return itens.map(renderItemIconPill).join('');
+    }
 
-    if (restantes > 0) visiveis.push(`+${restantes} outro${restantes > 1 ? 's' : ''}`);
+    const visiveis = itens.slice(0, LIMITE_ICONES_CARD - 1);
+    const restantes = itens.length - visiveis.length;
 
-    return visiveis.join(' • ');
+    return visiveis.map(renderItemIconPill).join('') +
+        `<div class="devolucao-item-icon-pill devolucao-item-icon-mais" title="+${restantes} ${restantes > 1 ? 'itens' : 'item'}">...</div>`;
+}
+
+function renderItemIconPill(item) {
+    const icon = EQUIPAMENTO_ICONS[item.id] || 'devices_other';
+    return `
+        <div class="devolucao-item-icon-pill" data-eq="${item.id}" title="${item.quantidade}x ${item.nome}">
+            <span class="material-symbols-outlined">${icon}</span>
+            <span class="devolucao-item-icon-pill-texto">${item.quantidade}x ${item.nome}</span>
+        </div>
+    `;
 }
 
 function formatarHora(date) {

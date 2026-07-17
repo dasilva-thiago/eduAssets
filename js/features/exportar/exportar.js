@@ -1,7 +1,7 @@
 import { showToast } from '../../core/toast/toast.js';
 
 export function initExportar() {
-    const form = document.querySelector('#panel-exportar form');
+    const form = document.getElementById('form-exportar');
     if (!form) return;
 
     form.addEventListener('submit', (e) => {

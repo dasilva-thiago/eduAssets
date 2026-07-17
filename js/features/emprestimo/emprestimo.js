@@ -15,6 +15,7 @@ export function initEmprestimo() {
     const quantidadeInput = document.getElementById('quantidade');
     const btnAdicionar = document.getElementById('btn-adicionar-item');
     const itensList = document.getElementById('itens-emprestimo-list');
+    const itensCount = document.getElementById('itens-emprestimo-count');
     const modalItensLista = document.getElementById('modal-itens-emprestimo-lista');
 
     const picker = criarDataAutoPicker(dataInput);
@@ -61,16 +62,20 @@ export function initEmprestimo() {
     }
 
     function renderItens() {
+        if (itensCount) itensCount.textContent = `(${itens.length})`;
+
         if (!itens.length) {
-            itensList.innerHTML = `<p class="itens-emprestimo-vazio">Nenhum equipamento adicionado ainda.</p>`;
+            itensList.innerHTML = `
+                <div class="itens-emprestimo-empty">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    <span class="itens-emprestimo-empty-titulo">Nenhum item adicionado ainda.</span>
+                    <span class="itens-emprestimo-empty-sub">Adicione equipamentos acima para criar a lista.</span>
+                </div>
+            `;
             return;
         }
 
-        const visiveis = itens.slice(0, LIMITE_ITENS_FORM);
-        const restantes = itens.length - LIMITE_ITENS_FORM;
-
-        itensList.innerHTML = visiveis.map(renderItemRow).join('') +
-            (restantes > 0 ? `<button type="button" class="itens-emprestimo-mais">+${restantes} outro${restantes > 1 ? 's' : ''}</button>` : '');
+        itensList.innerHTML = itens.map(renderItemRow).join('');
     }
 
     renderItens();
@@ -89,10 +94,12 @@ export function initEmprestimo() {
         }
 
         const responsavelSelect = document.getElementById('responsavel');
+        const responsavelOption = responsavelSelect.options[responsavelSelect.selectedIndex];
 
         addLoan({
             aluno: document.getElementById('solicitante').value,
-            responsavel: responsavelSelect.options[responsavelSelect.selectedIndex].text,
+            responsavel: responsavelOption.text,
+            papel: responsavelOption.dataset.papel || 'usuario',
             itens,
             data: dataInput.value,
             observacao: document.getElementById('observacao').value

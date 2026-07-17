@@ -174,82 +174,94 @@
 
                 <div class="emprestimo-container">
                     <div class="conteudo-container">
-                        <!-- <h2>Novo Empréstimo</h2> -->
                         <form id="form-emprestimo" class="form-emprestimo">
 
-                            <p class="form-label"><span class="material-symbols-outlined">person</span>Dados do
-                                Empréstimo</p>
-                            <span class="form-label-description">Informe os detalhes gerais do empréstimo</span>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="solicitante">Solicitante</label>
-                                    <input list="solicitante" id="solicitante" name="solicitante"
-                                        placeholder="Solicitante do empréstimo" required>
-                                    <datalist id="solicitante">
-                                        <option value="aluno1">Aluno 1</option>
-                                        <option value="aluno2">Aluno 2</option>
-                                    </datalist>
-                                </div>
-                                <div class="form-group">
-                                    <label for="responsavel">Responsável</label>
-                                    <select name="responsavel" id="responsavel" required>
-                                        <option value="" disabled selected hidden>Responsável pelo empréstimo</option>
-                                        <option value="resp1">Thiago da Silva</option>
-                                        <option value="resp2">Prof. Maria</option>
-                                        <option value="resp3">Prof. João</option>
-                                    </select>
-                                </div>
+                            <div class="form-section">
+                                <p class="form-label"><span class="material-symbols-outlined">person</span><span
+                                        class="form-label-number">1.</span> Dados do Empréstimo</p>
+                                <span class="form-label-description">Informe quem está solicitando e os detalhes gerais
+                                    do empréstimo.</span>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="solicitante">Solicitante</label>
+                                        <input list="solicitante" id="solicitante" name="solicitante"
+                                            placeholder="Solicitante do empréstimo" required>
+                                        <datalist id="solicitante">
+                                            <option value="aluno1">Aluno 1</option>
+                                            <option value="aluno2">Aluno 2</option>
+                                        </datalist>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="responsavel">Responsável</label>
+                                        <select name="responsavel" id="responsavel" required>
+                                            <option value="" disabled selected hidden>Responsável pelo empréstimo
+                                            </option>
+                                            <option value="resp1" data-papel="administrador">Thiago da Silva</option>
+                                            <option value="resp2" data-papel="editor">Prof. Maria</option>
+                                            <option value="resp3" data-papel="usuario">Prof. João</option>
+                                        </select>
+                                    </div>
 
-                                <div class="form-group col-md">
-                                    <label for="data-emprestimo">Data e Hora</label>
-                                    <input type="text" id="data-emprestimo" name="data-emprestimo" class="input-auto"
-                                        required>
-                                    <span class="form-hint">Clique para alterar</span>
-                                </div>
-                            </div>
-
-                            <div class="form-actions"></div>
-
-                            <p class="form-label"><span class="material-symbols-outlined">inventory_2</span>Itens do
-                                Empréstimo</p>
-                            <span class="form-label-description">Selecione os equipamentos e quantidades e adicione à
-                                lista</span>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="equipamento">Equipamento</label>
-                                    <select name="equipamento" id="equipamento">
-                                        <option value="" disabled selected hidden>Selecionar equipamento</option>
-                                        <option value="eq1">Notebook</option>
-                                        <option value="eq2">Tablet</option>
-                                        <option value="eq3">Fone de ouvido</option>
-                                        <option value="eq4">Fonte de carregamento</option>
-                                        <option value="eq5">Carregador USB</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group col-sm">
-                                    <label for="quantidade">Qtd.</label>
-                                    <input type="number" id="quantidade" name="quantidade" min="1" value="1">
-                                </div>
-
-                                <div class="form-group form-group-align-btn">
-                                    <label class="invisible-label">Ação</label>
-                                    <button type="button" class="btn btn-neutral" id="btn-adicionar-item">
-                                        <span class="material-symbols-outlined">add</span> Adicionar
-                                    </button>
+                                    <div class="form-group col-md">
+                                        <label for="data-emprestimo">Data e Hora <span
+                                                class="form-label-optional">(Clique para alterar)</span></label>
+                                        <input type="text" id="data-emprestimo" name="data-emprestimo"
+                                            class="input-auto" required>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="itens-emprestimo-list" id="itens-emprestimo-list"></div>
+                            <div class="form-section">
+                                <p class="form-label"><span class="material-symbols-outlined">inventory_2</span><span
+                                        class="form-label-number">2.</span> Itens do Empréstimo</p>
+                                <span class="form-label-description">Selecione o equipamento e a quantidade, depois
+                                    adicione à lista.</span>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="equipamento">Equipamento</label>
+                                        <select class="select-equipamento" name="equipamento" id="equipamento">
+                                            <option value="" disabled selected hidden>Selecionar equipamento</option>
+                                            <option value="eq1">Notebook</option>
+                                            <option value="eq2">Tablet</option>
+                                            <option value="eq3">Fone de ouvido</option>
+                                            <option value="eq4">Fonte de carregamento</option>
+                                            <option value="eq5">Carregador USB</option>
+                                        </select>
+                                    </div>
 
-                            <div class="form-actions"></div>
-                            <p class="form-label"><span class="material-symbols-outlined">notes</span>Observação</p>
-                            <span class="form-label-description">Adicione observações sobre o empréstimo...</span>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="observacao"></label>
-                                    <textarea id="observacao" name="observacao" rows="3"
-                                        placeholder="Adicione observações sobre o empréstimo..."></textarea>
+                                    <div class="form-group col-sm">
+                                        <label for="quantidade">Qtd.</label>
+                                        <input type="number" id="quantidade" name="quantidade" min="1" value="1">
+                                    </div>
+
+                                    <div class="form-group form-group-align-btn">
+                                        <label class="invisible-label">Ação</label>
+                                        <button type="button" class="btn btn-neutral" id="btn-adicionar-item">
+                                            <span class="material-symbols-outlined">add</span> Adicionar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="itens-emprestimo-header">
+                                    <span>Itens adicionados</span>
+                                    <span class="itens-emprestimo-count" id="itens-emprestimo-count">(0)</span>
+                                </div>
+
+                                <div class="itens-emprestimo-list" id="itens-emprestimo-list"></div>
+                            </div>
+
+                            <div class="form-section">
+                                <p class="form-label"><span class="material-symbols-outlined">notes</span><span
+                                        class="form-label-number">3.</span> Observação<span
+                                        class="form-label-optional">(opcional)</span></p>
+                                <span class="form-label-description">Adicione observações sobre o empréstimo, se
+                                    necessário.</span>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="observacao"></label>
+                                        <textarea id="observacao" name="observacao" rows="3"
+                                            placeholder="Adicione observações sobre o empréstimo..."></textarea>
+                                    </div>
                                 </div>
                             </div>
 
@@ -268,62 +280,7 @@
                 <h2 class="panel-title"> <span class="material-symbols-outlined">replay</span>Devoluções</h2>
                 <p class="panel-subtitle">Empréstimos em aberto aguardando devolução.</p>
 
-                <!-- Modal: Detalhes Devoluções -->
-                <div class="modal-overlay" id="modal-detalhe-emprestimo">
-                    <div class="modal-box">
-                        <div class="modal-header">
-                            <h3>Detalhes do Empréstimo</h3>
-                        </div>
-                        <div class="modal-body">
-                            <div class="detalhe-emprestimo-meta">
-                                <span id="detalhe-emprestimo-resp"></span>
-                                <span id="detalhe-emprestimo-aluno"></span>
-                                <span id="detalhe-emprestimo-data"></span>
-                            </div>
-
-                            <ul class="detalhe-emprestimo-lista" id="detalhe-emprestimo-lista"></ul>
-
-                            <div class="detalhe-emprestimo-edit" id="detalhe-emprestimo-edit" style="display:none;">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="detalhe-equipamento">Equipamento</label>
-                                        <select id="detalhe-equipamento">
-                                            <option value="" disabled selected hidden>Selecionar equipamento</option>
-                                            <option value="eq1">Notebook</option>
-                                            <option value="eq2">Tablet</option>
-                                            <option value="eq3">Fone de ouvido</option>
-                                            <option value="eq4">Fonte de carregamento</option>
-                                            <option value="eq5">Carregador USB</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group detalhe-qtd-group">
-                                        <label for="detalhe-quantidade">Quantidade</label>
-                                        <input type="number" id="detalhe-quantidade" min="1" value="1">
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <button type="button" class="btn btn-neutral btn-block"
-                                        id="btn-detalhe-adicionar-item">
-                                        <span class="material-symbols-outlined">add</span> Adicionar
-                                    </button>
-                                </div>
-
-                            </div>
-
-                            <div class="detalhe-emprestimo-obs" id="detalhe-emprestimo-obs"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-neutral" id="btn-detalhe-editar">
-                                <span class="material-symbols-outlined">edit</span> Editar
-                            </button>
-                            <button class="btn btn-success" id="btn-detalhe-salvar" style="display:none;">Salvar
-                                Alterações</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal: Confirmar Devolução -->
+                <!-- Modal: Confirmar Devolução (única janela pop-up que sobra neste painel) -->
                 <div class="modal-overlay" id="modal-confirmar-devolucao">
                     <div class="modal-box">
                         <div class="modal-header">
@@ -342,9 +299,103 @@
                     </div>
                 </div>
 
-                <div class="lista-devolucoes">
-                    <h2 class="devolucao-title"></h2>
-                    <div id="lista-devolucoes-items"></div>
+                <div class="devolucao-layout">
+
+                    <div class="devolucao-lista-wrap">
+                        <div id="lista-devolucoes-items"></div>
+                    </div>
+
+                    <aside class="devolucao-detalhe-painel">
+
+                        <div class="devolucao-detalhe-empty" id="devolucao-detalhe-empty">
+                            <span class="material-symbols-outlined">touch_app</span>
+                            <p>Selecione um empréstimo na lista para ver os detalhes.</p>
+                        </div>
+
+                        <div class="devolucao-detalhe-conteudo" id="devolucao-detalhe-conteudo" style="display:none;">
+
+                            <div class="devolucao-detalhe-header">
+                                <h3>Detalhes do Empréstimo</h3>
+                                <button type="button" class="devolucao-detalhe-fechar" id="btn-detalhe-fechar"
+                                    aria-label="Fechar">
+                                    <span class="material-symbols-outlined">close</span>
+                                </button>
+                            </div>
+
+                            <div class="devolucao-detalhe-pessoa">
+                                <span class="devolucao-papel-icon" id="detalhe-papel-icon">
+                                    <span class="material-symbols-outlined">person</span>
+                                </span>
+                                <div class="devolucao-detalhe-pessoa-info">
+                                    <div class="devolucao-detalhe-pessoa-linha">
+                                        <span class="info-resp" id="detalhe-emprestimo-resp"></span>
+                                        <svg class="seta-svg" viewBox="0 0 40 12" xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="0" y1="6" x2="32" y2="6" stroke="currentColor" stroke-width="1.5"
+                                                stroke-linecap="round" />
+                                            <polyline points="26,1 36,6 26,11" fill="none" stroke="currentColor"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <span class="info-value" id="detalhe-emprestimo-aluno"></span>
+                                    </div>
+                                    <span class="devolucao-detalhe-pessoa-data" id="detalhe-emprestimo-data"></span>
+                                </div>
+                            </div>
+
+                            <div class="devolucao-detalhe-secao">
+                                <div class="devolucao-detalhe-secao-header">
+                                    <span>Itens emprestados</span>
+                                    <span class="devolucao-detalhe-contagem" id="detalhe-itens-contagem">(0)</span>
+                                    <button type="button" class="devolucao-detalhe-editar-btn" id="btn-detalhe-editar"
+                                        aria-label="Editar itens">
+                                        <span class="material-symbols-outlined">edit</span>
+                                    </button>
+                                </div>
+
+                                <ul class="detalhe-emprestimo-lista" id="detalhe-emprestimo-lista"></ul>
+
+                                <div class="detalhe-emprestimo-edit" id="detalhe-emprestimo-edit" style="display:none;">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="detalhe-equipamento">Equipamento</label>
+                                            <select id="detalhe-equipamento">
+                                                <option value="" disabled selected hidden>Selecionar equipamento
+                                                </option>
+                                                <option value="eq1">Notebook</option>
+                                                <option value="eq2">Tablet</option>
+                                                <option value="eq3">Fone de ouvido</option>
+                                                <option value="eq4">Fonte de carregamento</option>
+                                                <option value="eq5">Carregador USB</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group detalhe-qtd-group">
+                                            <label for="detalhe-quantidade">Quantidade</label>
+                                            <input type="number" id="detalhe-quantidade" min="1" value="1">
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-neutral btn-block"
+                                        id="btn-detalhe-adicionar-item">
+                                        <span class="material-symbols-outlined">add</span> Adicionar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="devolucao-detalhe-secao devolucao-detalhe-obs" id="detalhe-emprestimo-obs">
+                            </div>
+
+                            <div class="devolucao-detalhe-acoes">
+                                <button class="btn btn-success btn-block" id="btn-detalhe-salvar" style="display:none;">
+                                    Salvar Alterações
+                                </button>
+                                <button class="btn btn-primary btn-block" id="btn-confirmar-devolucao-painel">
+                                    <span class="material-symbols-outlined">check</span> Confirmar Devolução
+                                </button>
+                                <button class="btn btn-neutral btn-block" id="btn-detalhe-cancelar">Cancelar</button>
+                            </div>
+
+                        </div>
+                    </aside>
+
                 </div>
             </section>
 
@@ -605,7 +656,7 @@
             <!-- PAINEL 5: Cadastros -->
             <section class="panel" id="panel-cadastros">
                 <h2 class="panel-title"><span class="material-symbols-outlined">list_alt</span>Cadastros</h2>
-                <p class="panel-subtitle"></p>
+                <p class="panel-subtitle">Selecione um módulo para visualizar, adicionar ou editar informações.</p>
 
                 <div class="modal-overlay" id="modal-cadastro">
                     <div class="modal-box">
@@ -628,45 +679,59 @@
                 </div>
 
                 <div class="cadastros-container">
-                    <p class="cadastros-intro">
-                        Selecione um módulo abaixo para visualizar, adicionar ou editar informações.
-                    </p>
 
                     <div class="cadastros-grid">
                         <a href="#" class="cadastro-card" data-cadastro="equipamentos">
-                            <span class="cadastro-card-icon">
-                                <span class="material-symbols-outlined">devices</span>
-                            </span>
+                            <div class="cadastro-card-top">
+                                <span class="cadastro-card-icon cadastro-card-icon-primary">
+                                    <span class="material-symbols-outlined">devices</span>
+                                </span>
+                                <span class="material-symbols-outlined cadastro-card-chevron">chevron_right</span>
+                            </div>
                             <h3 class="cadastro-card-title">Equipamentos</h3>
                             <p class="cadastro-card-desc">Cadastre e gerencie os equipamentos eletrônicos disponíveis
                                 para empréstimo.</p>
                         </a>
 
                         <a href="#" class="cadastro-card" data-cadastro="responsaveis">
-                            <span class="cadastro-card-icon">
-                                <span class="material-symbols-outlined">badge</span>
-                            </span>
+                            <div class="cadastro-card-top">
+                                <span class="cadastro-card-icon cadastro-card-icon-success">
+                                    <span class="material-symbols-outlined">badge</span>
+                                </span>
+                                <span class="material-symbols-outlined cadastro-card-chevron">chevron_right</span>
+                            </div>
                             <h3 class="cadastro-card-title">Responsáveis</h3>
                             <p class="cadastro-card-desc">Professores e funcionários autorizados a realizar empréstimos.
                             </p>
                         </a>
 
                         <a href="#" class="cadastro-card" data-cadastro="usuarios">
-                            <span class="cadastro-card-icon">
-                                <span class="material-symbols-outlined">admin_panel_settings</span>
-                            </span>
+                            <div class="cadastro-card-top">
+                                <span class="cadastro-card-icon cadastro-card-icon-secondary">
+                                    <span class="material-symbols-outlined">admin_panel_settings</span>
+                                </span>
+                                <span class="material-symbols-outlined cadastro-card-chevron">chevron_right</span>
+                            </div>
                             <h3 class="cadastro-card-title">Usuários</h3>
                             <p class="cadastro-card-desc">Administradores e pessoas autorizadas a acessar e alterar o
                                 sistema.</p>
                         </a>
 
                         <a href="#" class="cadastro-card" data-cadastro="categorias">
-                            <span class="cadastro-card-icon">
-                                <span class="material-symbols-outlined">category</span>
-                            </span>
+                            <div class="cadastro-card-top">
+                                <span class="cadastro-card-icon cadastro-card-icon-info">
+                                    <span class="material-symbols-outlined">category</span>
+                                </span>
+                                <span class="material-symbols-outlined cadastro-card-chevron">chevron_right</span>
+                            </div>
                             <h3 class="cadastro-card-title">Categorias</h3>
                             <p class="cadastro-card-desc">Organize os equipamentos por categorias e tipos.</p>
                         </a>
+                    </div>
+                    <div class="cadastros-info-banner">
+                        <span class="material-symbols-outlined">info</span>
+                        <span>Os cadastros permitem manter as informações organizadas e sempre atualizadas no
+                            sistema.</span>
                     </div>
                 </div>
             </section>
@@ -675,13 +740,24 @@
             <section class="panel" id="panel-exportar">
                 <h2 class="panel-title"><span class="material-symbols-outlined">download</span>Exportar</h2>
                 <p class="panel-subtitle">Filtre os dados para visualização e exportação.</p>
+
                 <div class="exportar-container">
-                    <h2 class="exportar-title">Exportar dados</h2>
-                    <div class="exportar-conteudo">
-                        <form>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="tipo-dados">Tipo de Dados</label>
+                    <form id="form-exportar">
+
+                        <div class="config-card">
+                            <div class="config-card-header">
+                                <span class="config-icon config-icon-info">
+                                    <span class="material-symbols-outlined">description</span>
+                                </span>
+                                <div>
+                                    <h4 class="config-card-title">1. Tipo de Dados</h4>
+                                    <p class="config-card-desc">Selecione o tipo de dados que deseja exportar.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="select-icon-wrap">
+                                    <span class="material-symbols-outlined select-icon">swap_horiz</span>
                                     <select name="tipo-dados" id="tipo-dados" required>
                                         <option value="" disabled selected hidden>Selecionar tipo de dados</option>
                                         <option value="devolucoes">Empréstimos e Devoluções</option>
@@ -689,7 +765,20 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class=" form-row">
+                        </div>
+
+                        <div class="config-card">
+                            <div class="config-card-header">
+                                <span class="config-icon config-icon-secondary">
+                                    <span class="material-symbols-outlined">calendar_month</span>
+                                </span>
+                                <div>
+                                    <h4 class="config-card-title">2. Período</h4>
+                                    <p class="config-card-desc">Defina o intervalo de datas para o filtro.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label for="data-inicial">Data Inicial</label>
                                     <input type="date" id="data-inicial" name="data-inicial" required>
@@ -699,9 +788,27 @@
                                     <input type="date" id="data-final" name="data-final" required>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="exportar-formato">Formato de Exportação</label>
+
+                            <div class="exportar-hint">
+                                <span class="material-symbols-outlined">info</span>
+                                <span>Selecione o período desejado para filtrar os dados.</span>
+                            </div>
+                        </div>
+
+                        <div class="config-card">
+                            <div class="config-card-header">
+                                <span class="config-icon config-icon-info">
+                                    <span class="material-symbols-outlined">draft</span>
+                                </span>
+                                <div>
+                                    <h4 class="config-card-title">3. Formato de Exportação</h4>
+                                    <p class="config-card-desc">Escolha o formato do arquivo.</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="select-icon-wrap">
+                                    <span class="material-symbols-outlined select-icon">draft</span>
                                     <select name="exportar-formato" id="exportar-formato" required>
                                         <option value="" disabled selected hidden>Selecionar formato</option>
                                         <option value="csv">CSV</option>
@@ -710,52 +817,119 @@
                                     </select>
                                 </div>
                             </div>
-                            <button class="btn btn-primary btn-block" type="submit">Exportar</button>
-                        </form>
-                    </div>
+                        </div>
+
+                        <div class="config-footer-bar">
+                            <div class="config-footer-info">
+                                <span class="material-symbols-outlined">info</span>
+                                <span><strong>Importante</strong><br>O arquivo será gerado com base nos filtros
+                                    selecionados.</span>
+                            </div>
+                            <button class="btn btn-primary" type="submit">
+                                <span class="material-symbols-outlined">download</span> Exportar Dados
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </section>
 
             <!-- PAINEL 7: Configurações -->
             <section class="panel" id="panel-config">
                 <h2 class="panel-title"><span class="material-symbols-outlined">settings</span>Configurações</h2>
-                <p class="panel-subtitle">Preferências gerais do sistema.</p>
+                <p class="panel-subtitle">Gerencie suas preferências e personalize sua experiência no sistema.</p>
 
                 <div class="config-container">
+
                     <div class="config-card">
-                        <h4 class="config-card-title">Aparência</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="config-tema">Tema</label>
-                                <select id="config-tema">
-                                    <option value="claro" selected>Claro</option>
-                                    <option value="escuro">Escuro (em breve)</option>
-                                </select>
+                        <div class="config-card-header">
+                            <span class="config-icon config-icon-secondary">
+                                <span class="material-symbols-outlined">palette</span>
+                            </span>
+                            <div>
+                                <h4 class="config-card-title">Aparência</h4>
+                                <p class="config-card-desc">Personalize como o sistema é exibido para você.</p>
+                            </div>
+                        </div>
+
+                        <div class="config-item">
+                            <div class="config-item-info">
+                                <span class="config-item-icon config-item-icon-neutral">
+                                    <span class="material-symbols-outlined">light_mode</span>
+                                </span>
+                                <div class="config-item-text">
+                                    <span class="config-item-title">Tema</span>
+                                    <span class="config-item-desc">Escolha entre o tema claro ou escuro.</span>
+                                </div>
+                            </div>
+                            <div class="config-toggle-group" id="config-tema-group">
+                                <button type="button" class="config-toggle-btn active" data-tema="claro">
+                                    <span class="material-symbols-outlined">light_mode</span> Claro
+                                </button>
+                                <button type="button" class="config-toggle-btn" data-tema="escuro" disabled>
+                                    <span class="material-symbols-outlined">dark_mode</span> Escuro (em breve)
+                                </button>
                             </div>
                         </div>
                     </div>
 
                     <div class="config-card">
-                        <h4 class="config-card-title">Notificações</h4>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="config-notif-emprestimo">Alertas de empréstimo</label>
-                                <select id="config-notif-emprestimo">
-                                    <option value="ativado" selected>Ativado</option>
-                                    <option value="desativado">Desativado</option>
-                                </select>
+                        <div class="config-card-header">
+                            <span class="config-icon config-icon-info">
+                                <span class="material-symbols-outlined">notifications</span>
+                            </span>
+                            <div>
+                                <h4 class="config-card-title">Notificações</h4>
+                                <p class="config-card-desc">Configure como você deseja receber alertas do sistema.</p>
                             </div>
-                            <div class="form-group">
-                                <label for="config-notif-devolucao">Alertas de devolução</label>
-                                <select id="config-notif-devolucao">
-                                    <option value="ativado" selected>Ativado</option>
-                                    <option value="desativado">Desativado</option>
-                                </select>
+                        </div>
+
+                        <div class="config-item">
+                            <div class="config-item-info">
+                                <span class="config-item-icon config-item-icon-success">
+                                    <span class="material-symbols-outlined">open_in_new</span>
+                                </span>
+                                <div class="config-item-text">
+                                    <span class="config-item-title">Alertas de empréstimo</span>
+                                    <span class="config-item-desc">Receba notificações sobre novos empréstimos
+                                        registrados.</span>
+                                </div>
                             </div>
+                            <button type="button" class="config-switch active" id="config-notif-emprestimo"
+                                role="switch" aria-checked="true" aria-label="Alertas de empréstimo">
+                                <span class="config-switch-thumb"></span>
+                                <span class="config-switch-label">Ativado</span>
+                            </button>
+                        </div>
+
+                        <div class="config-item">
+                            <div class="config-item-info">
+                                <span class="config-item-icon config-item-icon-warning">
+                                    <span class="material-symbols-outlined">assignment_return</span>
+                                </span>
+                                <div class="config-item-text">
+                                    <span class="config-item-title">Alertas de devolução</span>
+                                    <span class="config-item-desc">Receba notificações sobre devoluções pendentes e
+                                        realizadas.</span>
+                                </div>
+                            </div>
+                            <button type="button" class="config-switch active" id="config-notif-devolucao" role="switch"
+                                aria-checked="true" aria-label="Alertas de devolução">
+                                <span class="config-switch-thumb"></span>
+                                <span class="config-switch-label">Ativado</span>
+                            </button>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" id="config-salvar">Salvar Configurações</button>
+                    <div class="config-footer-bar">
+                        <div class="config-footer-info">
+                            <span class="material-symbols-outlined">info</span>
+                            <span>Alterações salvas automaticamente assim que você clicar em salvar.</span>
+                        </div>
+                        <button class="btn btn-primary" id="config-salvar">
+                            <span class="material-symbols-outlined">save</span> Salvar Configurações
+                        </button>
+                    </div>
+
                 </div>
             </section>
 
