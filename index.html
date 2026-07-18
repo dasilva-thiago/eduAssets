@@ -401,90 +401,175 @@
 
             <!-- PAINEL 3: Dashboard -->
             <section class="panel" id="panel-dashboard">
-                <h2 class="panel-title"><span class="material-symbols-outlined">dashboard_customize</span>Dashboard</h2>
-                <p class="panel-subtitle">Visão geral do estoque com estatísticas e últimos registros</p>
 
-                <div class="modal-overlay" id="modal-editar-estoque">
-                    <div class="modal-box">
-                        <div class="modal-header">
-                            <h3>Editar categoria</h3>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="modal-categoria">Categoria</label>
-                                <input type="text" id="modal-categoria" disabled>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="modal-total">Total</label>
-                                    <input type="number" id="modal-total" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal-disponivel">Disponível</label>
-                                    <input type="number" id="modal-disponivel" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label for="modal-quebrado">Quebrado</label>
-                                    <input type="number" id="modal-quebrado" min="0">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-success" id="modal-salvar">Salvar</button>
-                        </div>
+                <div class="dashboard-header-row">
+                    <div>
+                        <h2 class="panel-title"><span
+                                class="material-symbols-outlined">dashboard_customize</span>Dashboard</h2>
+                        <p class="panel-subtitle">Visão geral do estoque com estatísticas e últimos registros.</p>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-neutral" id="btn-dashboard-exportar" type="button">
+                            <span class="material-symbols-outlined">download</span> Exportar
+                        </button>
                     </div>
                 </div>
 
                 <div class="dashboard-container">
 
-                    <div class="dashboard-toolbar">
-                        <button class="btn btn-neutral" id="btn-editar" disabled> <span
-                                class="material-symbols-outlined">edit</span>Editar</button>
-                        <button class="btn btn-danger" id="btn-deletar" disabled> <span
-                                class="material-symbols-outlined">delete</span>Deletar</button>
-                    </div>
-
-                    <div class="dashboard-tabs">
-                        <span class="dashboard-tab-link active" data-tab="estoque">Estoque</span>
-                        <span class="dashboard-tab-link" data-tab="registros">Histórico</span>
-                    </div>
-
-                    <div class="dashboard-tab-content active" id="tab-estoque">
-                        <div class="estoque-header">
-                            <span></span>
-                            <span>Categoria</span>
-                            <span>Total</span>
-                            <span>Disponível</span>
-                            <span>Quebrado</span>
-                        </div>
-
-                        <div class="estoque-row" data-id="notebook" data-categoria="Notebook" data-total="40"
-                            data-disponivel="28" data-quebrado="2">
-                            <div class="estoque-checkbox-wrap">
-                                <input type="checkbox" class="estoque-checkbox" data-id="notebook">
+                    <div class="dashboard-resumo-grid">
+                        <div class="dashboard-resumo-card dashboard-resumo-card-info">
+                            <span class="dashboard-resumo-icon"><span
+                                    class="material-symbols-outlined">devices</span></span>
+                            <div class="dashboard-resumo-texto">
+                                <span class="dashboard-resumo-titulo">Total de equipamentos</span>
+                                <span class="dashboard-resumo-numero" id="resumo-total">0</span>
+                                <span class="dashboard-resumo-sub">100% do inventário</span>
                             </div>
-                            <span data-col="categoria">Notebook</span>
-                            <span data-col="total">40</span>
-                            <span data-col="disponivel">28</span>
-                            <span data-col="quebrado">2</span>
                         </div>
-
-                        <div class="estoque-row" data-id="tablet" data-categoria="Tablet" data-total="20"
-                            data-disponivel="15" data-quebrado="1">
-                            <div class="estoque-checkbox-wrap">
-                                <input type="checkbox" class="estoque-checkbox" data-id="tablet">
+                        <div class="dashboard-resumo-card dashboard-resumo-card-success">
+                            <span class="dashboard-resumo-icon"><span
+                                    class="material-symbols-outlined">check_circle</span></span>
+                            <div class="dashboard-resumo-texto">
+                                <span class="dashboard-resumo-titulo">Disponíveis</span>
+                                <span class="dashboard-resumo-numero" id="resumo-disponivel">0</span>
+                                <span class="dashboard-resumo-sub" id="resumo-disponivel-pct">0% do total</span>
                             </div>
-                            <span data-col="categoria">Tablet</span>
-                            <span data-col="total">20</span>
-                            <span data-col="disponivel">15</span>
-                            <span data-col="quebrado">1</span>
+                        </div>
+                        <div class="dashboard-resumo-card dashboard-resumo-card-warning">
+                            <span class="dashboard-resumo-icon"><span
+                                    class="material-symbols-outlined">schedule</span></span>
+                            <div class="dashboard-resumo-texto">
+                                <span class="dashboard-resumo-titulo">Emprestados</span>
+                                <span class="dashboard-resumo-numero" id="resumo-emprestado">0</span>
+                                <span class="dashboard-resumo-sub" id="resumo-emprestado-pct">0% do total</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-resumo-card dashboard-resumo-card-error">
+                            <span class="dashboard-resumo-icon"><span
+                                    class="material-symbols-outlined">warning</span></span>
+                            <div class="dashboard-resumo-texto">
+                                <span class="dashboard-resumo-titulo">Quebrados</span>
+                                <span class="dashboard-resumo-numero" id="resumo-quebrado">0</span>
+                                <span class="dashboard-resumo-sub" id="resumo-quebrado-pct">0% do total</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="dashboard-tab-content" id="tab-registros">
-                        <!-- vem depois -->
-                    </div>
+                    <div class="dashboard-layout">
 
+                        <div class="dashboard-main">
+
+                            <div class="dashboard-tabs">
+                                <span class="dashboard-tab-link active" data-tab="estoque">
+                                    <span class="material-symbols-outlined">inventory_2</span>Estoque
+                                </span>
+                                <span class="dashboard-tab-link" data-tab="historico">
+                                    <span class="material-symbols-outlined">history</span>Histórico
+                                </span>
+
+                                <div class="dashboard-toolbar" id="dashboard-toolbar">
+                                    <div class="controle-tabs-ferramentas">
+                                        <div class="controle-busca-wrap">
+                                            <span class="material-symbols-outlined">search</span>
+                                            <input type="text" placeholder="Buscar por informações..."
+                                                id="dashboard-busca" disabled>
+                                        </div>
+                                        <button type="button" class="btn btn-neutral btn-sm" disabled>
+                                            <span class="material-symbols-outlined">filter_list</span> Filtros
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-tab-content active" id="tab-estoque">
+                                <div class="estoque-header">
+                                    <span></span>
+                                    <span>Categoria</span>
+                                    <span>Total</span>
+                                    <span>Disponível</span>
+                                    <span>Quebrado</span>
+                                </div>
+
+                                <div class="estoque-row" data-id="notebook" data-categoria="Notebook" data-total="40"
+                                    data-disponivel="28" data-quebrado="2">
+                                    <div class="estoque-checkbox-wrap">
+                                        <input type="checkbox" class="estoque-checkbox" data-id="notebook">
+                                    </div>
+                                    <span data-col="categoria">Notebook</span>
+                                    <span data-col="total">40</span>
+                                    <span data-col="disponivel">28</span>
+                                    <span data-col="quebrado">2</span>
+                                </div>
+
+                                <div class="estoque-row" data-id="tablet" data-categoria="Tablet" data-total="20"
+                                    data-disponivel="15" data-quebrado="1">
+                                    <div class="estoque-checkbox-wrap">
+                                        <input type="checkbox" class="estoque-checkbox" data-id="tablet">
+                                    </div>
+                                    <span data-col="categoria">Tablet</span>
+                                    <span data-col="total">20</span>
+                                    <span data-col="disponivel">15</span>
+                                    <span data-col="quebrado">1</span>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-tab-content" id="tab-historico">
+                                <div class="historico-header">
+                                    <span>ID</span>
+                                    <span>Solicitante</span>
+                                    <span>Responsável</span>
+                                    <span>Retirada</span>
+                                    <span>Devolução</span>
+                                    <span>Itens</span>
+                                    <span>Status</span>
+                                    <span></span>
+                                </div>
+                                <div class="historico-lista" id="historico-lista"></div>
+                                <div class="historico-vazio devolucao-detalhe-empty" id="historico-vazio"
+                                    style="display:none;">
+                                    <span class="material-symbols-outlined">history</span>
+                                    <p>Nenhum empréstimo registrado ainda.</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <aside class="devolucao-detalhe-painel">
+
+                            <div class="dashboard-andamento" id="dashboard-andamento">
+                                <h3 class="dashboard-andamento-title">Empréstimos em andamento</h3>
+                                <div class="dashboard-andamento-lista" id="dashboard-andamento-lista"></div>
+                                <div class="dashboard-andamento-vazio" id="dashboard-andamento-vazio"
+                                    style="display:none;">
+                                    <span class="material-symbols-outlined">event_available</span>
+                                    <p>Nenhum empréstimo em andamento.</p>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-detalhe-container" id="dashboard-detalhe-container">
+                                <!-- Novo Estado Vazio para o Detalhe -->
+                                <div class="dashboard-detalhe-empty-state" id="dashboard-detalhe-empty">
+                                    <span class="material-symbols-outlined">touch_app</span>
+                                    <p>Selecione um item para editar</p>
+                                </div>
+
+                                <div class="devolucao-detalhe-conteudo" id="dashboard-detalhe-conteudo"
+                                    style="display:none;">
+                                    <div class="devolucao-detalhe-header">
+                                        <h3 id="dashboard-detalhe-titulo">Detalhes</h3>
+                                        <button type="button" class="devolucao-detalhe-fechar"
+                                            id="btn-dashboard-detalhe-fechar" aria-label="Fechar">
+                                            <span class="material-symbols-outlined">close</span>
+                                        </button>
+                                    </div>
+                                    <div id="dashboard-detalhe-body"></div>
+                                </div>
+                            </div>
+
+                        </aside>
+
+                    </div>
                 </div>
             </section>
 

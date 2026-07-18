@@ -130,10 +130,12 @@
 }
 
 .devolucao-vazia-logo {
-    width: 240px;
+    width: 340px;
     height: auto;
     opacity: 0.5;
     filter: drop-shadow(1px 1px 0 rgba(255, 255, 255, 0.6)) drop-shadow(-1px -1px 1px rgba(5, 11, 28, 0.12));
+    border-radius: 8px;
+    border: 0.75px solid var(--border-color);
 }
 
 .devolucao-vazia-texto {
