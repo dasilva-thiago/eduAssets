@@ -1,6 +1,7 @@
 import { openModal, closeModal } from '../../core/modal/modal.js';
 import { showToast } from '../../core/toast/toast.js';
-import { escapeHtml } from '../../core/utils/sanitize.js';
+import { confirmarExclusao } from '../../core/confirm/confirm.js';
+import { html, raw } from '../../core/utils/html.js';
 
 const PROBLEMA_ICONS = {
     tela: { label: 'Tela', icon: 'monitor' },
@@ -203,7 +204,20 @@ export function initControle() {
         });
     }
 
-    /* ===== Render + dados da linha (fonte única, usada em criar e editar) ===== */
+    function renderMenuAcoes() {
+        return html`
+            <span class="registros-row-menu-wrap">
+                <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                    <span class="material-symbols-outlined">more_vert</span>
+                </button>
+                <div class="registros-row-menu">
+                    <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                    <span class="registros-row-menu-opcao registros-row-menu-opcao-danger" data-acao="excluir">Excluir</span>
+                </div>
+            </span>
+        `;
+    }
+
     function aplicarDadosNaLinha(row, dados) {
         row.dataset.problema = dados.problema;
         row.dataset.categoria = dados.categoria;
@@ -218,45 +232,20 @@ export function initControle() {
         const problemaInfo = PROBLEMA_ICONS[dados.problema] || PROBLEMA_ICONS.outro;
         const iconeLinha = ICONE_POR_TIPO[tipo] || 'chat_bubble';
 
-        if (tipo === 'resolvidos') {
-            return `
-                <span class="registros-row-icon"><span class="material-symbols-outlined">${iconeLinha}</span></span>
-                <span data-col="categoria">${escapeHtml(dados.categoria)}</span>
-                <span data-col="modelo">${escapeHtml(dados.modelo)}</span>
-                <span class="registros-numero" data-col="numero">${escapeHtml(dados.numero)}</span>
-                <span class="controle-problema-badge"><span class="material-symbols-outlined">${problemaInfo.icon}</span>${escapeHtml(problemaInfo.label)}</span>
-                <span data-col="descricao">${escapeHtml(dados.descricao)}</span>
-                <span class="registros-data" data-col="registrado-em">${escapeHtml(dados.registradoEm)}</span>
-                <span data-col="medidas">${escapeHtml(dados.medidas)}</span>
-                <span class="registros-row-menu-wrap">
-                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
-                        <span class="material-symbols-outlined">more_vert</span>
-                    </button>
-                    <div class="registros-row-menu">
-                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
-                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger" data-acao="excluir">Excluir</span>
-                    </div>
-                </span>
-            `;
-        }
+        const colunaMedidas = tipo === 'resolvidos'
+            ? html`<span data-col="medidas">${dados.medidas}</span>`
+            : '';
 
-        return `
+        return html`
             <span class="registros-row-icon"><span class="material-symbols-outlined">${iconeLinha}</span></span>
-            <span data-col="categoria">${escapeHtml(dados.categoria)}</span>
-            <span data-col="modelo">${escapeHtml(dados.modelo)}</span>
-            <span class="registros-numero" data-col="numero">${escapeHtml(dados.numero)}</span>
-            <span class="controle-problema-badge"><span class="material-symbols-outlined">${problemaInfo.icon}</span>${escapeHtml(problemaInfo.label)}</span>
-            <span data-col="descricao">${escapeHtml(dados.descricao)}</span>
-            <span class="registros-data" data-col="registrado-em">${escapeHtml(dados.registradoEm)}</span>
-            <span class="registros-row-menu-wrap">
-                <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
-                    <span class="material-symbols-outlined">more_vert</span>
-                </button>
-                <div class="registros-row-menu">
-                    <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
-                    <span class="registros-row-menu-opcao registros-row-menu-opcao-danger" data-acao="excluir">Excluir</span>
-                </div>
-            </span>
+            <span data-col="categoria">${dados.categoria}</span>
+            <span data-col="modelo">${dados.modelo}</span>
+            <span class="registros-numero" data-col="numero">${dados.numero}</span>
+            <span class="controle-problema-badge"><span class="material-symbols-outlined">${problemaInfo.icon}</span>${problemaInfo.label}</span>
+            <span data-col="descricao">${dados.descricao}</span>
+            <span class="registros-data" data-col="registrado-em">${dados.registradoEm}</span>
+            ${raw(colunaMedidas)}
+            ${raw(renderMenuAcoes())}
         `;
     }
 
@@ -279,7 +268,6 @@ export function initControle() {
     }
 
     function editarRegistro(row, tipo, dados) {
-        // mantém a data de registro/resolução original, edição não deve alterá-la
         const completos = { ...dados, registradoEm: row.dataset.registradoEm };
         aplicarDadosNaLinha(row, completos);
         row.innerHTML = renderLinhaConteudo(tipo, completos);
@@ -308,13 +296,13 @@ export function initControle() {
         const opcaoMenu = e.target.closest('.registros-row-menu-opcao');
         if (opcaoMenu) {
             const row = opcaoMenu.closest('.registros-row');
+            fecharTodosMenus();
             if (opcaoMenu.dataset.acao === 'excluir') {
                 removerLinha(row);
             } else {
                 selecionarLinha(row);
                 abrirEdicaoRegistro(row);
             }
-            fecharTodosMenus();
             return;
         }
 
@@ -353,16 +341,25 @@ export function initControle() {
         if (btnEditar) btnEditar.disabled = !temSelecao;
         if (btnDeletar) btnDeletar.disabled = !temSelecao;
     }
+    async function removerLinha(row) {
+        if (!row) return;
 
-    function removerLinha(row) {
         const tabContent = row.closest('.controle-tab-content');
         const tipo = tabContent ? tabContent.dataset.tipo : null;
+
+        const confirmado = await confirmarExclusao({
+            titulo: 'Excluir registro',
+            mensagem: 'Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.'
+        });
+        if (!confirmado) return;
 
         if (row === linhaSelecionada) limparSelecao();
         row.remove();
 
         if (tipo) atualizarContagem(tipo);
         if (tabContent && tabContent.classList.contains('active')) atualizarPaginacaoTexto(tabContent);
+
+        showToast('Registro excluído com sucesso', 'success');
     }
 
     if (btnEditar) {
@@ -373,10 +370,7 @@ export function initControle() {
     }
 
     if (btnDeletar) {
-        btnDeletar.addEventListener('click', () => {
-            if (!linhaSelecionada) return;
-            removerLinha(linhaSelecionada);
-        });
+        btnDeletar.addEventListener('click', () => removerLinha(linhaSelecionada));
     }
 
     /* ===== Inicialização ===== */

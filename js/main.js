@@ -7,11 +7,13 @@ import { initEmprestimo } from './features/emprestimo/emprestimo.js';
 import { initDevolucao } from './features/devolucao/devolucao.js';
 import { initExportar } from './features/exportar/exportar.js';
 import { initConfig } from './features/config/config.js';
+import { initConfirm } from './core/confirm/confirm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const inits = [
         initNavigation,
         initModals,
+        initConfirm,
         initDashboard,
         initControle,
         initCadastros,
