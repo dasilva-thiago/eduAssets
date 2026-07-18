@@ -1,4 +1,4 @@
-import { getLoans, returnLoan, updateLoan, subscribe } from '../../core/state/loans.js';
+import { getLoansAbertos, returnLoan, updateLoan, subscribe } from '../../core/state/loans.js';
 import { showToast } from '../../core/toast/toast.js';
 import { openModal, closeModal } from '../../core/modal/modal.js';
 import { criarDataAutoPicker } from '../../core/datepicker/datepicker.js';
@@ -49,8 +49,8 @@ export function initDevolucao() {
     let itensEditando = [];
     let modoEdicaoAtivo = false;
 
-    render(getLoans());
-    subscribe(render);
+    render(getLoansAbertos());
+    subscribe(() => render(getLoansAbertos()));
 
     lista.addEventListener('click', (e) => {
         const btnDevolver = e.target.closest('.devolver-btn');
@@ -66,7 +66,7 @@ export function initDevolucao() {
     btnConfirmarDevolucao.addEventListener('click', () => {
         if (!idPendente) return;
 
-        returnLoan(idPendente);
+        returnLoan(idPendente, devolucaoDataInput.value);
         showToast(`Devolução registrada para ${devolucaoDataInput.value}`, 'success');
         closeModal('modal-confirmar-devolucao');
         idPendente = null;
@@ -83,7 +83,7 @@ export function initDevolucao() {
 
     btnDetalheCancelar.addEventListener('click', () => {
         if (modoEdicaoAtivo) {
-            const loan = getLoans().find((l) => l.id === idDetalheAberto);
+            const loan = getLoansAbertos().find((l) => l.id === idDetalheAberto);
             itensEditando = loan ? loan.itens.map((item) => ({ ...item })) : [];
             setModoEdicao(false);
             renderDetalheItens(itensEditando, false);
@@ -185,7 +185,7 @@ export function initDevolucao() {
     }
 
     function abrirDetalhe(id) {
-        const loan = getLoans().find((l) => l.id === id);
+        const loan = getLoansAbertos().find((l) => l.id === id);
         if (!loan) return;
 
         idDetalheAberto = id;
