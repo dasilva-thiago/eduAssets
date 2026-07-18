@@ -622,6 +622,15 @@
                                         placeholder="Descreva o ocorrido..."></textarea>
                                 </div>
                             </div>
+
+                            <div class="form-row" id="controle-modal-medidas-row" style="display:none;">
+                                <div class="form-group">
+                                    <label for="controle-modal-medidas">Medidas tomadas</label>
+                                    <textarea id="controle-modal-medidas" rows="3"
+                                        placeholder="Descreva a resolução aplicada..."></textarea>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-neutral" id="controle-modal-cancelar" type="button">Cancelar</button>
@@ -733,16 +742,19 @@
                                 <span>Registrado em</span>
                                 <span></span>
                             </div>
-                            <div class="registros-row" data-id="1" data-problema="tela">
+                            <div class="registros-row" data-id="1" data-problema="tela" data-categoria="Notebook"
+                                data-modelo="Multilaser" data-numero="NB-014"
+                                data-descricao="Tela com pequeno risco, sem impacto no uso."
+                                data-registrado-em="15/07/2026 09:12">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">chat_bubble</span></span>
-                                <span>Notebook</span>
-                                <span>Multilaser</span>
-                                <span class="registros-numero">NB-014</span>
+                                <span data-col="categoria">Notebook</span>
+                                <span data-col="modelo">Multilaser</span>
+                                <span class="registros-numero" data-col="numero">NB-014</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">monitor</span>Tela</span>
-                                <span>Tela com pequeno risco, sem impacto no uso.</span>
-                                <span class="registros-data">15/07/2026 09:12</span>
+                                <span data-col="descricao">Tela com pequeno risco, sem impacto no uso.</span>
+                                <span class="registros-data" data-col="registrado-em">15/07/2026 09:12</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -754,16 +766,18 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="registros-row" data-id="2" data-problema="audio">
+                            <div class="registros-row" data-id="2" data-problema="audio" data-categoria="Fone de ouvido"
+                                data-modelo="JBL Tune 510" data-numero="FO-021"
+                                data-descricao="Volume baixo no lado esquerdo." data-registrado-em="15/07/2026 08:45">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">chat_bubble</span></span>
-                                <span>Fone de ouvido</span>
-                                <span>JBL Tune 510</span>
-                                <span class="registros-numero">FO-021</span>
+                                <span data-col="categoria">Fone de ouvido</span>
+                                <span data-col="modelo">JBL Tune 510</span>
+                                <span class="registros-numero" data-col="numero">FO-021</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">headphones</span>Áudio</span>
-                                <span>Volume baixo no lado esquerdo.</span>
-                                <span class="registros-data">15/07/2026 08:45</span>
+                                <span data-col="descricao">Volume baixo no lado esquerdo.</span>
+                                <span class="registros-data" data-col="registrado-em">15/07/2026 08:45</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -775,16 +789,18 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="registros-row" data-id="3" data-problema="cabo">
+                            <div class="registros-row" data-id="3" data-problema="cabo" data-categoria="Carregador"
+                                data-modelo="USB-C 65W" data-numero="CR-009"
+                                data-descricao="Cabo esquentando durante o uso." data-registrado-em="14/07/2026 17:33">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">chat_bubble</span></span>
-                                <span>Carregador</span>
-                                <span>USB-C 65W</span>
-                                <span class="registros-numero">CR-009</span>
+                                <span data-col="categoria">Carregador</span>
+                                <span data-col="modelo">USB-C 65W</span>
+                                <span class="registros-numero" data-col="numero">CR-009</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">cable</span>Cabo</span>
-                                <span>Cabo esquentando durante o uso.</span>
-                                <span class="registros-data">14/07/2026 17:33</span>
+                                <span data-col="descricao">Cabo esquentando durante o uso.</span>
+                                <span class="registros-data" data-col="registrado-em">14/07/2026 17:33</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -796,16 +812,19 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="registros-row" data-id="4" data-problema="touch">
+                            <div class="registros-row" data-id="4" data-problema="touch" data-categoria="Tablet"
+                                data-modelo="Samsung Galaxy Tab A" data-numero="TB-002"
+                                data-descricao="Touch screen com falhas ocasionais."
+                                data-registrado-em="14/07/2026 14:21">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">chat_bubble</span></span>
-                                <span>Tablet</span>
-                                <span>Samsung Galaxy Tab A</span>
-                                <span class="registros-numero">TB-002</span>
+                                <span data-col="categoria">Tablet</span>
+                                <span data-col="modelo">Samsung Galaxy Tab A</span>
+                                <span class="registros-numero" data-col="numero">TB-002</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">touch_app</span>Touch</span>
-                                <span>Touch screen com falhas ocasionais.</span>
-                                <span class="registros-data">14/07/2026 14:21</span>
+                                <span data-col="descricao">Touch screen com falhas ocasionais.</span>
+                                <span class="registros-data" data-col="registrado-em">14/07/2026 14:21</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -830,16 +849,19 @@
                                 <span>Registrado em</span>
                                 <span></span>
                             </div>
-                            <div class="registros-row" data-id="5" data-problema="bateria">
+                            <div class="registros-row" data-id="5" data-problema="bateria" data-categoria="Notebook"
+                                data-modelo="Multilaser" data-numero="NB-022"
+                                data-descricao="Não segura carga acima de 20 minutos."
+                                data-registrado-em="13/07/2026 16:40">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">build</span></span>
-                                <span>Notebook</span>
-                                <span>Multilaser</span>
-                                <span class="registros-numero">NB-022</span>
+                                <span data-col="categoria">Notebook</span>
+                                <span data-col="modelo">Multilaser</span>
+                                <span class="registros-numero" data-col="numero">NB-022</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">battery_alert</span>Bateria</span>
-                                <span>Não segura carga acima de 20 minutos.</span>
-                                <span class="registros-data">13/07/2026 16:40</span>
+                                <span data-col="descricao">Não segura carga acima de 20 minutos.</span>
+                                <span class="registros-data" data-col="registrado-em">13/07/2026 16:40</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -851,16 +873,19 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="registros-row" data-id="6" data-problema="botao">
+                            <div class="registros-row" data-id="6" data-problema="botao" data-categoria="Mouse"
+                                data-modelo="Logitech M190" data-numero="MO-005"
+                                data-descricao="Botão direito apresentando clique duplo."
+                                data-registrado-em="12/07/2026 10:02">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">build</span></span>
-                                <span>Mouse</span>
-                                <span>Logitech M190</span>
-                                <span class="registros-numero">MO-005</span>
+                                <span data-col="categoria">Mouse</span>
+                                <span data-col="modelo">Logitech M190</span>
+                                <span class="registros-numero" data-col="numero">MO-005</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">smart_button</span>Botão</span>
-                                <span>Botão direito apresentando clique duplo.</span>
-                                <span class="registros-data">12/07/2026 10:02</span>
+                                <span data-col="descricao">Botão direito apresentando clique duplo.</span>
+                                <span class="registros-data" data-col="registrado-em">12/07/2026 10:02</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -872,16 +897,19 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="registros-row" data-id="7" data-problema="teclado">
+                            <div class="registros-row" data-id="7" data-problema="teclado" data-categoria="Notebook"
+                                data-modelo="Dell Inspiron" data-numero="NB-045"
+                                data-descricao="Algumas teclas não respondem ao toque."
+                                data-registrado-em="11/07/2026 15:18">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">build</span></span>
-                                <span>Notebook</span>
-                                <span>Dell Inspiron</span>
-                                <span class="registros-numero">NB-045</span>
+                                <span data-col="categoria">Notebook</span>
+                                <span data-col="modelo">Dell Inspiron</span>
+                                <span class="registros-numero" data-col="numero">NB-045</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">keyboard</span>Teclado</span>
-                                <span>Algumas teclas não respondem ao toque.</span>
-                                <span class="registros-data">11/07/2026 15:18</span>
+                                <span data-col="descricao">Algumas teclas não respondem ao toque.</span>
+                                <span class="registros-data" data-col="registrado-em">11/07/2026 15:18</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -906,16 +934,19 @@
                                 <span>Registrado em</span>
                                 <span></span>
                             </div>
-                            <div class="registros-row" data-id="8" data-problema="tela">
+                            <div class="registros-row" data-id="8" data-problema="tela" data-categoria="Notebook"
+                                data-modelo="Multilaser" data-numero="NB-031"
+                                data-descricao="Tela quebrada, não liga o display."
+                                data-registrado-em="10/07/2026 11:05">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">heart_broken</span></span>
-                                <span>Notebook</span>
-                                <span>Multilaser</span>
-                                <span class="registros-numero">NB-031</span>
+                                <span data-col="categoria">Notebook</span>
+                                <span data-col="modelo">Multilaser</span>
+                                <span class="registros-numero" data-col="numero">NB-031</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">monitor</span>Tela</span>
-                                <span>Tela quebrada, não liga o display.</span>
-                                <span class="registros-data">10/07/2026 11:05</span>
+                                <span data-col="descricao">Tela quebrada, não liga o display.</span>
+                                <span class="registros-data" data-col="registrado-em">10/07/2026 11:05</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -927,16 +958,18 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="registros-row" data-id="9" data-problema="carcaca">
+                            <div class="registros-row" data-id="9" data-problema="carcaca" data-categoria="Tablet"
+                                data-modelo="Multilaser" data-numero="TB-014"
+                                data-descricao="Carcaça trincada após queda." data-registrado-em="09/07/2026 09:50">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">heart_broken</span></span>
-                                <span>Tablet</span>
-                                <span>Multilaser</span>
-                                <span class="registros-numero">TB-014</span>
+                                <span data-col="categoria">Tablet</span>
+                                <span data-col="modelo">Multilaser</span>
+                                <span class="registros-numero" data-col="numero">TB-014</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">construction</span>Carcaça</span>
-                                <span>Carcaça trincada após queda.</span>
-                                <span class="registros-data">09/07/2026 09:50</span>
+                                <span data-col="descricao">Carcaça trincada após queda.</span>
+                                <span class="registros-data" data-col="registrado-em">09/07/2026 09:50</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -962,17 +995,20 @@
                                 <span>Medidas tomadas</span>
                                 <span></span>
                             </div>
-                            <div class="registros-row registros-row-resolvidos" data-id="10" data-problema="teclado">
+                            <div class="registros-row registros-row-resolvidos" data-id="10" data-problema="teclado"
+                                data-categoria="Notebook" data-modelo="Multilaser" data-numero="NB-009"
+                                data-descricao="Algumas teclas travando." data-registrado-em="10/07/2026"
+                                data-medidas="Substituição do teclado.">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">task_alt</span></span>
-                                <span>Notebook</span>
-                                <span>Multilaser</span>
-                                <span class="registros-numero">NB-009</span>
+                                <span data-col="categoria">Notebook</span>
+                                <span data-col="modelo">Multilaser</span>
+                                <span class="registros-numero" data-col="numero">NB-009</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">keyboard</span>Teclado</span>
-                                <span>Algumas teclas travando.</span>
-                                <span class="registros-data">10/07/2026</span>
-                                <span>Substituição do teclado.</span>
+                                <span data-col="descricao">Algumas teclas travando.</span>
+                                <span class="registros-data" data-col="registrado-em">10/07/2026</span>
+                                <span data-col="medidas">Substituição do teclado.</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>
@@ -984,17 +1020,20 @@
                                     </div>
                                 </span>
                             </div>
-                            <div class="registros-row registros-row-resolvidos" data-id="11" data-problema="audio">
+                            <div class="registros-row registros-row-resolvidos" data-id="11" data-problema="audio"
+                                data-categoria="Fone de ouvido" data-modelo="JBL Tune 500" data-numero="FO-018"
+                                data-descricao="Fio partido próximo ao conector." data-registrado-em="05/07/2026"
+                                data-medidas="Substituição do cabo de áudio.">
                                 <span class="registros-row-icon"><span
                                         class="material-symbols-outlined">task_alt</span></span>
-                                <span>Fone de ouvido</span>
-                                <span>JBL Tune 500</span>
-                                <span class="registros-numero">FO-018</span>
+                                <span data-col="categoria">Fone de ouvido</span>
+                                <span data-col="modelo">JBL Tune 500</span>
+                                <span class="registros-numero" data-col="numero">FO-018</span>
                                 <span class="controle-problema-badge"><span
                                         class="material-symbols-outlined">headphones</span>Áudio</span>
-                                <span>Fio partido próximo ao conector.</span>
-                                <span class="registros-data">05/07/2026</span>
-                                <span>Substituição do cabo de áudio.</span>
+                                <span data-col="descricao">Fio partido próximo ao conector.</span>
+                                <span class="registros-data" data-col="registrado-em">05/07/2026</span>
+                                <span data-col="medidas">Substituição do cabo de áudio.</span>
                                 <span class="registros-row-menu-wrap">
                                     <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                                         <span class="material-symbols-outlined">more_vert</span>

@@ -1,5 +1,6 @@
 import { getLoans, getLoansAbertos, subscribe } from '../../core/state/loans.js';
 import { showToast } from '../../core/toast/toast.js';
+import { escapeHtml } from '../../core/utils/sanitize.js';
 
 const PAPEL_ICONS = {
     administrador: 'admin_panel_settings',
@@ -108,7 +109,7 @@ export function initDashboard() {
             <!-- Campo: Nome da Categoria -->
             <div class="form-group margin-bottom-lg">
                 <label class="category-field-label">Nome da categoria <span class="required-asterisk">*</span></label>
-                <input type="text" id="detalhe-estoque-categoria" class="category-field-input" value="${row.dataset.categoria}" disabled>
+                <input type="text" id="detalhe-estoque-categoria" class="category-field-input" value="${escapeHtml(row.dataset.categoria)}" disabled>
             </div>
 
             <!-- Quadro: Resumo e Métricas da Categoria -->
@@ -205,14 +206,14 @@ export function initDashboard() {
         const itensHtml = loan.itens.map((item) => `
             <li>
                 <span class="material-symbols-outlined">${EQUIPAMENTO_ICONS[item.id] || 'devices_other'}</span>
-                <span class="detalhe-item-nome">${item.quantidade}x ${item.nome}</span>
+                <span class="detalhe-item-nome">${item.quantidade}x ${escapeHtml(item.nome)}</span>
             </li>
         `).join('');
 
         const obsHtml = loan.observacao ? `
             <div class="devolucao-detalhe-secao devolucao-detalhe-obs">
                 <span class="detalhe-emprestimo-obs-label">Observação</span>
-                <p>${loan.observacao}</p>
+                <p>${escapeHtml(loan.observacao)}</p>
             </div>
         ` : '';
 
@@ -223,12 +224,12 @@ export function initDashboard() {
                 </span>
                 <div class="devolucao-detalhe-pessoa-info">
                     <div class="devolucao-detalhe-pessoa-linha">
-                        <span class="info-resp">${loan.responsavel}</span>
+                        <span class="info-resp">${escapeHtml(loan.responsavel)}</span>
                         <svg class="seta-svg" viewBox="0 0 40 12" xmlns="http://www.w3.org/2000/svg">
                             <line x1="0" y1="6" x2="32" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                             <polyline points="26,1 36,6 26,11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <span class="info-value">${loan.aluno}</span>
+                        <span class="info-value">${escapeHtml(loan.aluno)}</span>
                     </div>
                     <span class="devolucao-detalhe-pessoa-data">Retirada em ${loan.data}</span>
                     <span class="devolucao-detalhe-pessoa-data">Devolução: ${loan.dataDevolucao || '—'}</span>
@@ -358,8 +359,8 @@ export function initDashboard() {
         andamentoVazio.style.display = 'none';
         andamentoLista.innerHTML = abertos.map((loan) => `
             <div class="dashboard-andamento-item">
-                <span class="dashboard-andamento-resp">${loan.responsavel}</span>
-                <span class="dashboard-andamento-itens">${loan.itens.map((i) => `${i.quantidade}x ${i.nome}`).join(', ')}</span>
+                <span class="dashboard-andamento-resp">${escapeHtml(loan.responsavel)}</span>
+                <span class="dashboard-andamento-itens">${loan.itens.map((i) => `${i.quantidade}x ${escapeHtml(i.nome)}`).join(', ')}</span>
             </div>
         `).join('');
     }
@@ -378,8 +379,8 @@ export function initDashboard() {
         historicoLista.innerHTML = loans.map((loan) => `
             <div class="historico-row" data-id="${loan.id}">
                 <span class="historico-numero">#${loan.numero}</span>
-                <span>${loan.aluno}</span>
-                <span>${loan.responsavel}</span>
+                <span>${escapeHtml(loan.aluno)}</span>
+                <span>${escapeHtml(loan.responsavel)}</span>
                 <span class="historico-data">${loan.data}</span>
                 <span class="historico-data">${loan.dataDevolucao || '—'}</span>
                 <div class="historico-itens">${renderChipsItens(loan.itens)}</div>
@@ -412,7 +413,7 @@ export function initDashboard() {
 
     function renderChip(item) {
         return `
-            <span class="historico-item-chip" title="${item.quantidade}x ${item.nome}">
+            <span class="historico-item-chip" title="${item.quantidade}x ${escapeHtml(item.nome)}">
                 <span class="material-symbols-outlined">${EQUIPAMENTO_ICONS[item.id] || 'devices_other'}</span>${item.quantidade}
             </span>
         `;

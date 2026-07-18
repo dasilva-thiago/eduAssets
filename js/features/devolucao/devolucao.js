@@ -2,6 +2,7 @@ import { getLoansAbertos, returnLoan, updateLoan, subscribe } from '../../core/s
 import { showToast } from '../../core/toast/toast.js';
 import { openModal, closeModal } from '../../core/modal/modal.js';
 import { criarDataAutoPicker } from '../../core/datepicker/datepicker.js';
+import { escapeHtml } from '../../core/utils/sanitize.js';
 
 const LIMITE_ICONES_CARD = 3;
 
@@ -164,11 +165,11 @@ export function initDevolucao() {
 
         if (!editMode) {
             detalheLista.innerHTML = itens.map((item) => `
-                <li>
-                    <span class="material-symbols-outlined">${EQUIPAMENTO_ICONS[item.id] || 'devices_other'}</span>
-                    <span class="detalhe-item-nome">${item.quantidade}x ${item.nome}</span>
-                    <span class="detalhe-item-status">Pendente</span>
-                </li>
+        <li>
+            <span class="material-symbols-outlined">${EQUIPAMENTO_ICONS[item.id] || 'devices_other'}</span>
+            <span class="detalhe-item-nome">${item.quantidade}x ${escapeHtml(item.nome)}</span>
+            <span class="detalhe-item-status">Pendente</span>
+        </li>
             `).join('');
             return;
         }
@@ -176,7 +177,7 @@ export function initDevolucao() {
         detalheLista.innerHTML = itens.map((item) => `
             <li class="detalhe-emprestimo-item-edit">
                 <input type="number" min="1" class="detalhe-item-qtd" value="${item.quantidade}" data-id="${item.id}">
-                <span>${item.nome}</span>
+                <span>${escapeHtml(item.nome)}</span>
                 <button type="button" class="item-emprestimo-remover detalhe-item-remover" data-id="${item.id}" aria-label="Remover">
                     <span class="material-symbols-outlined">close</span>
                 </button>
@@ -205,7 +206,7 @@ export function initDevolucao() {
         const obsEl = document.getElementById('detalhe-emprestimo-obs');
         if (loan.observacao) {
             obsEl.style.display = 'block';
-            obsEl.innerHTML = `<span class="detalhe-emprestimo-obs-label">Observação</span><p>${loan.observacao}</p>`;
+            obsEl.innerHTML = `<span class="detalhe-emprestimo-obs-label">Observação</span><p>${escapeHtml(loan.observacao)}</p>`;
         } else {
             obsEl.style.display = 'none';
             obsEl.innerHTML = '';
@@ -251,12 +252,12 @@ export function initDevolucao() {
                 </span>
                 <div class="devolucao-info">
                     <div class="devolucao-linha-principal">
-                        <span class="info-resp">${loan.responsavel}</span>
+                        <span class="info-resp">${escapeHtml(loan.responsavel)}</span>
                         <svg class="seta-svg" viewBox="0 0 40 12" xmlns="http://www.w3.org/2000/svg">
                             <line x1="0" y1="6" x2="32" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                             <polyline points="26,1 36,6 26,11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <span class="info-value">${loan.aluno}</span>
+                        <span class="info-value">${escapeHtml(loan.aluno)}</span>
                     </div>
                     <div class="devolucao-itens-icons">${renderItensIcons(loan.itens)}</div>
                     <div class="devolucao-linha-hora">
@@ -288,12 +289,14 @@ function renderItensIcons(itens) {
         `<div class="devolucao-item-icon-pill devolucao-item-icon-mais" title="+${restantes} ${restantes > 1 ? 'itens' : 'item'}">...</div>`;
 }
 
+// renderItemIconPill()
 function renderItemIconPill(item) {
     const icon = EQUIPAMENTO_ICONS[item.id] || 'devices_other';
+    const nome = escapeHtml(item.nome);
     return `
-        <div class="devolucao-item-icon-pill" data-eq="${item.id}" title="${item.quantidade}x ${item.nome}">
+        <div class="devolucao-item-icon-pill" data-eq="${item.id}" title="${item.quantidade}x ${nome}">
             <span class="material-symbols-outlined">${icon}</span>
-            <span class="devolucao-item-icon-pill-texto">${item.quantidade}x ${item.nome}</span>
+            <span class="devolucao-item-icon-pill-texto">${item.quantidade}x ${nome}</span>
         </div>
     `;
 }

@@ -2,6 +2,7 @@ import { addLoan } from '../../core/state/loans.js';
 import { showToast } from '../../core/toast/toast.js';
 import { openModal } from '../../core/modal/modal.js';
 import { criarDataAutoPicker } from '../../core/datepicker/datepicker.js';
+import { escapeHtml } from '../../core/utils/sanitize.js';
 
 
 const LIMITE_ITENS_FORM = 3;
@@ -119,7 +120,7 @@ function renderItemRow(item) {
         <div class="item-emprestimo-row">
             <div class="item-emprestimo-info">
                 <span class="item-emprestimo-qtd">${item.quantidade}x</span>
-                <span>${item.nome}</span>
+                <span>${escapeHtml(item.nome)}</span>
             </div>
             <button type="button" class="item-emprestimo-remover" data-id="${item.id}" aria-label="Remover">
                 <span class="material-symbols-outlined">close</span>

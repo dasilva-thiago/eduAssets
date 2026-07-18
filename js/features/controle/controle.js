@@ -1,4 +1,6 @@
 import { openModal, closeModal } from '../../core/modal/modal.js';
+import { showToast } from '../../core/toast/toast.js';
+import { escapeHtml } from '../../core/utils/sanitize.js';
 
 const PROBLEMA_ICONS = {
     tela: { label: 'Tela', icon: 'monitor' },
@@ -15,13 +17,15 @@ const PROBLEMA_ICONS = {
 const ICONE_POR_TIPO = {
     observacao: 'chat_bubble',
     manutencao: 'build',
-    quebrado: 'heart_broken'
+    quebrado: 'heart_broken',
+    resolvidos: 'task_alt'
 };
 
 const TITULOS_POR_TIPO = {
     observacao: 'Nova Observação',
     manutencao: 'Nova Manutenção',
-    quebrado: 'Registrar Quebra'
+    quebrado: 'Registrar Quebra',
+    resolvidos: 'Editar Registro Resolvido'
 };
 
 export function initControle() {
@@ -36,13 +40,14 @@ export function initControle() {
 
     let linhaSelecionada = null;
     let tipoAtual = null;
+    let idEditando = null;
+    let linhaEditando = null;
 
     /* ===== Tabs: Observação | Manutenção | Quebrado | Resolvidos ===== */
     document.querySelectorAll('.controle-tab-link').forEach((tabLink) => {
         tabLink.addEventListener('click', () => ativarAba(tabLink.dataset.controleTab));
     });
 
-    /* ===== Cards de resumo clicáveis ===== */
     document.querySelectorAll('.controle-resumo-card').forEach((card) => {
         card.addEventListener('click', () => ativarAba(card.dataset.controleTab));
     });
@@ -93,30 +98,71 @@ export function initControle() {
         fecharTodosMenus(e.target);
     });
 
-    /* ===== Modal: novo registro ===== */
+    /* ===== Modal: novo registro / edição ===== */
     const modalTitle = document.getElementById('controle-modal-title');
     const campoCategoria = document.getElementById('controle-modal-categoria');
     const campoModelo = document.getElementById('controle-modal-modelo');
     const campoNumero = document.getElementById('controle-modal-numero');
     const campoProblema = document.getElementById('controle-modal-problema');
     const campoDescricao = document.getElementById('controle-modal-descricao');
+    const linhaMedidas = document.getElementById('controle-modal-medidas-row');
+    const campoMedidas = document.getElementById('controle-modal-medidas');
     const btnModalCancelar = document.getElementById('controle-modal-cancelar');
     const btnModalSalvar = document.getElementById('controle-modal-salvar');
 
-    function abrirNovoRegistro(tipo) {
-        tipoAtual = tipo;
-        if (modalTitle) modalTitle.textContent = TITULOS_POR_TIPO[tipo] || 'Novo Registro';
-
-        [campoCategoria, campoModelo, campoNumero, campoDescricao].forEach((campo) => {
+    function limparCampos() {
+        [campoCategoria, campoModelo, campoNumero, campoDescricao, campoMedidas].forEach((campo) => {
             if (campo) campo.value = '';
         });
         if (campoProblema) campoProblema.value = '';
+    }
+
+    function alternarCampoMedidas(mostrar) {
+        if (linhaMedidas) linhaMedidas.style.display = mostrar ? 'block' : 'none';
+    }
+
+    function abrirNovoRegistro(tipo) {
+        tipoAtual = tipo;
+        idEditando = null;
+        linhaEditando = null;
+
+        if (modalTitle) modalTitle.textContent = TITULOS_POR_TIPO[tipo] || 'Novo Registro';
+        limparCampos();
+        alternarCampoMedidas(false);
+
+        openModal('modal-controle-novo');
+    }
+
+    function abrirEdicaoRegistro(row) {
+        const tabContent = row.closest('.controle-tab-content');
+        const tipo = tabContent ? tabContent.dataset.tipo : null;
+        if (!tipo) return;
+
+        tipoAtual = tipo;
+        idEditando = row.dataset.id;
+        linhaEditando = row;
+
+        if (modalTitle) modalTitle.textContent = tipo === 'resolvidos' ? 'Editar Registro Resolvido' : 'Editar Registro';
+
+        campoCategoria.value = row.dataset.categoria || '';
+        campoModelo.value = row.dataset.modelo || '';
+        campoNumero.value = row.dataset.numero || '';
+        campoProblema.value = row.dataset.problema || '';
+        campoDescricao.value = row.dataset.descricao || '';
+
+        const ehResolvido = tipo === 'resolvidos';
+        alternarCampoMedidas(ehResolvido);
+        if (campoMedidas) campoMedidas.value = ehResolvido ? (row.dataset.medidas || '') : '';
 
         openModal('modal-controle-novo');
     }
 
     if (btnModalCancelar) {
-        btnModalCancelar.addEventListener('click', () => closeModal('modal-controle-novo'));
+        btnModalCancelar.addEventListener('click', () => {
+            idEditando = null;
+            linhaEditando = null;
+            closeModal('modal-controle-novo');
+        });
     }
 
     if (btnModalSalvar) {
@@ -128,38 +174,80 @@ export function initControle() {
                 return;
             }
 
-            adicionarRegistro(tipoAtual, {
+            if (tipoAtual === 'resolvidos' && !campoMedidas.value.trim()) {
+                showToast('Descreva as medidas tomadas antes de salvar', 'warning');
+                campoMedidas.focus();
+                return;
+            }
+
+            const dados = {
                 categoria: campoCategoria.value,
                 modelo: campoModelo.value,
                 numero: campoNumero.value,
                 problema: campoProblema.value,
-                descricao: campoDescricao.value || '—'
-            });
+                descricao: campoDescricao.value || '—',
+                medidas: tipoAtual === 'resolvidos' ? campoMedidas.value : undefined
+            };
+
+            if (idEditando && linhaEditando) {
+                editarRegistro(linhaEditando, tipoAtual, dados);
+                showToast('Registro atualizado com sucesso', 'success');
+            } else {
+                adicionarRegistro(tipoAtual, dados);
+                showToast('Registro criado com sucesso', 'success');
+            }
 
             closeModal('modal-controle-novo');
+            idEditando = null;
+            linhaEditando = null;
         });
     }
 
-    function adicionarRegistro(tipo, dados) {
-        const tabContent = document.getElementById(`tab-${tipo}`);
-        if (!tabContent) return;
+    /* ===== Render + dados da linha (fonte única, usada em criar e editar) ===== */
+    function aplicarDadosNaLinha(row, dados) {
+        row.dataset.problema = dados.problema;
+        row.dataset.categoria = dados.categoria;
+        row.dataset.modelo = dados.modelo;
+        row.dataset.numero = dados.numero;
+        row.dataset.descricao = dados.descricao;
+        row.dataset.registradoEm = dados.registradoEm;
+        if (dados.medidas !== undefined) row.dataset.medidas = dados.medidas;
+    }
 
+    function renderLinhaConteudo(tipo, dados) {
         const problemaInfo = PROBLEMA_ICONS[dados.problema] || PROBLEMA_ICONS.outro;
         const iconeLinha = ICONE_POR_TIPO[tipo] || 'chat_bubble';
-        const id = crypto.randomUUID();
 
-        const row = document.createElement('div');
-        row.className = 'registros-row';
-        row.dataset.id = id;
-        row.dataset.problema = dados.problema;
-        row.innerHTML = `
+        if (tipo === 'resolvidos') {
+            return `
+                <span class="registros-row-icon"><span class="material-symbols-outlined">${iconeLinha}</span></span>
+                <span data-col="categoria">${escapeHtml(dados.categoria)}</span>
+                <span data-col="modelo">${escapeHtml(dados.modelo)}</span>
+                <span class="registros-numero" data-col="numero">${escapeHtml(dados.numero)}</span>
+                <span class="controle-problema-badge"><span class="material-symbols-outlined">${problemaInfo.icon}</span>${escapeHtml(problemaInfo.label)}</span>
+                <span data-col="descricao">${escapeHtml(dados.descricao)}</span>
+                <span class="registros-data" data-col="registrado-em">${escapeHtml(dados.registradoEm)}</span>
+                <span data-col="medidas">${escapeHtml(dados.medidas)}</span>
+                <span class="registros-row-menu-wrap">
+                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                        <span class="material-symbols-outlined">more_vert</span>
+                    </button>
+                    <div class="registros-row-menu">
+                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger" data-acao="excluir">Excluir</span>
+                    </div>
+                </span>
+            `;
+        }
+
+        return `
             <span class="registros-row-icon"><span class="material-symbols-outlined">${iconeLinha}</span></span>
-            <span>${dados.categoria}</span>
-            <span>${dados.modelo}</span>
-            <span class="registros-numero">${dados.numero}</span>
-            <span class="controle-problema-badge"><span class="material-symbols-outlined">${problemaInfo.icon}</span>${problemaInfo.label}</span>
-            <span>${dados.descricao}</span>
-            <span class="registros-data">${formatarDataHoraAtual()}</span>
+            <span data-col="categoria">${escapeHtml(dados.categoria)}</span>
+            <span data-col="modelo">${escapeHtml(dados.modelo)}</span>
+            <span class="registros-numero" data-col="numero">${escapeHtml(dados.numero)}</span>
+            <span class="controle-problema-badge"><span class="material-symbols-outlined">${problemaInfo.icon}</span>${escapeHtml(problemaInfo.label)}</span>
+            <span data-col="descricao">${escapeHtml(dados.descricao)}</span>
+            <span class="registros-data" data-col="registrado-em">${escapeHtml(dados.registradoEm)}</span>
             <span class="registros-row-menu-wrap">
                 <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
                     <span class="material-symbols-outlined">more_vert</span>
@@ -170,11 +258,31 @@ export function initControle() {
                 </div>
             </span>
         `;
+    }
+
+    function adicionarRegistro(tipo, dados) {
+        const tabContent = document.getElementById(`tab-${tipo}`);
+        if (!tabContent) return;
+
+        const completos = { ...dados, registradoEm: formatarDataHoraAtual() };
+
+        const row = document.createElement('div');
+        row.className = tipo === 'resolvidos' ? 'registros-row registros-row-resolvidos' : 'registros-row';
+        row.dataset.id = crypto.randomUUID();
+        aplicarDadosNaLinha(row, completos);
+        row.innerHTML = renderLinhaConteudo(tipo, completos);
 
         tabContent.appendChild(row);
         atualizarContagem(tipo);
 
         if (tabContent.classList.contains('active')) atualizarPaginacaoTexto(tabContent);
+    }
+
+    function editarRegistro(row, tipo, dados) {
+        // mantém a data de registro/resolução original, edição não deve alterá-la
+        const completos = { ...dados, registradoEm: row.dataset.registradoEm };
+        aplicarDadosNaLinha(row, completos);
+        row.innerHTML = renderLinhaConteudo(tipo, completos);
     }
 
     function atualizarContagem(tipo) {
@@ -204,7 +312,7 @@ export function initControle() {
                 removerLinha(row);
             } else {
                 selecionarLinha(row);
-                console.log('Editar registro:', row.dataset.id);
+                abrirEdicaoRegistro(row);
             }
             fecharTodosMenus();
             return;
@@ -253,14 +361,14 @@ export function initControle() {
         if (row === linhaSelecionada) limparSelecao();
         row.remove();
 
-        if (tipo && ICONE_POR_TIPO[tipo]) atualizarContagem(tipo);
+        if (tipo) atualizarContagem(tipo);
         if (tabContent && tabContent.classList.contains('active')) atualizarPaginacaoTexto(tabContent);
     }
 
     if (btnEditar) {
         btnEditar.addEventListener('click', () => {
             if (!linhaSelecionada) return;
-            console.log('Editar registro:', linhaSelecionada.dataset.id);
+            abrirEdicaoRegistro(linhaSelecionada);
         });
     }
 
