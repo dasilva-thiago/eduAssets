@@ -446,7 +446,7 @@
 
                     <div class="dashboard-tabs">
                         <span class="dashboard-tab-link active" data-tab="estoque">Estoque</span>
-                        <span class="dashboard-tab-link" data-tab="registros">Registros</span>
+                        <span class="dashboard-tab-link" data-tab="registros">Histórico</span>
                     </div>
 
                     <div class="dashboard-tab-content active" id="tab-estoque">
@@ -516,7 +516,18 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="controle-modal-problema">Problema</label>
-                                    <input type="text" id="controle-modal-problema" placeholder="Ex: Tela, Bateria...">
+                                    <select id="controle-modal-problema">
+                                        <option value="" disabled selected hidden>Selecionar tipo de problema</option>
+                                        <option value="tela">Tela</option>
+                                        <option value="audio">Áudio</option>
+                                        <option value="bateria">Bateria</option>
+                                        <option value="cabo">Cabo</option>
+                                        <option value="touch">Touch</option>
+                                        <option value="teclado">Teclado</option>
+                                        <option value="botao">Botão</option>
+                                        <option value="carcaca">Carcaça</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -535,41 +546,79 @@
                 </div>
 
                 <div class="controle-container">
-                    <div class="controle-conteudo">
 
-                        <div class="controle-grid">
-                            <div class="controle-cards">
-                                <span>Observações</span>
-                                <span>Manutenção</span>
-                                <span>Quebrados</span>
+                    <!-- Cards de resumo -->
+                    <div class="controle-resumo-grid">
+                        <button type="button" class="controle-resumo-card controle-resumo-card-info"
+                            data-controle-tab="observacao">
+                            <span class="controle-resumo-icon">
+                                <span class="material-symbols-outlined">chat_bubble</span>
+                            </span>
+                            <div class="controle-resumo-texto">
+                                <span class="controle-resumo-titulo">Observações</span>
+                                <span class="controle-resumo-numero" id="contagem-observacao">0</span>
+                                <span class="controle-resumo-sub">Registros em aberto</span>
+                            </div>
+                            <span class="material-symbols-outlined controle-resumo-chevron">chevron_right</span>
+                        </button>
+
+                        <button type="button" class="controle-resumo-card controle-resumo-card-warning"
+                            data-controle-tab="manutencao">
+                            <span class="controle-resumo-icon">
+                                <span class="material-symbols-outlined">build</span>
+                            </span>
+                            <div class="controle-resumo-texto">
+                                <span class="controle-resumo-titulo">Manutenção</span>
+                                <span class="controle-resumo-numero" id="contagem-manutencao">0</span>
+                                <span class="controle-resumo-sub">Registros em aberto</span>
+                            </div>
+                            <span class="material-symbols-outlined controle-resumo-chevron">chevron_right</span>
+                        </button>
+
+                        <button type="button" class="controle-resumo-card controle-resumo-card-error"
+                            data-controle-tab="quebrado">
+                            <span class="controle-resumo-icon">
+                                <span class="material-symbols-outlined">heart_broken</span>
+                            </span>
+                            <div class="controle-resumo-texto">
+                                <span class="controle-resumo-titulo">Quebrados</span>
+                                <span class="controle-resumo-numero" id="contagem-quebrado">0</span>
+                                <span class="controle-resumo-sub">Registros em aberto</span>
+                            </div>
+                            <span class="material-symbols-outlined controle-resumo-chevron">chevron_right</span>
+                        </button>
+                    </div>
+
+                    <div class="controle-registros-container">
+                        <div class="controle-registros-header-row">
+                            <div>
+                                <h4>Registros</h4>
+                                <p class="controle-registros-desc">Acompanhe e gerencie todos os registros de controle.
+                                </p>
+                            </div>
+
+                            <div class="controle-registros-toolbar">
+                                <div class="novo-registro-dropdown">
+                                    <button class="btn btn-primary btn-sm" id="btn-novo-registro" type="button">
+                                        <span class="material-symbols-outlined">add</span> Novo
+                                    </button>
+                                    <div class="novo-registro-menu" id="novo-registro-menu">
+                                        <span class="novo-registro-opcao" data-tipo="observacao">Observação</span>
+                                        <span class="novo-registro-opcao" data-tipo="manutencao">Manutenção</span>
+                                        <span class="novo-registro-opcao" data-tipo="quebrado">Quebrado</span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-neutral btn-sm" id="btn-editar-registro" disabled>
+                                    <span class="material-symbols-outlined">edit</span> Editar
+                                </button>
+                                <button class="btn btn-danger btn-sm" id="btn-deletar-registro" disabled>
+                                    <span class="material-symbols-outlined">delete</span> Deletar
+                                </button>
                             </div>
                         </div>
 
-                        <div class="controle-registros-container">
-                            <div class="controle-registros-header-row">
-                                <h4>Registros</h4>
-
-                                <div class="controle-registros-toolbar">
-                                    <div class="novo-registro-dropdown">
-                                        <button class="btn btn-primary btn-sm" id="btn-novo-registro" type="button">
-                                            <span class="material-symbols-outlined">add</span> Novo
-                                        </button>
-                                        <div class="novo-registro-menu" id="novo-registro-menu">
-                                            <span class="novo-registro-opcao" data-tipo="observacao">Observação</span>
-                                            <span class="novo-registro-opcao" data-tipo="manutencao">Manutenção</span>
-                                            <span class="novo-registro-opcao" data-tipo="quebrado">Quebrado</span>
-                                        </div>
-                                    </div>
-
-                                    <button class="btn btn-neutral btn-sm" id="btn-editar-registro" disabled>
-                                        <span class="material-symbols-outlined">edit</span> Editar
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" id="btn-deletar-registro" disabled>
-                                        <span class="material-symbols-outlined">delete</span> Deletar
-                                    </button>
-                                </div>
-                            </div>
-
+                        <div class="controle-tabs-row">
                             <div class="controle-tabs">
                                 <span class="controle-tab-link active" data-controle-tab="observacao">Observação</span>
                                 <span class="controle-tab-link" data-controle-tab="manutencao">Manutenção</span>
@@ -577,77 +626,325 @@
                                 <span class="controle-tab-link" data-controle-tab="resolvidos">Resolvidos</span>
                             </div>
 
-                            <div class="controle-tab-content active" id="tab-observacao">
-                                <div class="registros-header">
-                                    <span>Categoria</span>
-                                    <span>Modelo</span>
-                                    <span>Número</span>
-                                    <span>Problema</span>
-                                    <span>Descrição</span>
+                            <div class="controle-tabs-ferramentas">
+                                <div class="controle-busca-wrap">
+                                    <span class="material-symbols-outlined">search</span>
+                                    <input type="text" placeholder="Buscar registros..." disabled>
                                 </div>
-                                <div class="registros-row" data-id="1">
-                                    <span>Notebook</span>
-                                    <span>Multilaser</span>
-                                    <span>NB-014</span>
-                                    <span>—</span>
-                                    <span>Tela com pequeno risco, sem impacto no uso.</span>
-                                </div>
+                                <button type="button" class="btn btn-neutral btn-sm" disabled>
+                                    <span class="material-symbols-outlined">filter_list</span> Filtros
+                                </button>
                             </div>
+                        </div>
 
-                            <div class="controle-tab-content" id="tab-manutencao">
-                                <div class="registros-header">
-                                    <span>Categoria</span>
-                                    <span>Modelo</span>
-                                    <span>Número</span>
-                                    <span>Problema</span>
-                                    <span>Descrição</span>
-                                </div>
-                                <div class="registros-row" data-id="2">
-                                    <span>Notebook</span>
-                                    <span>Multilaser</span>
-                                    <span>NB-022</span>
-                                    <span>Bateria</span>
-                                    <span>Não segura carga acima de 20 minutos.</span>
-                                </div>
+                        <div class="controle-tab-content active" id="tab-observacao" data-tipo="observacao">
+                            <div class="registros-header">
+                                <span></span>
+                                <span>Categoria</span>
+                                <span>Modelo</span>
+                                <span>Número</span>
+                                <span>Problema</span>
+                                <span>Descrição</span>
+                                <span>Registrado em</span>
+                                <span></span>
                             </div>
+                            <div class="registros-row" data-id="1" data-problema="tela">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">chat_bubble</span></span>
+                                <span>Notebook</span>
+                                <span>Multilaser</span>
+                                <span class="registros-numero">NB-014</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">monitor</span>Tela</span>
+                                <span>Tela com pequeno risco, sem impacto no uso.</span>
+                                <span class="registros-data">15/07/2026 09:12</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="registros-row" data-id="2" data-problema="audio">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">chat_bubble</span></span>
+                                <span>Fone de ouvido</span>
+                                <span>JBL Tune 510</span>
+                                <span class="registros-numero">FO-021</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">headphones</span>Áudio</span>
+                                <span>Volume baixo no lado esquerdo.</span>
+                                <span class="registros-data">15/07/2026 08:45</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="registros-row" data-id="3" data-problema="cabo">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">chat_bubble</span></span>
+                                <span>Carregador</span>
+                                <span>USB-C 65W</span>
+                                <span class="registros-numero">CR-009</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">cable</span>Cabo</span>
+                                <span>Cabo esquentando durante o uso.</span>
+                                <span class="registros-data">14/07/2026 17:33</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="registros-row" data-id="4" data-problema="touch">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">chat_bubble</span></span>
+                                <span>Tablet</span>
+                                <span>Samsung Galaxy Tab A</span>
+                                <span class="registros-numero">TB-002</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">touch_app</span>Touch</span>
+                                <span>Touch screen com falhas ocasionais.</span>
+                                <span class="registros-data">14/07/2026 14:21</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
 
-                            <div class="controle-tab-content" id="tab-quebrado">
-                                <div class="registros-header">
-                                    <span>Categoria</span>
-                                    <span>Modelo</span>
-                                    <span>Número</span>
-                                    <span>Problema</span>
-                                    <span>Descrição</span>
-                                </div>
-                                <div class="registros-row" data-id="3">
-                                    <span>Notebook</span>
-                                    <span>Multilaser</span>
-                                    <span>NB-031</span>
-                                    <span>Tela</span>
-                                    <span>Tela quebrada, não liga o display.</span>
-                                </div>
+                        <div class="controle-tab-content" id="tab-manutencao" data-tipo="manutencao">
+                            <div class="registros-header">
+                                <span></span>
+                                <span>Categoria</span>
+                                <span>Modelo</span>
+                                <span>Número</span>
+                                <span>Problema</span>
+                                <span>Descrição</span>
+                                <span>Registrado em</span>
+                                <span></span>
                             </div>
+                            <div class="registros-row" data-id="5" data-problema="bateria">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">build</span></span>
+                                <span>Notebook</span>
+                                <span>Multilaser</span>
+                                <span class="registros-numero">NB-022</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">battery_alert</span>Bateria</span>
+                                <span>Não segura carga acima de 20 minutos.</span>
+                                <span class="registros-data">13/07/2026 16:40</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="registros-row" data-id="6" data-problema="botao">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">build</span></span>
+                                <span>Mouse</span>
+                                <span>Logitech M190</span>
+                                <span class="registros-numero">MO-005</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">smart_button</span>Botão</span>
+                                <span>Botão direito apresentando clique duplo.</span>
+                                <span class="registros-data">12/07/2026 10:02</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="registros-row" data-id="7" data-problema="teclado">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">build</span></span>
+                                <span>Notebook</span>
+                                <span>Dell Inspiron</span>
+                                <span class="registros-numero">NB-045</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">keyboard</span>Teclado</span>
+                                <span>Algumas teclas não respondem ao toque.</span>
+                                <span class="registros-data">11/07/2026 15:18</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
 
-                            <div class="controle-tab-content" id="tab-resolvidos">
-                                <div class="registros-header registros-header-resolvidos">
-                                    <span>Categoria</span>
-                                    <span>Modelo</span>
-                                    <span>Número</span>
-                                    <span>Problema</span>
-                                    <span>Descrição</span>
-                                    <span>Resolvido em</span>
-                                    <span>Medidas tomadas</span>
-                                </div>
-                                <div class="registros-row registros-row-resolvidos" data-id="4">
-                                    <span>Notebook</span>
-                                    <span>Multilaser</span>
-                                    <span>NB-009</span>
-                                    <span>Teclado</span>
-                                    <span>Algumas teclas travando.</span>
-                                    <span>10/07/2026</span>
-                                    <span>Substituição do teclado.</span>
-                                </div>
+                        <div class="controle-tab-content" id="tab-quebrado" data-tipo="quebrado">
+                            <div class="registros-header">
+                                <span></span>
+                                <span>Categoria</span>
+                                <span>Modelo</span>
+                                <span>Número</span>
+                                <span>Problema</span>
+                                <span>Descrição</span>
+                                <span>Registrado em</span>
+                                <span></span>
                             </div>
+                            <div class="registros-row" data-id="8" data-problema="tela">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">heart_broken</span></span>
+                                <span>Notebook</span>
+                                <span>Multilaser</span>
+                                <span class="registros-numero">NB-031</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">monitor</span>Tela</span>
+                                <span>Tela quebrada, não liga o display.</span>
+                                <span class="registros-data">10/07/2026 11:05</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="registros-row" data-id="9" data-problema="carcaca">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">heart_broken</span></span>
+                                <span>Tablet</span>
+                                <span>Multilaser</span>
+                                <span class="registros-numero">TB-014</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">construction</span>Carcaça</span>
+                                <span>Carcaça trincada após queda.</span>
+                                <span class="registros-data">09/07/2026 09:50</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="controle-tab-content" id="tab-resolvidos" data-tipo="resolvidos">
+                            <div class="registros-header registros-header-resolvidos">
+                                <span></span>
+                                <span>Categoria</span>
+                                <span>Modelo</span>
+                                <span>Número</span>
+                                <span>Problema</span>
+                                <span>Descrição</span>
+                                <span>Resolvido em</span>
+                                <span>Medidas tomadas</span>
+                                <span></span>
+                            </div>
+                            <div class="registros-row registros-row-resolvidos" data-id="10" data-problema="teclado">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">task_alt</span></span>
+                                <span>Notebook</span>
+                                <span>Multilaser</span>
+                                <span class="registros-numero">NB-009</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">keyboard</span>Teclado</span>
+                                <span>Algumas teclas travando.</span>
+                                <span class="registros-data">10/07/2026</span>
+                                <span>Substituição do teclado.</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="registros-row registros-row-resolvidos" data-id="11" data-problema="audio">
+                                <span class="registros-row-icon"><span
+                                        class="material-symbols-outlined">task_alt</span></span>
+                                <span>Fone de ouvido</span>
+                                <span>JBL Tune 500</span>
+                                <span class="registros-numero">FO-018</span>
+                                <span class="controle-problema-badge"><span
+                                        class="material-symbols-outlined">headphones</span>Áudio</span>
+                                <span>Fio partido próximo ao conector.</span>
+                                <span class="registros-data">05/07/2026</span>
+                                <span>Substituição do cabo de áudio.</span>
+                                <span class="registros-row-menu-wrap">
+                                    <button type="button" class="registros-row-menu-btn" aria-label="Mais opções">
+                                        <span class="material-symbols-outlined">more_vert</span>
+                                    </button>
+                                    <div class="registros-row-menu">
+                                        <span class="registros-row-menu-opcao" data-acao="editar">Editar</span>
+                                        <span class="registros-row-menu-opcao registros-row-menu-opcao-danger"
+                                            data-acao="excluir">Excluir</span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="controle-paginacao">
+                            <span class="controle-paginacao-texto" id="controle-paginacao-texto"></span>
+                            <div class="controle-paginacao-controles">
+                                <button type="button" class="controle-pagina-btn" disabled aria-label="Página anterior">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <button type="button" class="controle-pagina-btn active">1</button>
+                                <button type="button" class="controle-pagina-btn" disabled aria-label="Próxima página">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="controle-dica-bar">
+                            <div class="controle-dica-info">
+                                <span class="material-symbols-outlined">info</span>
+                                <span><strong>Dica:</strong> Clique em um registro para visualizar detalhes, adicionar
+                                    resolução e acompanhar o histórico.</span>
+                            </div>
+                            <button type="button" class="btn btn-neutral btn-sm" disabled>
+                                Saiba mais <span class="material-symbols-outlined">open_in_new</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -938,10 +1235,15 @@
                 <div class="sobre-container">
                     <div class="sobre-conteudo">
                         <img src="assets\logos\eduAssets_logo_sobre.png" alt="EduAssets Logo" class="sobre-logo">
-                        <p class="sobre-subtitle">Sistema de controle de equipamentos eletrônicos para ambientes educacionais</p>
+                        <p class="sobre-subtitle">Sistema de controle de equipamentos eletrônicos para ambientes
+                            educacionais</p>
 
-                        <p class="sobre-text">O eduAssets nasceu para solucionar um problema real vivenciado no meu ambiente de trabalho: O controle de empréstimos e devoluções de equipamentos era realizado por meio de registros físicos, preenchidos manualmente em papel.</p> 
-                        <p class="sobre-text">O sistema foi desenvolvido para digitalizar esse processo, simplificando o registro diário de empréstimos, devoluções e ocorrências, reduzindo burocracias e tornando a gestão dos recursos tecnológicos mais ágil, organizada e confiável.</p>
+                        <p class="sobre-text">O eduAssets nasceu para solucionar um problema real vivenciado no meu
+                            ambiente de trabalho: O controle de empréstimos e devoluções de equipamentos era realizado
+                            por meio de registros físicos, preenchidos manualmente em papel.</p>
+                        <p class="sobre-text">O sistema foi desenvolvido para digitalizar esse processo, simplificando o
+                            registro diário de empréstimos, devoluções e ocorrências, reduzindo burocracias e tornando a
+                            gestão dos recursos tecnológicos mais ágil, organizada e confiável.</p>
 
                     </div>
                 </div>
