@@ -3,7 +3,6 @@
     max-width: 780px;
     justify-content: left;
     text-align: left;
-    margin-top: 28px;
 }
 
 .sobre-conteudo {
@@ -11,27 +10,30 @@
     flex-direction: column;
     width: 100%;
     padding: 28px;
-    border: 1px solid var(--border-color);
     border-radius: 8px;
 }
 
 .sobre-logo {
-    width: 180px;
+    width: 325px;
     height: auto;
     margin-bottom: 16px;
     transition: all 0.3s ease;
 }
 
-.sobre-logo:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s ease;
+.sobre-container .sobre-subtitle{
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    max-width: 480px;
+    padding-top: 5px;
 }
 
-.dev-by {
-    font-size: 14px;
+.sobre-container .sobre-text {
+    font-size: 1rem;
+    text-align:left;
     color: var(--text-secondary);
-    font-weight: 500;
-    margin-top: 15px;
+    padding-top: 12px;
+    max-width: 550px;
 }
 
 .skill-icon-wrap {
