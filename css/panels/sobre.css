@@ -1,132 +1,67 @@
+/* ==========================================================
+   SOBRE
+========================================================== */
+
 .sobre-container {
     width: 100%;
-    max-width: 780px;
-    justify-content: left;
-    text-align: left;
+    max-width: 1180px;
 }
 
-.sobre-conteudo {
+/* ==========================================================
+   HERO
+========================================================== */
+
+.sobre-hero text {
+    
+    margin: 0 auto;
+}
+
+.sobre-hero {
     display: flex;
-    flex-direction: column;
+    flex-direction: row-reverse;
+    gap: 64px;
+    align-items: center;
+    margin-bottom: 56px;
+}
+
+.sobre-img {
     width: 100%;
-    padding: 28px;
-    border-radius: 8px;
-}
-
-.sobre-logo {
-    width: 325px;
-    height: auto;
-    margin-bottom: 16px;
-    transition: all 0.3s ease;
-}
-
-.sobre-container .sobre-subtitle{
-    font-size: 1.1rem;
-    color: var(--text-primary);
-    font-weight: 500;
     max-width: 480px;
-    padding-top: 5px;
+    height: auto;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .18));
+    border: 1px solid transparent;
+    border-radius: 999px;
+    justify-content:right;
 }
 
-.sobre-container .sobre-text {
-    font-size: 1rem;
-    text-align:left;
-    color: var(--text-secondary);
-    padding-top: 12px;
-    max-width: 550px;
-}
-
-.skill-icon-wrap {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-        background-color 0.25s ease,
-        border-color 0.25s ease;
-    position: relative;
-    z-index: 1;
-    flex-shrink: 0;
-}
-
-.skill-icon-wrap svg {
-    width: 48px;
-    height: 48px;
-    color: var(--primary-color);
-    opacity: 0.8;
-}
-
-.skill-icon-card:hover .skill-icon-wrap svg {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.skill-icon-card:hover .skill-icon-wrap {
-    border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
-}
-
-.skill-icon-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 0.02em;
-    transition: color 0.2s ease;
-    position: relative;
-    z-index: 1;
-}
-
-.skill-icon-card:hover .skill-icon-name {
-    color: var(--primary-color);
-}
-
-
-
-.skills-icon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
-    gap: 12px;
-    margin-top: 32px;
-}
-
-/* individual card */
-.skill-icon-card {
-    cursor: pointer;
+.sobre-textos {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 18px 10px 14px;
-    background-color: var(--white);
-    border: 0.5px solid var(--border-color);
-    border-radius: 14px;
-    position: relative;
-    overflow: hidden;
-    transition:
-        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-        border-color 0.25s ease,
-        box-shadow 0.25s ease;
-}
-/* shimmer sweep on hover */
-.skill-icon-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        130deg,
-        transparent 35%,
-        color-mix(in srgb, var(--primary-color) 8%, transparent) 55%,
-        transparent 75%
-    );
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    pointer-events: none;
+    gap: 18px;
 }
 
-.skill-icon-card:hover {
-    transform: translateY(-5px);
-    border-color: color-mix(in srgb, var(--primary-color) 45%, transparent);
-    box-shadow:
-        0 10px 30px color-mix(in srgb, var(--primary-color) 12%, transparent),
-        0 2px 8px color-mix(in srgb, var(--primary-color) 8%, transparent);
+.sobre-tag {
+    width: fit-content;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+    color: var(--primary-color);
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+
+.sobre-textos h3 {
+    font-size: 1.45rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    line-height: 1.4;
+    max-width: 520px;
+}
+
+.sobre-textos p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 620px;
 }
