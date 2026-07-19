@@ -66,7 +66,7 @@
     flex-direction: column;
 }
 
-.nav-link {
+.sidebar-nav .nav-link {
     color: var(--text-on-primary);
     text-decoration: none;
     font-size: 1rem;
@@ -77,12 +77,11 @@
     transition: all 0.2s ease-in-out;
 }
 
-.nav-link:hover {
+.sidebar-nav .nav-link:hover {
     background-color: var(--primary-400);
 }
 
-
-.nav-link.active {
+.sidebar-nav .nav-link.active {
     font-weight: 600;
     background-color: var(--primary-dark);
     color: var(--white);
