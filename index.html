@@ -128,30 +128,107 @@
 
             <!-- PAINEL 0: Início -->
             <section class="panel active" id="panel-inicio">
-                <h2 class="panel-title"></h2>
-                <p class="panel-subtitle"></p>
 
-                <div class="inicio-content">
-                    <h2 class="welcome">Seja bem-vindo ao</h2>
-                    <img class="home-logo" src="./assets/logos/eduAssets_logo-hero-transparent.png"
-                        alt="EduAssets Logo">
-                    <span class="logo-subtitle">Gestão de Equipamentos de forma simples!</span>
+                <div class="inicio-hero-card">
+                    <div class="inicio-hero-grid">
+                        <div class="inicio-hero-textos">
+                            <span class="inicio-tag">Bem-vindo ao</span>
 
-                    <span class="inicio-divider"></span>
+                            <img class="inicio-logo-img" src="./assets/logos/eduAssets_logo-hero-transparent.png"
+                                alt="EduAssets Logo">
 
-                    <p class="inicio-descricao">
-                        Utilize o menu lateral para registrar empréstimos, realizar devoluções ou consultar
-                        equipamentos.
-                    </p>
-                    <p class="inicio-instrucao">Para registrar um novo
-                        empréstimo, clique em:</p>
-                    </p>
+                            <span class="inicio-divider"></span>
 
-                    <a href="#" class="nav-link instrucao-exemplo" data-panel="panel-emprestimo">
-                        <span class="material-symbols-outlined">open_in_new</span>
-                        <span>Começar</span>
+                            <h2 class="inicio-subtitulo">Gestão de equipamentos de forma simples!</h2>
+
+                            <p class="inicio-descricao">
+                                Utilize o menu lateral para registrar empréstimos, realizar devoluções ou consultar
+                                equipamentos.
+                            </p>
+
+                            <div class="inicio-botoes">
+                                <a href="#" class="btn btn-primary inicio-cta nav-link" data-panel="panel-emprestimo">
+                                    <span class="material-symbols-outlined">open_in_new</span> Começar
+                                </a>
+
+                                <!-- TODO: Implement login functionality -->
+                                <a href="#" class="btn btn-primary inicio-cta nav-link" data-panel="panel-login">
+                                    <span class="material-symbols-outlined">open_in_new</span> Login
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Espaço reservado para a imagem dos aparelhos (Photoshop) -->
+                        <div class="inicio-hero-img-placeholder">
+                            <span class="material-symbols-outlined">add_photo_alternate</span>
+                            <span>Imagem em produção</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inicio-acoes">
+                    <h3 class="inicio-acoes-titulo">Ações rápidas</h3>
+
+                    <div class="inicio-acoes-grid">
+                        <a href="#" class="inicio-acao-card nav-link" data-panel="panel-emprestimo">
+                            <span class="inicio-acao-icon inicio-acao-icon-primary">
+                                <span class="material-symbols-outlined">open_in_new</span>
+                            </span>
+                            <div class="inicio-acao-texto">
+                                <span class="inicio-acao-titulo">Novo empréstimo</span>
+                                <span class="inicio-acao-desc">Registrar um novo empréstimo de equipamento</span>
+                            </div>
+                            <span class="material-symbols-outlined inicio-acao-chevron">chevron_right</span>
+                        </a>
+
+                        <a href="#" class="inicio-acao-card nav-link" data-panel="panel-devolucao">
+                            <span class="inicio-acao-icon inicio-acao-icon-success">
+                                <span class="material-symbols-outlined">assignment_return</span>
+                            </span>
+                            <div class="inicio-acao-texto">
+                                <span class="inicio-acao-titulo">Devoluções</span>
+                                <span class="inicio-acao-desc">Ver empréstimos em aberto e registrar devoluções</span>
+                            </div>
+                            <span class="material-symbols-outlined inicio-acao-chevron">chevron_right</span>
+                        </a>
+
+                        <a href="#" class="inicio-acao-card nav-link" data-panel="panel-dashboard">
+                            <span class="inicio-acao-icon inicio-acao-icon-secondary">
+                                <span class="material-symbols-outlined">dashboard</span>
+                            </span>
+                            <div class="inicio-acao-texto">
+                                <span class="inicio-acao-titulo">Dashboard</span>
+                                <span class="inicio-acao-desc">Ver estatísticas e registros do sistema</span>
+                            </div>
+                            <span class="material-symbols-outlined inicio-acao-chevron">chevron_right</span>
+                        </a>
+
+                        <a href="#" class="inicio-acao-card nav-link" data-panel="panel-controle">
+                            <span class="inicio-acao-icon inicio-acao-icon-warning">
+                                <span class="material-symbols-outlined">inventory</span>
+                            </span>
+                            <div class="inicio-acao-texto">
+                                <span class="inicio-acao-titulo">Controle</span>
+                                <span class="inicio-acao-desc">Gerenciar ocorrências e manutenções</span>
+                            </div>
+                            <span class="material-symbols-outlined inicio-acao-chevron">chevron_right</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="inicio-dica-bar">
+                    <div class="inicio-dica-info">
+                        <span class="material-symbols-outlined">info</span>
+                        <div>
+                            <strong>Dica sobre uso</strong>
+                            <p>Consulte a documentação e o manual do usuário para obter mais informações sobre como utilizar o sistema.</p>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-neutral btn-sm nav-link" data-panel="panel-sobre">
+                        Ver documentação <span class="material-symbols-outlined">open_in_new</span>
                     </a>
                 </div>
+
             </section>
 
             <!-- PAINEL 1: Novo empréstimo  -->
