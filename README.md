@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="assets/img/eduAssets_banner.png" alt="EduAssets banner" width="100%">
+<img src="frontend/assets/img/eduAssets_banner.png" alt="EduAssets banner" width="100%">
 
 </div>
 
