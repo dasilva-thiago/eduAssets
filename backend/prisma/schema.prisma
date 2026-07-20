@@ -1,16 +1,101 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
+}
+
+enum NivelAcesso {
+  ADMINISTRADOR
+  EDITOR
+}
+
+enum StatusEmprestimo {
+  ABERTO
+  DEVOLVIDO
+}
+
+enum TipoOcorrencia {
+  OBSERVACAO
+  MANUTENCAO
+  QUEBRADO
+}
+
+enum StatusOcorrencia {
+  ABERTO
+  RESOLVIDO
+}
+
+model Categoria {
+  id           Int           @id @default(autoincrement())
+  nome         String        @unique
+  equipamentos Equipamento[]
+}
+
+model Equipamento {
+  id                   Int              @id @default(autoincrement())
+  categoriaId          Int
+  categoria            Categoria        @relation(fields: [categoriaId], references: [id])
+  modelo               String
+  quantidadeTotal      Int
+  quantidadeDisponivel Int
+  quantidadeQuebrada   Int              @default(0)
+  itensEmprestimo      ItemEmprestimo[]
+  ocorrencias          Ocorrencia[]
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+}
+
+model Responsavel {
+  id          Int          @id @default(autoincrement())
+  nome        String
+  cargo       String
+  emprestimos Emprestimo[]
+}
+
+model Usuario {
+  id          Int         @id @default(autoincrement())
+  nome        String
+  login       String      @unique
+  nivelAcesso NivelAcesso
+  createdAt   DateTime    @default(now())
+}
+
+model Emprestimo {
+  id              Int              @id @default(autoincrement())
+  solicitanteNome String
+  responsavelId   Int
+  responsavel     Responsavel      @relation(fields: [responsavelId], references: [id])
+  status          StatusEmprestimo @default(ABERTO)
+  dataRetirada    DateTime
+  dataDevolucao   DateTime?
+  observacao      String?
+  itens           ItemEmprestimo[]
+  createdAt       DateTime         @default(now())
+}
+
+model ItemEmprestimo {
+  id            Int         @id @default(autoincrement())
+  emprestimoId  Int
+  emprestimo    Emprestimo  @relation(fields: [emprestimoId], references: [id])
+  equipamentoId Int
+  equipamento   Equipamento @relation(fields: [equipamentoId], references: [id])
+  quantidade    Int
+}
+
+model Ocorrencia {
+  id             Int              @id @default(autoincrement())
+  equipamentoId  Int
+  equipamento    Equipamento      @relation(fields: [equipamentoId], references: [id])
+  numero         String?
+  tipo           TipoOcorrencia
+  status         StatusOcorrencia @default(ABERTO)
+  problema       String
+  descricao      String
+  resolvidoEm    DateTime?
+  medidasTomadas String?
+  createdAt      DateTime         @default(now())
 }
