@@ -100,7 +100,6 @@ export function initEmprestimo() {
         addLoan({
             aluno: document.getElementById('solicitante').value,
             responsavel: responsavelOption.text,
-            papel: responsavelOption.dataset.papel || 'usuario',
             itens,
             data: dataInput.value,
             observacao: document.getElementById('observacao').value

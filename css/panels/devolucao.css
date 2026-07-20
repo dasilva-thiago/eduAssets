@@ -185,26 +185,6 @@
     height: 20px;
 }
 
-.devolucao-papel-icon[data-papel="administrador"] {
-    background-color: var(--primary-50);
-    color: var(--primary-color);
-}
-
-.devolucao-papel-icon[data-papel="editor"] {
-    background-color: var(--secondary-bg);
-    color: var(--secondary-color);
-}
-
-.devolucao-papel-icon[data-papel="usuario"] {
-    background-color: var(--info-bg);
-    color: var(--info-color);
-}
-
-.devolucao-papel-icon[data-papel="convidado"] {
-    background-color: var(--slate-100);
-    color: var(--text-secondary);
-}
-
 /* ícones de equipamento adaptáveis ao espaço */
 .devolucao-itens-icons {
     display: flex;
