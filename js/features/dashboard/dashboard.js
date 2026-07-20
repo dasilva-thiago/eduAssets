@@ -2,13 +2,6 @@ import { getLoans, getLoansAbertos, subscribe } from '../../core/state/loans.js'
 import { showToast } from '../../core/toast/toast.js';
 import { escapeHtml } from '../../core/utils/sanitize.js';
 
-const PAPEL_ICONS = {
-    administrador: 'admin_panel_settings',
-    editor: 'edit',
-    usuario: 'person',
-    convidado: 'person_outline'
-};
-
 const EQUIPAMENTO_ICONS = {
     eq1: 'laptop',
     eq2: 'tablet',
@@ -219,8 +212,8 @@ export function initDashboard() {
 
         detalheBody.innerHTML = `
             <div class="devolucao-detalhe-pessoa">
-                <span class="devolucao-papel-icon" data-papel="${loan.papel || 'usuario'}">
-                    <span class="material-symbols-outlined">${PAPEL_ICONS[loan.papel] || PAPEL_ICONS.usuario}</span>
+                <span class="devolucao-papel-icon devolucao-papel-icon-sm">
+                    <span class="material-symbols-outlined">badge</span>
                 </span>
                 <div class="devolucao-detalhe-pessoa-info">
                     <div class="devolucao-detalhe-pessoa-linha">

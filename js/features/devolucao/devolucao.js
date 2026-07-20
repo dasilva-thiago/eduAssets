@@ -6,13 +6,6 @@ import { escapeHtml } from '../../core/utils/sanitize.js';
 
 const LIMITE_ICONES_CARD = 3;
 
-const PAPEL_ICONS = {
-    administrador: 'admin_panel_settings',
-    editor: 'edit',
-    usuario: 'person',
-    convidado: 'person_outline'
-};
-
 const EQUIPAMENTO_ICONS = {
     eq1: 'laptop',
     eq2: 'tablet',
@@ -192,10 +185,6 @@ export function initDevolucao() {
         idDetalheAberto = id;
         itensEditando = loan.itens.map((item) => ({ ...item }));
 
-        const papel = loan.papel || 'usuario';
-        detalhePapelIcon.dataset.papel = papel;
-        detalhePapelIcon.querySelector('.material-symbols-outlined').textContent = PAPEL_ICONS[papel] || PAPEL_ICONS.usuario;
-
         document.getElementById('detalhe-emprestimo-resp').textContent = loan.responsavel;
         document.getElementById('detalhe-emprestimo-aluno').textContent = loan.aluno;
         document.getElementById('detalhe-emprestimo-data').textContent = `Empréstimo realizado em ${loan.data}`;
@@ -247,8 +236,8 @@ export function initDevolucao() {
 
         lista.innerHTML = loans.map((loan) => `
             <div class="devolucao-item" data-id="${loan.id}">
-                <span class="devolucao-papel-icon devolucao-papel-icon-sm" data-papel="${loan.papel || 'usuario'}">
-                    <span class="material-symbols-outlined">${PAPEL_ICONS[loan.papel] || PAPEL_ICONS.usuario}</span>
+                <span class="devolucao-papel-icon devolucao-papel-icon-sm">
+                    <span class="material-symbols-outlined">badge</span>
                 </span>
                 <div class="devolucao-info">
                     <div class="devolucao-linha-principal">
