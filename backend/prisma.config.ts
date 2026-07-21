@@ -7,11 +7,14 @@ import { defineConfig, env } from "prisma/config";
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
+    seed: "prisma/seed.ts",
     path: "prisma/migrations",
   },
   engine: "classic",
   datasource: {
     url: env("DATABASE_URL"),
+    // @ts-expect-error — 'directUrl' funciona em runtime (necessário para migrations),
+    // mas ainda não está documentado no tipo oficial desta versão do Prisma (feature em preview).
     directUrl: env("DIRECT_URL"),
   },
 });
