@@ -11,6 +11,27 @@ equipamentosRouter.get('/', async (req, res) => {
   res.json(equipamentos);
 });
 
+equipamentosRouter.post('/', async (req, res) => {
+  const { categoriaId, modelo, quantidadeTotal } = req.body;
+
+  if (!categoriaId || !modelo || !quantidadeTotal) {
+    res.status(400).json({ erro: 'Categoria, modelo e quantidade total são obrigatórios.' });
+    return;
+  }
+
+  const criado = await prisma.equipamento.create({
+    data: {
+      categoriaId,
+      modelo,
+      quantidadeTotal,
+      quantidadeDisponivel: quantidadeTotal,
+    },
+    include: { categoria: true },
+  });
+
+  res.status(201).json(criado);
+});
+
 equipamentosRouter.patch('/:id', async (req, res) => {
   const id = Number(req.params.id);
   const { quantidadeTotal, quantidadeDisponivel, quantidadeQuebrada } = req.body;

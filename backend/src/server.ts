@@ -6,6 +6,8 @@ import { responsaveisRouter } from './routes/responsaveis.js';
 import { usuariosRouter } from './routes/usuarios.js';
 import { emprestimosRouter } from './routes/emprestimos.js';
 import { ocorrenciasRouter } from './routes/ocorrencias.js';
+import { notFoundHandler } from './middleware/notFound.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 const PORT = 3000;
@@ -23,6 +25,9 @@ app.use('/responsaveis', responsaveisRouter);
 app.use('/usuarios', usuariosRouter);
 app.use('/emprestimos', emprestimosRouter);
 app.use('/ocorrencias', ocorrenciasRouter);
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

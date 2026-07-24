@@ -52,6 +52,51 @@ emprestimosRouter.post('/', async (req, res) => {
   res.status(201).json(criado);
 });
 
+emprestimosRouter.patch('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const { itens } = req.body;
+
+  if (!Array.isArray(itens) || itens.length === 0) {
+    res.status(400).json({ erro: 'É necessário informar ao menos um item.' });
+    return;
+  }
+
+  const atualizado = await prisma.$transaction(async (tx) => {
+    const itensAntigos = await tx.itemEmprestimo.findMany({ where: { emprestimoId: id } });
+
+    for (const item of itensAntigos) {
+      await tx.equipamento.update({
+        where: { id: item.equipamentoId },
+        data: { quantidadeDisponivel: { increment: item.quantidade } },
+      });
+    }
+
+    await tx.itemEmprestimo.deleteMany({ where: { emprestimoId: id } });
+
+    await tx.itemEmprestimo.createMany({
+      data: itens.map((item: { equipamentoId: number; quantidade: number }) => ({
+        emprestimoId: id,
+        equipamentoId: item.equipamentoId,
+        quantidade: item.quantidade,
+      })),
+    });
+
+    for (const item of itens) {
+      await tx.equipamento.update({
+        where: { id: item.equipamentoId },
+        data: { quantidadeDisponivel: { decrement: item.quantidade } },
+      });
+    }
+
+    return tx.emprestimo.findUnique({
+      where: { id },
+      include: { responsavel: true, itens: { include: { equipamento: true } } },
+    });
+  });
+
+  res.json(atualizado);
+});
+
 emprestimosRouter.patch('/:id/devolver', async (req, res) => {
   const id = Number(req.params.id);
 

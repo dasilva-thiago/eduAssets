@@ -14,7 +14,7 @@ ocorrenciasRouter.post('/', async (req, res) => {
   const { equipamentoId, tipo, problema, descricao, numeros } = req.body;
 
   if (!equipamentoId || !tipo || !problema || !descricao || !Array.isArray(numeros) || numeros.length === 0) {
-    res.status(400).json({ erro: 'Dados incompletos para registrar a ocorrência.' });
+    res.status(400).json({ erro: 'Incomplete data to register the occurrence.' });
     return;
   }
 
@@ -45,6 +45,18 @@ ocorrenciasRouter.post('/', async (req, res) => {
   res.status(201).json(criadas);
 });
 
+ocorrenciasRouter.patch('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const { problema, descricao, numero } = req.body;
+
+  const atualizada = await prisma.ocorrencia.update({
+    where: { id },
+    data: { problema, descricao, numero },
+  });
+
+  res.json(atualizada);
+});
+
 ocorrenciasRouter.patch('/:id/resolver', async (req, res) => {
   const id = Number(req.params.id);
   const { medidasTomadas } = req.body;
@@ -69,4 +81,27 @@ ocorrenciasRouter.patch('/:id/resolver', async (req, res) => {
   });
 
   res.json(resolvida);
+});
+
+ocorrenciasRouter.delete('/:id', async (req, res) => {
+  const id = Number(req.params.id);
+
+  await prisma.$transaction(async (tx) => {
+    const ocorrencia = await tx.ocorrencia.findUnique({ where: { id } });
+    if (!ocorrencia) return;
+
+    if (ocorrencia.status === 'ABERTO' && (ocorrencia.tipo === 'MANUTENCAO' || ocorrencia.tipo === 'QUEBRADO')) {
+      await tx.equipamento.update({
+        where: { id: ocorrencia.equipamentoId },
+        data: {
+          quantidadeDisponivel: { increment: 1 },
+          ...(ocorrencia.tipo === 'QUEBRADO' ? { quantidadeQuebrada: { decrement: 1 } } : {}),
+        },
+      });
+    }
+
+    await tx.ocorrencia.delete({ where: { id } });
+  });
+
+  res.status(204).send();
 });
