@@ -3,8 +3,17 @@ import { prisma } from '../prisma.js';
 
 export const ocorrenciasRouter = Router();
 
+const ocorrenciaInclude = {
+  equipamento: {
+    include: {
+      categoria: true,
+    },
+  },
+};
+
 ocorrenciasRouter.get('/', async (req, res) => {
   const ocorrencias = await prisma.ocorrencia.findMany({
+    include: ocorrenciaInclude,
     orderBy: { createdAt: 'desc' },
   });
   res.json(ocorrencias);
@@ -25,6 +34,7 @@ ocorrenciasRouter.post('/', async (req, res) => {
       numeros.map((numero: string) =>
         tx.ocorrencia.create({
           data: { equipamentoId, tipo, problema, descricao, numero },
+          include: ocorrenciaInclude,
         })
       )
     );
@@ -51,7 +61,8 @@ ocorrenciasRouter.patch('/:id', async (req, res) => {
 
   const atualizada = await prisma.ocorrencia.update({
     where: { id },
-    data: { problema, descricao, numero },
+    data: { problema, descricao, numero, ...(req.body.medidasTomadas ? { medidasTomadas: req.body.medidasTomadas } : {}) },
+    include: ocorrenciaInclude,
   });
 
   res.json(atualizada);
@@ -65,6 +76,7 @@ ocorrenciasRouter.patch('/:id/resolver', async (req, res) => {
     const ocorrencia = await tx.ocorrencia.update({
       where: { id },
       data: { status: 'RESOLVIDO', resolvidoEm: new Date(), medidasTomadas },
+      include: ocorrenciaInclude,
     });
 
     if (ocorrencia.tipo === 'MANUTENCAO' || ocorrencia.tipo === 'QUEBRADO') {
