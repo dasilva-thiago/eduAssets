@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
+import { requireAuth } from '../middleware/auth.js';
 
 export const categoriasRouter = Router();
 
@@ -10,7 +11,7 @@ categoriasRouter.get('/', async (req, res) => {
   res.json(categorias);
 });
 
-categoriasRouter.post('/', async (req, res) => {
+categoriasRouter.post('/', requireAuth, async (req, res) => {
   const { nome } = req.body;
 
   if (!nome) {

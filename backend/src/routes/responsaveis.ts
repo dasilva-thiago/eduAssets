@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
+import { requireAuth } from '../middleware/auth.js';
 
 export const responsaveisRouter = Router();
 
@@ -10,7 +11,7 @@ responsaveisRouter.get('/', async (req, res) => {
   res.json(responsaveis);
 });
 
-responsaveisRouter.post('/', async (req, res) => {
+responsaveisRouter.post('/', requireAuth, async (req, res) => {
   const { nome, cargo } = req.body;
 
   if (!nome || !cargo) {

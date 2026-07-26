@@ -36,11 +36,12 @@ model Responsavel {
 }
 
 model Usuario {
-  id          Int         @id @default(autoincrement())
-  nome        String
-  login       String      @unique
-  nivelAcesso NivelAcesso
-  createdAt   DateTime    @default(now())
+  id           Int         @id @default(autoincrement())
+  nome         String
+  login        String      @unique
+  passwordHash String
+  nivelAcesso  NivelAcesso
+  createdAt    DateTime    @default(now())
 }
 
 model Emprestimo {

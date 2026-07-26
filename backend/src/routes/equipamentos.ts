@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
+import { requireAuth } from '../middleware/auth.js';
 
 export const equipamentosRouter = Router();
 
@@ -11,7 +12,7 @@ equipamentosRouter.get('/', async (req, res) => {
   res.json(equipamentos);
 });
 
-equipamentosRouter.post('/', async (req, res) => {
+equipamentosRouter.post('/', requireAuth, async (req, res) => {
   const { categoriaId, modelo, quantidadeTotal } = req.body;
 
   if (!categoriaId || !modelo || !quantidadeTotal) {
@@ -32,7 +33,7 @@ equipamentosRouter.post('/', async (req, res) => {
   res.status(201).json(criado);
 });
 
-equipamentosRouter.patch('/:id', async (req, res) => {
+equipamentosRouter.patch('/:id', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
   const { quantidadeTotal, quantidadeDisponivel, quantidadeQuebrada } = req.body;
 

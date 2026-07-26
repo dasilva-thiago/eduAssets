@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
+import { requireAuth } from '../middleware/auth.js';
 
 export const ocorrenciasRouter = Router();
 
@@ -19,7 +20,7 @@ ocorrenciasRouter.get('/', async (req, res) => {
   res.json(ocorrencias);
 });
 
-ocorrenciasRouter.post('/', async (req, res) => {
+ocorrenciasRouter.post('/', requireAuth, async (req, res) => {
   const { equipamentoId, tipo, problema, descricao, numeros } = req.body;
 
   if (!equipamentoId || !tipo || !problema || !descricao || !Array.isArray(numeros) || numeros.length === 0) {
@@ -55,7 +56,7 @@ ocorrenciasRouter.post('/', async (req, res) => {
   res.status(201).json(criadas);
 });
 
-ocorrenciasRouter.patch('/:id', async (req, res) => {
+ocorrenciasRouter.patch('/:id', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
   const { problema, descricao, numero } = req.body;
 
@@ -68,7 +69,7 @@ ocorrenciasRouter.patch('/:id', async (req, res) => {
   res.json(atualizada);
 });
 
-ocorrenciasRouter.patch('/:id/resolver', async (req, res) => {
+ocorrenciasRouter.patch('/:id/resolver', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
   const { medidasTomadas } = req.body;
 
@@ -95,7 +96,7 @@ ocorrenciasRouter.patch('/:id/resolver', async (req, res) => {
   res.json(resolvida);
 });
 
-ocorrenciasRouter.delete('/:id', async (req, res) => {
+ocorrenciasRouter.delete('/:id', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
 
   await prisma.$transaction(async (tx) => {

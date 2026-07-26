@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
+import { requireAuth } from '../middleware/auth.js';
 
 export const emprestimosRouter = Router();
 
@@ -14,7 +15,7 @@ emprestimosRouter.get('/', async (req, res) => {
   res.json(emprestimos);
 });
 
-emprestimosRouter.post('/', async (req, res) => {
+emprestimosRouter.post('/', requireAuth, async (req, res) => {
   const { solicitanteNome, responsavelId, dataRetirada, observacao, itens } = req.body;
 
   if (!solicitanteNome || !responsavelId || !dataRetirada || !Array.isArray(itens) || itens.length === 0) {
@@ -52,7 +53,7 @@ emprestimosRouter.post('/', async (req, res) => {
   res.status(201).json(criado);
 });
 
-emprestimosRouter.patch('/:id', async (req, res) => {
+emprestimosRouter.patch('/:id', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
   const { itens } = req.body;
 
@@ -97,7 +98,7 @@ emprestimosRouter.patch('/:id', async (req, res) => {
   res.json(atualizado);
 });
 
-emprestimosRouter.patch('/:id/devolver', async (req, res) => {
+emprestimosRouter.patch('/:id/devolver', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
 
   const devolvido = await prisma.$transaction(async (tx) => {

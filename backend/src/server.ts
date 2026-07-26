@@ -1,5 +1,7 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import { authRouter } from './routes/auth.js';
 import { categoriasRouter } from './routes/categorias.js';
 import { equipamentosRouter } from './routes/equipamentos.js';
 import { responsaveisRouter } from './routes/responsaveis.js';
@@ -15,10 +17,9 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('eduAssets API running.');
-});
+app.get('/', (req, res) => res.send('eduAssets API running.'));
 
+app.use('/auth', authRouter);
 app.use('/categorias', categoriasRouter);
 app.use('/equipamentos', equipamentosRouter);
 app.use('/responsaveis', responsaveisRouter);
@@ -29,6 +30,4 @@ app.use('/ocorrencias', ocorrenciasRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));
