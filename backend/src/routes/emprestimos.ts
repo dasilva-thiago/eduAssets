@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
 import { requireAuth } from '../middleware/auth.js';
+import { agruparQuantidades, validarEstoqueDisponivel, EstoqueInsuficienteError } from '../lib/estoque.js';
 
 export const emprestimosRouter = Router();
 
@@ -23,34 +24,45 @@ emprestimosRouter.post('/', requireAuth, async (req, res) => {
     return;
   }
 
-  const criado = await prisma.$transaction(async (tx) => {
-    const emprestimo = await tx.emprestimo.create({
-      data: {
-        solicitanteNome,
-        responsavelId,
-        dataRetirada: new Date(dataRetirada),
-        observacao,
-        itens: {
-          create: itens.map((item: { equipamentoId: number; quantidade: number }) => ({
-            equipamentoId: item.equipamentoId,
-            quantidade: item.quantidade,
-          })),
+  try {
+    const criado = await prisma.$transaction(async (tx) => {
+      const quantidadesSolicitadas = agruparQuantidades(itens);
+      await validarEstoqueDisponivel(tx, quantidadesSolicitadas);
+
+      const emprestimo = await tx.emprestimo.create({
+        data: {
+          solicitanteNome,
+          responsavelId,
+          dataRetirada: new Date(dataRetirada),
+          observacao,
+          itens: {
+            create: itens.map((item: { equipamentoId: number; quantidade: number }) => ({
+              equipamentoId: item.equipamentoId,
+              quantidade: item.quantidade,
+            })),
+          },
         },
-      },
-      include: { itens: true },
+        include: { itens: true },
+      });
+
+      for (const item of itens) {
+        await tx.equipamento.update({
+          where: { id: item.equipamentoId },
+          data: { quantidadeDisponivel: { decrement: item.quantidade } },
+        });
+      }
+
+      return emprestimo;
     });
 
-    for (const item of itens) {
-      await tx.equipamento.update({
-        where: { id: item.equipamentoId },
-        data: { quantidadeDisponivel: { decrement: item.quantidade } },
-      });
+    res.status(201).json(criado);
+  } catch (err) {
+    if (err instanceof EstoqueInsuficienteError) {
+      res.status(400).json({ erro: err.message, itens: err.itens });
+      return;
     }
-
-    return emprestimo;
-  });
-
-  res.status(201).json(criado);
+    throw err;
+  }
 });
 
 emprestimosRouter.patch('/:id', requireAuth, async (req, res) => {
@@ -62,40 +74,55 @@ emprestimosRouter.patch('/:id', requireAuth, async (req, res) => {
     return;
   }
 
-  const atualizado = await prisma.$transaction(async (tx) => {
-    const itensAntigos = await tx.itemEmprestimo.findMany({ where: { emprestimoId: id } });
+  try {
+    const atualizado = await prisma.$transaction(async (tx) => {
+      const itensAntigos = await tx.itemEmprestimo.findMany({ where: { emprestimoId: id } });
 
-    for (const item of itensAntigos) {
-      await tx.equipamento.update({
-        where: { id: item.equipamentoId },
-        data: { quantidadeDisponivel: { increment: item.quantidade } },
+      const quantidadesDevolvidas = agruparQuantidades(
+        itensAntigos.map((item) => ({ equipamentoId: item.equipamentoId, quantidade: item.quantidade }))
+      );
+      const quantidadesSolicitadas = agruparQuantidades(itens);
+
+      await validarEstoqueDisponivel(tx, quantidadesSolicitadas, quantidadesDevolvidas);
+
+      for (const item of itensAntigos) {
+        await tx.equipamento.update({
+          where: { id: item.equipamentoId },
+          data: { quantidadeDisponivel: { increment: item.quantidade } },
+        });
+      }
+
+      await tx.itemEmprestimo.deleteMany({ where: { emprestimoId: id } });
+
+      await tx.itemEmprestimo.createMany({
+        data: itens.map((item: { equipamentoId: number; quantidade: number }) => ({
+          emprestimoId: id,
+          equipamentoId: item.equipamentoId,
+          quantidade: item.quantidade,
+        })),
       });
-    }
 
-    await tx.itemEmprestimo.deleteMany({ where: { emprestimoId: id } });
+      for (const item of itens) {
+        await tx.equipamento.update({
+          where: { id: item.equipamentoId },
+          data: { quantidadeDisponivel: { decrement: item.quantidade } },
+        });
+      }
 
-    await tx.itemEmprestimo.createMany({
-      data: itens.map((item: { equipamentoId: number; quantidade: number }) => ({
-        emprestimoId: id,
-        equipamentoId: item.equipamentoId,
-        quantidade: item.quantidade,
-      })),
+      return tx.emprestimo.findUnique({
+        where: { id },
+        include: { responsavel: true, itens: { include: { equipamento: true } } },
+      });
     });
 
-    for (const item of itens) {
-      await tx.equipamento.update({
-        where: { id: item.equipamentoId },
-        data: { quantidadeDisponivel: { decrement: item.quantidade } },
-      });
+    res.json(atualizado);
+  } catch (err) {
+    if (err instanceof EstoqueInsuficienteError) {
+      res.status(400).json({ erro: err.message, itens: err.itens });
+      return;
     }
-
-    return tx.emprestimo.findUnique({
-      where: { id },
-      include: { responsavel: true, itens: { include: { equipamento: true } } },
-    });
-  });
-
-  res.json(atualizado);
+    throw err;
+  }
 });
 
 emprestimosRouter.patch('/:id/devolver', requireAuth, async (req, res) => {

@@ -1,0 +1,78 @@
+import type { Prisma } from '@prisma/client';
+
+type TxClient = Prisma.TransactionClient;
+
+export interface ItemInsuficiente {
+  equipamentoId: number;
+  nome: string;
+  categoria: string;
+  solicitado: number;
+  disponivel: number;
+}
+
+export class EstoqueInsuficienteError extends Error {
+  itens: ItemInsuficiente[];
+
+  constructor(itens: ItemInsuficiente[]) {
+    super(`Estoque insuficiente para ${itens.length} equipamento(s).`);
+    this.name = 'EstoqueInsuficienteError';
+    this.itens = itens;
+  }
+}
+
+export function agruparQuantidades(
+  itens: Array<{ equipamentoId: number; quantidade: number }>
+): Map<number, number> {
+  const mapa = new Map<number, number>();
+  for (const item of itens) {
+    mapa.set(item.equipamentoId, (mapa.get(item.equipamentoId) ?? 0) + item.quantidade);
+  }
+  return mapa;
+}
+
+export async function validarEstoqueDisponivel(
+  tx: TxClient,
+  quantidadesSolicitadas: Map<number, number>,
+  quantidadesDevolvidas: Map<number, number> = new Map()
+): Promise<void> {
+  const equipamentoIds = [...quantidadesSolicitadas.keys()];
+
+  const equipamentos = await tx.equipamento.findMany({
+    where: { id: { in: equipamentoIds } },
+    include: { categoria: true },
+  });
+
+  const insuficientes: ItemInsuficiente[] = [];
+
+  for (const [equipamentoId, solicitado] of quantidadesSolicitadas) {
+    const equipamento = equipamentos.find((e) => e.id === equipamentoId);
+
+    if (!equipamento) {
+      insuficientes.push({
+        equipamentoId,
+        nome: 'Equipamento não encontrado',
+        categoria: '',
+        solicitado,
+        disponivel: 0,
+      });
+      continue;
+    }
+
+    const devolvido = quantidadesDevolvidas.get(equipamentoId) ?? 0;
+    const disponivelEfetivo = equipamento.quantidadeDisponivel + devolvido;
+
+    if (solicitado > disponivelEfetivo) {
+      insuficientes.push({
+        equipamentoId,
+        nome: equipamento.modelo,
+        categoria: equipamento.categoria.nome,
+        solicitado,
+        disponivel: disponivelEfetivo,
+      });
+    }
+  }
+
+  if (insuficientes.length > 0) {
+    throw new EstoqueInsuficienteError(insuficientes);
+  }
+}
