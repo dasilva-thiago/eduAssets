@@ -10,12 +10,31 @@ import { emprestimosRouter } from './routes/emprestimos.js';
 import { ocorrenciasRouter } from './routes/ocorrencias.js';
 import { notFoundHandler } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { securityHeaders, globalRateLimiter } from './middleware/security.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
-app.use(cors());
-app.use(express.json());
+// necessário atrás de proxy reverso (Render/Vercel) para o rate limiter
+// identificar o IP real do cliente, e não o IP interno do proxy
+app.set('trust proxy', 1);
+
+app.use(securityHeaders);
+
+const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    // TODO: configure CORS properly for production
+    origin: allowedOrigins.length > 0 ? allowedOrigins : true,
+  })
+);
+
+app.use(express.json({ limit: '100kb' }));
+app.use(globalRateLimiter);
 
 app.get('/', (req, res) => res.send('eduAssets API running.'));
 

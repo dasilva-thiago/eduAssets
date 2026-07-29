@@ -1,24 +1,18 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
 import { requireAuth } from '../middleware/auth.js';
+import { validateBody } from '../lib/validate.js';
+import { responsavelCreateSchema } from '../schemas/index.js';
 
 export const responsaveisRouter = Router();
 
 responsaveisRouter.get('/', async (req, res) => {
-  const responsaveis = await prisma.responsavel.findMany({
-    orderBy: { nome: 'asc' },
-  });
+  const responsaveis = await prisma.responsavel.findMany({ orderBy: { nome: 'asc' } });
   res.json(responsaveis);
 });
 
-responsaveisRouter.post('/', requireAuth, async (req, res) => {
+responsaveisRouter.post('/', requireAuth, validateBody(responsavelCreateSchema), async (req, res) => {
   const { nome, cargo } = req.body;
-
-  if (!nome || !cargo) {
-    res.status(400).json({ erro: 'Nome e cargo são obrigatórios.' });
-    return;
-  }
-
   const criado = await prisma.responsavel.create({ data: { nome, cargo } });
   res.status(201).json(criado);
 });

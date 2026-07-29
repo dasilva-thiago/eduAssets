@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { prisma } from '../prisma.js';
 import { requireAuth } from '../middleware/auth.js';
 import { agruparQuantidades, validarEstoqueDisponivel, EstoqueInsuficienteError } from '../lib/estoque.js';
+import { validateBody, requireIntParam } from '../lib/validate.js';
+import { emprestimoCreateSchema, emprestimoUpdateItensSchema } from '../schemas/index.js';
 
 export const emprestimosRouter = Router();
 
@@ -18,13 +20,8 @@ emprestimosRouter.get('/', async (req, res) => {
   res.json(emprestimos);
 });
 
-emprestimosRouter.post('/', requireAuth, async (req, res) => {
+emprestimosRouter.post('/', requireAuth, validateBody(emprestimoCreateSchema), async (req, res) => {
   const { solicitanteNome, responsavelId, dataRetirada, observacao, itens } = req.body;
-
-  if (!solicitanteNome || !responsavelId || !dataRetirada || !Array.isArray(itens) || itens.length === 0) {
-    res.status(400).json({ erro: 'Dados incompletos para registrar o empréstimo.' });
-    return;
-  }
 
   try {
     const criado = await prisma.$transaction(async (tx) => {
@@ -67,67 +64,68 @@ emprestimosRouter.post('/', requireAuth, async (req, res) => {
   }
 });
 
-emprestimosRouter.patch('/:id', requireAuth, async (req, res) => {
-  const id = Number(req.params.id);
-  const { itens } = req.body;
+emprestimosRouter.patch(
+  '/:id',
+  requireAuth,
+  requireIntParam('id'),
+  validateBody(emprestimoUpdateItensSchema),
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const { itens } = req.body;
 
-  if (!Array.isArray(itens) || itens.length === 0) {
-    res.status(400).json({ erro: 'É necessário informar ao menos um item.' });
-    return;
-  }
+    try {
+      const atualizado = await prisma.$transaction(async (tx) => {
+        const itensAntigos = await tx.itemEmprestimo.findMany({ where: { emprestimoId: id } });
 
-  try {
-    const atualizado = await prisma.$transaction(async (tx) => {
-      const itensAntigos = await tx.itemEmprestimo.findMany({ where: { emprestimoId: id } });
+        const quantidadesDevolvidas = agruparQuantidades(
+          itensAntigos.map((item) => ({ equipamentoId: item.equipamentoId, quantidade: item.quantidade }))
+        );
+        const quantidadesSolicitadas = agruparQuantidades(itens);
 
-      const quantidadesDevolvidas = agruparQuantidades(
-        itensAntigos.map((item) => ({ equipamentoId: item.equipamentoId, quantidade: item.quantidade }))
-      );
-      const quantidadesSolicitadas = agruparQuantidades(itens);
+        await validarEstoqueDisponivel(tx, quantidadesSolicitadas, quantidadesDevolvidas);
 
-      await validarEstoqueDisponivel(tx, quantidadesSolicitadas, quantidadesDevolvidas);
+        for (const item of itensAntigos) {
+          await tx.equipamento.update({
+            where: { id: item.equipamentoId },
+            data: { quantidadeDisponivel: { increment: item.quantidade } },
+          });
+        }
 
-      for (const item of itensAntigos) {
-        await tx.equipamento.update({
-          where: { id: item.equipamentoId },
-          data: { quantidadeDisponivel: { increment: item.quantidade } },
+        await tx.itemEmprestimo.deleteMany({ where: { emprestimoId: id } });
+
+        await tx.itemEmprestimo.createMany({
+          data: itens.map((item: { equipamentoId: number; quantidade: number }) => ({
+            emprestimoId: id,
+            equipamentoId: item.equipamentoId,
+            quantidade: item.quantidade,
+          })),
         });
-      }
 
-      await tx.itemEmprestimo.deleteMany({ where: { emprestimoId: id } });
+        for (const item of itens) {
+          await tx.equipamento.update({
+            where: { id: item.equipamentoId },
+            data: { quantidadeDisponivel: { decrement: item.quantidade } },
+          });
+        }
 
-      await tx.itemEmprestimo.createMany({
-        data: itens.map((item: { equipamentoId: number; quantidade: number }) => ({
-          emprestimoId: id,
-          equipamentoId: item.equipamentoId,
-          quantidade: item.quantidade,
-        })),
+        return tx.emprestimo.findUnique({
+          where: { id },
+          include: { responsavel: true, itens: { include: { equipamento: true } } },
+        });
       });
 
-      for (const item of itens) {
-        await tx.equipamento.update({
-          where: { id: item.equipamentoId },
-          data: { quantidadeDisponivel: { decrement: item.quantidade } },
-        });
+      res.json(atualizado);
+    } catch (err) {
+      if (err instanceof EstoqueInsuficienteError) {
+        res.status(400).json({ erro: err.message, itens: err.itens });
+        return;
       }
-
-      return tx.emprestimo.findUnique({
-        where: { id },
-        include: { responsavel: true, itens: { include: { equipamento: true } } },
-      });
-    });
-
-    res.json(atualizado);
-  } catch (err) {
-    if (err instanceof EstoqueInsuficienteError) {
-      res.status(400).json({ erro: err.message, itens: err.itens });
-      return;
+      throw err;
     }
-    throw err;
   }
-});
+);
 
-emprestimosRouter.patch('/:id/devolver', requireAuth, async (req, res) => {
+emprestimosRouter.patch('/:id/devolver', requireAuth, requireIntParam('id'), async (req, res) => {
   const id = Number(req.params.id);
 
   try {

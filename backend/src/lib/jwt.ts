@@ -1,9 +1,17 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
+const JWT_SECRET_RAW = process.env.JWT_SECRET;
+
+if (!JWT_SECRET_RAW || JWT_SECRET_RAW.length < 32) {
+  throw new Error(
+    'JWT_SECRET ausente ou fraco. Defina uma variável de ambiente JWT_SECRET com pelo menos 32 caracteres aleatórios antes de iniciar o servidor.'
+  );
+}
+
+const JWT_SECRET: string = JWT_SECRET_RAW;
+
 const JWT_EXPIRES_IN = '8h';
 
-// Renomeado para evitar colisão de nome com jwt.JwtPayload da lib
 export interface AppJwtPayload {
   sub: number;
   nivelAcesso: 'ADMINISTRADOR' | 'EDITOR';

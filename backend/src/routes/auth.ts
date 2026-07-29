@@ -3,16 +3,14 @@ import bcrypt from 'bcrypt';
 import { prisma } from '../prisma.js';
 import { signToken } from '../lib/jwt.js';
 import { requireAuth } from '../middleware/auth.js';
+import { validateBody } from '../lib/validate.js';
+import { loginSchema } from '../schemas/index.js';
+import { loginRateLimiter } from '../middleware/security.js';
 
 export const authRouter = Router();
 
-authRouter.post('/login', async (req, res) => {
+authRouter.post('/login', loginRateLimiter, validateBody(loginSchema), async (req, res) => {
   const { login, password } = req.body;
-
-  if (!login || !password) {
-    res.status(400).json({ erro: 'Login e senha são obrigatórios.' });
-    return;
-  }
 
   const usuario = await prisma.usuario.findUnique({ where: { login } });
   if (!usuario) {
