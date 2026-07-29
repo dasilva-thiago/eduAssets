@@ -5,6 +5,8 @@ import { agruparQuantidades, validarEstoqueDisponivel, EstoqueInsuficienteError 
 
 export const emprestimosRouter = Router();
 
+class EmprestimoJaDevolvidoError extends Error {}
+
 emprestimosRouter.get('/', async (req, res) => {
   const emprestimos = await prisma.emprestimo.findMany({
     include: {
@@ -128,22 +130,38 @@ emprestimosRouter.patch('/:id', requireAuth, async (req, res) => {
 emprestimosRouter.patch('/:id/devolver', requireAuth, async (req, res) => {
   const id = Number(req.params.id);
 
-  const devolvido = await prisma.$transaction(async (tx) => {
-    const emprestimo = await tx.emprestimo.update({
-      where: { id },
-      data: { status: 'DEVOLVIDO', dataDevolucao: new Date() },
-      include: { itens: true },
+  try {
+    const devolvido = await prisma.$transaction(async (tx) => {
+      const resultado = await tx.emprestimo.updateMany({
+        where: { id, status: 'ABERTO' },
+        data: { status: 'DEVOLVIDO', dataDevolucao: new Date() },
+      });
+
+      if (resultado.count === 0) {
+        throw new EmprestimoJaDevolvidoError();
+      }
+
+      const emprestimo = await tx.emprestimo.findUniqueOrThrow({
+        where: { id },
+        include: { itens: true },
+      });
+
+      for (const item of emprestimo.itens) {
+        await tx.equipamento.update({
+          where: { id: item.equipamentoId },
+          data: { quantidadeDisponivel: { increment: item.quantidade } },
+        });
+      }
+
+      return emprestimo;
     });
 
-    for (const item of emprestimo.itens) {
-      await tx.equipamento.update({
-        where: { id: item.equipamentoId },
-        data: { quantidadeDisponivel: { increment: item.quantidade } },
-      });
+    res.json(devolvido);
+  } catch (err) {
+    if (err instanceof EmprestimoJaDevolvidoError) {
+      res.status(409).json({ erro: 'Este empréstimo já foi devolvido.' });
+      return;
     }
-
-    return emprestimo;
-  });
-
-  res.json(devolvido);
+    throw err;
+  }
 });
