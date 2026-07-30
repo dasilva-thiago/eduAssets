@@ -72,3 +72,8 @@ export const ocorrenciaUpdateSchema = z.object({
 export const ocorrenciaResolverSchema = z.object({
   medidasTomadas: z.string().trim().min(1, 'Descreva as medidas tomadas.').max(2000),
 });
+
+export const alterarSenhaSchema = z.object({
+  senhaAtual: z.string().min(1, 'Informe a senha atual.').max(200),
+  novaSenha: z.string().min(8, 'A nova senha deve ter no mínimo 8 caracteres.').max(200),
+});
