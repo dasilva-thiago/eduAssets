@@ -3,6 +3,7 @@ import { prisma } from '../prisma.js';
 import { requireAuth } from '../middleware/auth.js';
 import { validateBody, requireIntParam } from '../lib/validate.js';
 import { ocorrenciaCreateSchema, ocorrenciaUpdateSchema, ocorrenciaResolverSchema } from '../schemas/index.js';
+import { decrementarComSeguranca, EstoqueInsuficienteError } from '../lib/estoque.js';
 
 export const ocorrenciasRouter = Router();
 
@@ -22,30 +23,39 @@ ocorrenciasRouter.post('/', requireAuth, validateBody(ocorrenciaCreateSchema), a
   const { equipamentoId, tipo, problema, descricao, numeros } = req.body;
   const quantidade = numeros.length;
 
-  const criadas = await prisma.$transaction(async (tx) => {
-    const ocorrencias = await Promise.all(
-      numeros.map((numero: string) =>
-        tx.ocorrencia.create({
-          data: { equipamentoId, tipo, problema, descricao, numero },
-          include: ocorrenciaInclude,
-        })
-      )
-    );
+  try {
+    const criadas = await prisma.$transaction(async (tx) => {
+      if (tipo === 'MANUTENCAO' || tipo === 'QUEBRADO') {
+        await decrementarComSeguranca(tx, new Map([[equipamentoId, quantidade]]));
+      }
 
-    if (tipo === 'MANUTENCAO' || tipo === 'QUEBRADO') {
-      await tx.equipamento.update({
-        where: { id: equipamentoId },
-        data: {
-          quantidadeDisponivel: { decrement: quantidade },
-          ...(tipo === 'QUEBRADO' ? { quantidadeQuebrada: { increment: quantidade } } : {}),
-        },
-      });
+      const ocorrencias = await Promise.all(
+        numeros.map((numero: string) =>
+          tx.ocorrencia.create({
+            data: { equipamentoId, tipo, problema, descricao, numero },
+            include: ocorrenciaInclude,
+          })
+        )
+      );
+
+      if (tipo === 'QUEBRADO') {
+        await tx.equipamento.update({
+          where: { id: equipamentoId },
+          data: { quantidadeQuebrada: { increment: quantidade } },
+        });
+      }
+
+      return ocorrencias;
+    });
+
+    res.status(201).json(criadas);
+  } catch (err) {
+    if (err instanceof EstoqueInsuficienteError) {
+      res.status(400).json({ erro: err.message, itens: err.itens });
+      return;
     }
-
-    return ocorrencias;
-  });
-
-  res.status(201).json(criadas);
+    throw err;
+  }
 });
 
 ocorrenciasRouter.patch(

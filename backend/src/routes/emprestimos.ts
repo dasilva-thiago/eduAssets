@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
 import { requireAuth } from '../middleware/auth.js';
-import { agruparQuantidades, validarEstoqueDisponivel, EstoqueInsuficienteError } from '../lib/estoque.js';
+import { agruparQuantidades, validarEstoqueDisponivel, decrementarComSeguranca, EstoqueInsuficienteError } from '../lib/estoque.js';
 import { validateBody, requireIntParam } from '../lib/validate.js';
 import { emprestimoCreateSchema, emprestimoUpdateItensSchema } from '../schemas/index.js';
 
 export const emprestimosRouter = Router();
 
+class EmprestimoNaoEncontradoError extends Error {}
+class EmprestimoNaoEditavelError extends Error {}
 class EmprestimoJaDevolvidoError extends Error {}
 
 emprestimosRouter.get('/', async (req, res) => {
@@ -44,12 +46,7 @@ emprestimosRouter.post('/', requireAuth, validateBody(emprestimoCreateSchema), a
         include: { itens: true },
       });
 
-      for (const item of itens) {
-        await tx.equipamento.update({
-          where: { id: item.equipamentoId },
-          data: { quantidadeDisponivel: { decrement: item.quantidade } },
-        });
-      }
+      await decrementarComSeguranca(tx, quantidadesSolicitadas);
 
       return emprestimo;
     });
@@ -75,6 +72,10 @@ emprestimosRouter.patch(
 
     try {
       const atualizado = await prisma.$transaction(async (tx) => {
+        const emprestimoAtual = await tx.emprestimo.findUnique({ where: { id } });
+        if (!emprestimoAtual) throw new EmprestimoNaoEncontradoError();
+        if (emprestimoAtual.status !== 'ABERTO') throw new EmprestimoNaoEditavelError();
+
         const itensAntigos = await tx.itemEmprestimo.findMany({ where: { emprestimoId: id } });
 
         const quantidadesDevolvidas = agruparQuantidades(
@@ -101,12 +102,7 @@ emprestimosRouter.patch(
           })),
         });
 
-        for (const item of itens) {
-          await tx.equipamento.update({
-            where: { id: item.equipamentoId },
-            data: { quantidadeDisponivel: { decrement: item.quantidade } },
-          });
-        }
+        await decrementarComSeguranca(tx, quantidadesSolicitadas);
 
         return tx.emprestimo.findUnique({
           where: { id },
@@ -120,6 +116,14 @@ emprestimosRouter.patch(
         res.status(400).json({ erro: err.message, itens: err.itens });
         return;
       }
+      if (err instanceof EmprestimoNaoEncontradoError) {
+        res.status(404).json({ erro: 'Empréstimo não encontrado.' });
+        return;
+      }
+      if (err instanceof EmprestimoNaoEditavelError) {
+        res.status(409).json({ erro: 'Este empréstimo já foi devolvido e não pode mais ser editado.' });
+        return;
+      }
       throw err;
     }
   }
@@ -130,14 +134,15 @@ emprestimosRouter.patch('/:id/devolver', requireAuth, requireIntParam('id'), asy
 
   try {
     const devolvido = await prisma.$transaction(async (tx) => {
+      const emprestimoAtual = await tx.emprestimo.findUnique({ where: { id } });
+      if (!emprestimoAtual) throw new EmprestimoNaoEncontradoError();
+
       const resultado = await tx.emprestimo.updateMany({
         where: { id, status: 'ABERTO' },
         data: { status: 'DEVOLVIDO', dataDevolucao: new Date() },
       });
 
-      if (resultado.count === 0) {
-        throw new EmprestimoJaDevolvidoError();
-      }
+      if (resultado.count === 0) throw new EmprestimoJaDevolvidoError();
 
       const emprestimo = await tx.emprestimo.findUniqueOrThrow({
         where: { id },
@@ -156,6 +161,10 @@ emprestimosRouter.patch('/:id/devolver', requireAuth, requireIntParam('id'), asy
 
     res.json(devolvido);
   } catch (err) {
+    if (err instanceof EmprestimoNaoEncontradoError) {
+      res.status(404).json({ erro: 'Empréstimo não encontrado.' });
+      return;
+    }
     if (err instanceof EmprestimoJaDevolvidoError) {
       res.status(409).json({ erro: 'Este empréstimo já foi devolvido.' });
       return;

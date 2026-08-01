@@ -34,6 +34,21 @@ equipamentosRouter.patch(
     const id = Number(req.params.id);
     const { quantidadeTotal, quantidadeDisponivel, quantidadeQuebrada } = req.body;
 
+    const atual = await prisma.equipamento.findUnique({ where: { id } });
+    if (!atual) {
+      res.status(404).json({ erro: 'Equipamento não encontrado.' });
+      return;
+    }
+
+    const totalFinal = quantidadeTotal ?? atual.quantidadeTotal;
+    const disponivelFinal = quantidadeDisponivel ?? atual.quantidadeDisponivel;
+    const quebradaFinal = quantidadeQuebrada ?? atual.quantidadeQuebrada;
+
+    if (disponivelFinal + quebradaFinal > totalFinal) {
+      res.status(400).json({ erro: 'A soma de Disponível e Quebrado não pode ultrapassar o Total.' });
+      return;
+    }
+
     const atualizado = await prisma.equipamento.update({
       where: { id },
       data: { quantidadeTotal, quantidadeDisponivel, quantidadeQuebrada },
