@@ -1,7 +1,7 @@
 # eduAssets
 
 <div align="center">
-  <img src="frontend/assets/img/eduAssets_banner.png" alt="EduAssets banner" width="100%">
+  <img src="frontend/public/assets/img/eduAssets_banner.png" alt="EduAssets banner" width="100%">
 </div>
 
 > **Status: Beta (v0.9.2).** Core functionality — including authentication, Guest Mode, and Dark Mode — is implemented end-to-end across frontend and backend. The project is in final polish before its first public deployment. Minor adjustments and hardening are still expected before a stable 1.0 release.
