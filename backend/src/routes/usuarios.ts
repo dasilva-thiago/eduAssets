@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { prisma } from '../prisma.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAdmin } from '../middleware/auth.js';
 import { validateBody } from '../lib/validate.js';
 import { usuarioCreateSchema } from '../schemas/index.js';
 
 export const usuariosRouter = Router();
-usuariosRouter.use(requireAuth);
+usuariosRouter.use(requireAdmin);
 
 usuariosRouter.get('/', async (req, res) => {
   const usuarios = await prisma.usuario.findMany({

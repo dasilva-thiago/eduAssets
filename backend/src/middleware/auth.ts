@@ -10,6 +10,7 @@ declare global {
   }
 }
 
+
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
 
@@ -39,10 +40,6 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-/**
- * Composição sobre requireAuth — restringe a rota a usuários ADMINISTRADOR.
- * Reaproveita toda a lógica de token/inatividade já existente em requireAuth.
- */
 export function requireAdmin(req: Request, res: Response, next: NextFunction) {
   requireAuth(req, res, () => {
     if (req.user?.nivelAcesso !== 'ADMINISTRADOR') {

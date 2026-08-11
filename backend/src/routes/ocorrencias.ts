@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
-import { requireAdmin, requireAuth } from '../middleware/auth.js';
+import { requireAuth, requireAdmin } from '../middleware/auth.js';
 import { validateBody, requireIntParam } from '../lib/validate.js';
 import { ocorrenciaCreateSchema, ocorrenciaUpdateSchema, ocorrenciaResolverSchema } from '../schemas/index.js';
 import { decrementarComSeguranca, EstoqueInsuficienteError } from '../lib/estoque.js';

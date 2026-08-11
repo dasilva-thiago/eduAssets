@@ -100,7 +100,7 @@ async function main() {
 
   await prisma.usuario.upsert({
     where: { login: 'admin@eduassets.com' },
-    update: {passwordHash: senhaHash},
+    update: { passwordHash: senhaHash },
     create: {
       nome: 'Thiago da Silva',
       login: 'admin@eduassets.com',
@@ -108,6 +108,23 @@ async function main() {
       nivelAcesso: 'ADMINISTRADOR',
     },
   });
+  const senhaEditorInicial = process.env.SEED_EDITOR_PASSWORD;
+  if (senhaEditorInicial) {
+    const senhaEditorHash = await bcrypt.hash(senhaEditorInicial, 10);
+
+    await prisma.usuario.upsert({
+      where: { login: 'editor@eduassets.com' },
+      update: { passwordHash: senhaEditorHash },
+      create: {
+        nome: 'Editor de Teste',
+        login: 'editor@eduassets.com',
+        passwordHash: senhaEditorHash,
+        nivelAcesso: 'EDITOR',
+      },
+    });
+  } else {
+    console.log('SEED_EDITOR_PASSWORD não definida — usuário EDITOR de teste não criado.');
+  }
 
   console.log('Seed concluído com sucesso.');
 }
