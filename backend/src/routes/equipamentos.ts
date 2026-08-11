@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAdmin } from '../middleware/auth.js';
 import { validateBody, requireIntParam } from '../lib/validate.js';
 import { equipamentoCreateSchema, equipamentoUpdateSchema } from '../schemas/index.js';
 
@@ -14,7 +14,7 @@ equipamentosRouter.get('/', async (req, res) => {
   res.json(equipamentos);
 });
 
-equipamentosRouter.post('/', requireAuth, validateBody(equipamentoCreateSchema), async (req, res) => {
+equipamentosRouter.post('/', requireAdmin, validateBody(equipamentoCreateSchema), async (req, res) => {
   const { categoriaId, modelo, quantidadeTotal } = req.body;
 
   const criado = await prisma.equipamento.create({
@@ -27,7 +27,7 @@ equipamentosRouter.post('/', requireAuth, validateBody(equipamentoCreateSchema),
 
 equipamentosRouter.patch(
   '/:id',
-  requireAuth,
+  requireAdmin,
   requireIntParam('id'),
   validateBody(equipamentoUpdateSchema),
   async (req, res) => {

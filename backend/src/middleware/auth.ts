@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import { verifyToken, AppJwtPayload } from '../lib/jwt.js';
-import { JwtPayload } from 'jsonwebtoken';
+import { registrarAtividadeAdmin, sessaoAdminExpirada, limparAtividadeAdmin } from '../lib/adminActivity.js';
 
 declare global {
   namespace Express {
@@ -10,13 +10,6 @@ declare global {
   }
 }
 
-/**
- * Middleware para exigir autenticação.
- * Modelo atual do projeto é binário (Guest / Admin), conforme GuestMode.md.
- * Qualquer Usuario autenticado é tratado como Admin. nivelAcesso já fica
- * disponível em req.user para permissões mais granulares no futuro
- * (ex: EDITOR com acesso parcial).
- */
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
 
@@ -25,10 +18,37 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
     return;
   }
 
+  let payload: AppJwtPayload;
   try {
-    req.user = verifyToken(header.slice(7));
-    next();
+    payload = verifyToken(header.slice(7));
   } catch {
     res.status(401).json({ erro: 'Token inválido ou expirado.' });
+    return;
   }
+
+  if (payload.nivelAcesso === 'ADMINISTRADOR') {
+    if (sessaoAdminExpirada(payload.sub)) {
+      limparAtividadeAdmin(payload.sub);
+      res.status(401).json({ erro: 'Sessão expirada por inatividade. Faça login novamente.', sessaoExpirada: true });
+      return;
+    }
+    registrarAtividadeAdmin(payload.sub);
+  }
+
+  req.user = payload;
+  next();
+}
+
+/**
+ * Composição sobre requireAuth — restringe a rota a usuários ADMINISTRADOR.
+ * Reaproveita toda a lógica de token/inatividade já existente em requireAuth.
+ */
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  requireAuth(req, res, () => {
+    if (req.user?.nivelAcesso !== 'ADMINISTRADOR') {
+      res.status(403).json({ erro: 'Acesso restrito a administradores.' });
+      return;
+    }
+    next();
+  });
 }

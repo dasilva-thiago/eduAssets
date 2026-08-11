@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../prisma.js';
-import { requireAuth } from '../middleware/auth.js';
+import { requireAdmin, requireAuth } from '../middleware/auth.js';
 import { validateBody, requireIntParam } from '../lib/validate.js';
 import { ocorrenciaCreateSchema, ocorrenciaUpdateSchema, ocorrenciaResolverSchema } from '../schemas/index.js';
 import { decrementarComSeguranca, EstoqueInsuficienteError } from '../lib/estoque.js';
@@ -110,7 +110,7 @@ ocorrenciasRouter.patch(
   }
 );
 
-ocorrenciasRouter.delete('/:id', requireAuth, requireIntParam('id'), async (req, res) => {
+ocorrenciasRouter.delete('/:id', requireAdmin, requireIntParam('id'), async (req, res) => {
   const id = Number(req.params.id);
 
   await prisma.$transaction(async (tx) => {
