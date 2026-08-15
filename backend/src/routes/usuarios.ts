@@ -12,9 +12,12 @@ usuariosRouter.use(requireAdmin);
 usuariosRouter.get('/', async (req, res) => {
   const usuarios = await prisma.usuario.findMany({
     orderBy: { nome: 'asc' },
-    select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true },
+    select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true, rfidTokenHash: true },
   });
-  res.json(usuarios);
+  res.json(usuarios.map(({ rfidTokenHash, ...usuario }) => ({
+    ...usuario,
+    possuiCartaoRfid: rfidTokenHash !== null,
+  })));
 });
 
 usuariosRouter.post('/', validateBody(usuarioCreateSchema), async (req, res) => {
