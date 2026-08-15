@@ -41,6 +41,7 @@ model Usuario {
   login        String      @unique
   passwordHash String
   nivelAcesso  NivelAcesso
+  rfidTokenHash String?    @unique
   createdAt    DateTime    @default(now())
 }
 

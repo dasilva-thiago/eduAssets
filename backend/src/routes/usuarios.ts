@@ -2,8 +2,9 @@ import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { prisma } from '../prisma.js';
 import { requireAdmin } from '../middleware/auth.js';
-import { validateBody } from '../lib/validate.js';
+import { validateBody, requireIntParam } from '../lib/validate.js';
 import { usuarioCreateSchema } from '../schemas/index.js';
+import { gerarRfidToken, hashRfidToken } from '../lib/rfidToken.js';
 
 export const usuariosRouter = Router();
 usuariosRouter.use(requireAdmin);
@@ -26,4 +27,23 @@ usuariosRouter.post('/', validateBody(usuarioCreateSchema), async (req, res) => 
   });
 
   res.status(201).json(criado);
+});
+
+usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) => {
+  const id = Number(req.params.id);
+  const tokenHex = gerarRfidToken();
+
+  const usuario = await prisma.usuario.update({
+    where: { id },
+    data: { rfidTokenHash: hashRfidToken(tokenHex) },
+    select: { id: true, nome: true }
+  });
+
+  res.status(201).json({ usuario, token: tokenHex });
+});
+
+usuariosRouter.delete('/:id/rfid-token', requireIntParam('id'), async (req, res) => {
+  const id = Number(req.params.id);
+  await prisma.usuario.update({ where: { id }, data: { rfidTokenHash: null } });
+  res.status(204).send();
 });

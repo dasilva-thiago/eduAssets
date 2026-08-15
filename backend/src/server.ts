@@ -11,6 +11,8 @@ import { ocorrenciasRouter } from './routes/ocorrencias.js';
 import { notFoundHandler } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { securityHeaders, globalRateLimiter } from './middleware/security.js';
+import { createServer } from 'http';
+import { initRfidBridge } from './lib/rfidBridge.js';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -49,4 +51,7 @@ app.use('/ocorrencias', ocorrenciasRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));
+const server = createServer(app);
+initRfidBridge(server);
+
+server.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));

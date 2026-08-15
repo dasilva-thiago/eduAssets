@@ -1,0 +1,15 @@
+[Unit]
+Description=eduAssets RFID Admin Login Bridge
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/eduassets-rfid
+EnvironmentFile=/etc/eduassets/rfid-bridge.env
+ExecStart=/usr/bin/python3 /opt/eduassets-rfid/rfid_admin_bridge.py
+Restart=on-failure
+RestartSec=3
+User=pi
+
+[Install]
+WantedBy=multi-user.target
