@@ -2,12 +2,10 @@
 import os
 import time
 import requests
-import Rfid as MFRC522
 import sound
+from rfid_reader import get_reader
 
 BLOCK = 8
-DEFAULT_KEY = [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF]
-
 BACKEND_URL = os.environ.get("EDUASSETS_BACKEND_URL", "http://localhost:3000")
 BRIDGE_SECRET = os.environ.get("RFID_BRIDGE_SECRET")
 
@@ -38,54 +36,21 @@ def enviar_scan(token_hex: str) -> None:
 
 
 def main():
-    print("Serviço RFID eduAssets iniciado.")
-    reader = MFRC522.Rfid()
+    backend_nome = os.environ.get("RFID_BACKEND", "spi")
+    print(f"Serviço RFID eduAssets iniciado (backend: {backend_nome}).")
 
-    try:
+    with get_reader(BLOCK) as reader:
         while True:
-            status, _ = reader.MFRC522_Request(reader.PICC_REQIDL)
+            data = reader.aguardar_e_ler_bloco(BLOCK)
+            sound.tocar_deteccao()
 
-            if status == reader.MI_OK:
-                status, uid = reader.MFRC522_Anticoll()
-                if status != reader.MI_OK:
-                    time.sleep(0.1)
-                    continue
+            if data is not None:
+                enviar_scan(data.hex())
+            else:
+                print("Falha ao autenticar/ler o cartão.")
+                sound.tocar_erro()
 
-                # Cartão fisicamente detectado — feedback imediato, antes de
-                # qualquer autenticação ou chamada de rede.
-                sound.tocar_deteccao()
-
-                if reader.MFRC522_SelectTag(uid) != reader.MI_OK:
-                    sound.tocar_erro()
-                    time.sleep(0.5)
-                    continue
-
-                status = reader.MFRC522_Auth(reader.PICC_AUTHENT1A, BLOCK, DEFAULT_KEY, uid)
-                if status != reader.MI_OK:
-                    print("Falha na autenticação do cartão.")
-                    sound.tocar_erro()
-                    time.sleep(0.5)
-                    continue
-
-                status, data = reader.MFRC522_Read(BLOCK)
-                reader.MFRC522_StopCrypto1()
-                reader.MFRC522_Halt()
-
-                if status == reader.MI_OK:
-                    token_hex = bytes(data).hex()
-                    enviar_scan(token_hex)
-                else:
-                    print("Falha ao ler o bloco do cartão.")
-                    sound.tocar_erro()
-
-                time.sleep(1.5)  # debounce físico — evita re-leitura enquanto o cartão está encostado
-
-            time.sleep(0.1)
-
-    except KeyboardInterrupt:
-        print("Encerrando serviço RFID.")
-    finally:
-        reader.close()
+            time.sleep(1.5)  # debounce físico
 
 
 if __name__ == "__main__":
