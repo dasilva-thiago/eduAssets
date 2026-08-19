@@ -2,7 +2,7 @@
 
 import spidev
 import time
-
+import RPi.GPIO as GPIO
 
 class Rfid:
 
@@ -64,7 +64,15 @@ class Rfid:
 
     MAX_LEN = 16
 
+    # Pino físico 22 = GPIO25, usado como RST do MFRC522 (numeração BOARD)
+    RST_PIN = 22
+
     def __init__(self, bus=0, device=0, speed=1_000_000):
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(self.RST_PIN, GPIO.OUT)
+        GPIO.output(self.RST_PIN, GPIO.HIGH)  # tira o chip do reset (ativo em LOW)
+        time.sleep(0.05)  # tempo mínimo de estabilização após sair do reset
+
         try:
             self.spi = spidev.SpiDev()
             self.spi.open(bus, device)
@@ -563,3 +571,6 @@ class Rfid:
         if self.spi:
             self.spi.close()
             self.spi = None
+
+        GPIO.output(self.RST_PIN, GPIO.LOW)
+        GPIO.cleanup(self.RST_PIN)
