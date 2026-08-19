@@ -14,10 +14,9 @@ import os
 from abc import ABC, abstractmethod
 from typing import Optional
 
-
 class RfidReaderBase(ABC):
     @abstractmethod
-    def aguardar_e_ler_bloco(self, bloco: int) -> Optional[bytes]:
+    def aguardar_e_ler_bloco(self, bloco: int, timeout_s: Optional[float] = None) -> Optional[bytes]:
         raise NotImplementedError
 
     @abstractmethod

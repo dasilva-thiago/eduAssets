@@ -5,15 +5,17 @@ from typing import Optional
 import serial
 from rfid_reader import RfidReaderBase
 
-
 class SerialRfidReader(RfidReaderBase):
     def __init__(self, porta: str, baudrate: int = 115200):
         self._ser = serial.Serial(porta, baudrate, timeout=1)
-        time.sleep(2)  # Arduino reinicia ao abrir a porta serial — aguarda o boot
+        time.sleep(2)
 
-    def aguardar_e_ler_bloco(self, bloco: int) -> Optional[bytes]:
-        # `bloco` é definido no firmware (BLOCK=8), ignorado aqui por simplicidade.
+    def aguardar_e_ler_bloco(self, bloco: int, timeout_s: Optional[float] = None) -> Optional[bytes]:
+        inicio = time.time()
         while True:
+            if timeout_s and (time.time() - inicio) > timeout_s:
+                return None
+                
             linha = self._ser.readline().decode("utf-8", errors="ignore").strip()
             if not linha:
                 continue
