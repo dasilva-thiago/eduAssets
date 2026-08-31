@@ -27,16 +27,25 @@ usuariosRouter.get('/', async (req, res) => {
   })));
 });
 
-usuariosRouter.post('/', validateBody(usuarioCreateSchema), async (req, res) => {
-  const { nome, login, senha, nivelAcesso } = req.body;
-  const passwordHash = await bcrypt.hash(senha, 12);
+usuariosRouter.get('/', async (req, res) => {
+  try {
+    const usuarios = await prisma.usuario.findMany({
+      orderBy: { nome: 'asc' },
+      select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true, rfidTokenHash: true },
+    });
 
-  const criado = await prisma.usuario.create({
-    data: { nome, login, passwordHash, nivelAcesso },
-    select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true },
-  });
-
-  res.status(201).json(criado);
+    res.json(usuarios.map((u: any) => ({
+      id: u.id,
+      nome: u.nome,
+      login: u.login,
+      nivelAcesso: u.nivelAcesso,
+      createdAt: u.createdAt,
+      possuiCartaoRfid: u.rfidTokenHash !== null,
+    })));
+  } catch (error) {
+    console.error('Erro ao buscar usuários (Prisma):', error);
+    res.status(500).json({ erro: 'Falha ao consultar o banco de dados.' });
+  }
 });
 
 usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) => {
