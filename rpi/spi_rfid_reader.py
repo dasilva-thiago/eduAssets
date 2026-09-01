@@ -50,7 +50,7 @@ class SpiRfidReader(RfidReaderBase):
         if len(dados) != 16:
             raise ValueError("dados deve ter exatamente 16 bytes")
 
-        uid = self._aguardar_cartao()
+        uid = self._aguardar_cartao(timeout_s)
 
         if self._reader.MFRC522_SelectTag(uid) != self._reader.MI_OK:
             return False
