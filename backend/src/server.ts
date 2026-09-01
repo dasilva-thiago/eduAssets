@@ -17,8 +17,6 @@ import { initRfidBridge } from './lib/rfidBridge.js';
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
-// necessário atrás de proxy reverso (Render/Vercel) para o rate limiter
-// identificar o IP real do cliente, e não o IP interno do proxy
 app.set('trust proxy', 1);
 
 app.use(securityHeaders);
@@ -30,8 +28,7 @@ const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
 
 app.use(
   cors({
-    // TODO: configure CORS properly for production
-    origin: allowedOrigins.length > 0 ? allowedOrigins : true,
+    origin: allowedOrigins.length > 0 ? allowedOrigins : process.env.NODE_ENV !== 'production',
   })
 );
 

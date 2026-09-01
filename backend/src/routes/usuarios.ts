@@ -12,22 +12,6 @@ usuariosRouter.use(requireAdmin);
 const RFID_BRIDGE_TIMEOUT_MS = 5000;
 
 usuariosRouter.get('/', async (req, res) => {
-  const usuarios = await prisma.usuario.findMany({
-    orderBy: { nome: 'asc' },
-    select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true, rfidTokenHash: true },
-  });
-
-  res.json(usuarios.map((u: any) => ({
-    id: u.id,
-    nome: u.nome,
-    login: u.login,
-    nivelAcesso: u.nivelAcesso,
-    createdAt: u.createdAt,
-    possuiCartaoRfid: u.rfidTokenHash !== null,
-  })));
-});
-
-usuariosRouter.get('/', async (req, res) => {
   try {
     const usuarios = await prisma.usuario.findMany({
       orderBy: { nome: 'asc' },
@@ -52,13 +36,6 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) =
   const id = Number(req.params.id);
   const tokenHex = gerarRfidToken();
 
-  // Salva no banco de dados primeiro
-  await prisma.usuario.update({
-    where: { id },
-    data: { rfidTokenHash: hashRfidToken(tokenHex) },
-    select: { id: true, nome: true }
-  });
-
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), RFID_BRIDGE_TIMEOUT_MS);
 
@@ -73,6 +50,13 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) =
     if (!bridgeResponse.ok) {
       throw new Error(`Bridge HTTP status: ${bridgeResponse.status}`);
     }
+
+    // Persiste no banco de dados apenas após a confirmação do bridge
+    await prisma.usuario.update({
+      where: { id },
+      data: { rfidTokenHash: hashRfidToken(tokenHex) },
+      select: { id: true, nome: true }
+    });
 
     res.status(201).json({ message: 'Modo de gravação ativo com sucesso.', token: tokenHex });
   } catch (hardwareError) {
