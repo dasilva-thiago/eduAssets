@@ -26,9 +26,17 @@ const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
   .map((o) => o.trim())
   .filter(Boolean);
 
+const isProduction = process.env.NODE_ENV === 'production';
+
+if (isProduction && allowedOrigins.length === 0) {
+  throw new Error(
+    'CORS_ORIGIN não definida em produção. Configure a variável de ambiente com as origens permitidas (ex: https://eduassets.vercel.app) antes de iniciar o servidor.'
+  );
+}
+
 app.use(
   cors({
-    origin: allowedOrigins.length > 0 ? allowedOrigins : process.env.NODE_ENV !== 'production',
+    origin: allowedOrigins.length > 0 ? allowedOrigins : !isProduction,
   })
 );
 

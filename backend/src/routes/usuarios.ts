@@ -10,6 +10,12 @@ export const usuariosRouter = Router();
 usuariosRouter.use(requireAdmin);
 
 const RFID_BRIDGE_TIMEOUT_MS = 5000;
+// Só tenta contatar o bridge físico se a variável de ambiente indicar
+// explicitamente que ele está disponível nesta implantação.
+
+// Only attempt to contact the physical bridge if the environment variable explicitly indicates
+// that it is available in this deployment.
+const RFID_BRIDGE_ENABLED = process.env.RFID_BRIDGE_ENABLED === 'true';
 
 usuariosRouter.get('/', async (req, res) => {
   try {
@@ -33,6 +39,13 @@ usuariosRouter.get('/', async (req, res) => {
 });
 
 usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) => {
+  if (!RFID_BRIDGE_ENABLED) {
+    res.status(503).json({
+      erro: 'Login por cartão RFID não está disponível nesta implantação (nenhum leitor físico configurado).'
+    });
+    return;
+  }
+
   const id = Number(req.params.id);
   const tokenHex = gerarRfidToken();
 
