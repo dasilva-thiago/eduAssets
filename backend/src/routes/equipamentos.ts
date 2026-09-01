@@ -36,7 +36,7 @@ equipamentosRouter.patch(
 
     const atual = await prisma.equipamento.findUnique({ where: { id } });
     if (!atual) {
-      res.status(404).json({ erro: 'Equipamento não encontrado.' });
+      res.status(404).json({ erro: 'backend.equipamentos.nao_encontrado' });
       return;
     }
 
@@ -45,7 +45,7 @@ equipamentosRouter.patch(
     const quebradaFinal = quantidadeQuebrada ?? atual.quantidadeQuebrada;
 
     if (disponivelFinal + quebradaFinal > totalFinal) {
-      res.status(400).json({ erro: 'A soma de Disponível e Quebrado não pode ultrapassar o Total.' });
+      res.status(400).json({ erro: 'backend.equipamentos.soma_invalida' });
       return;
     }
 

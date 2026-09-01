@@ -7,7 +7,7 @@ export function validateBody(schema: ZodSchema) {
 
     if (!result.success) {
       res.status(400).json({
-        erro: 'Dados inválidos.',
+        erro: 'backend.validacao.dados_invalidos',
         detalhes: result.error.issues.map((issue) => ({
           campo: issue.path.join('.'),
           mensagem: issue.message,
@@ -26,7 +26,7 @@ export function requireIntParam(paramName: string) {
     const value = Number(req.params[paramName]);
 
     if (!Number.isInteger(value) || value <= 0) {
-      res.status(400).json({ erro: `Parâmetro '${paramName}' inválido.` });
+      res.status(400).json({ erro: 'backend.validacao.parametro_invalido', campo: paramName });
       return;
     }
 

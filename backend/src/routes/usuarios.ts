@@ -40,9 +40,7 @@ usuariosRouter.get('/', async (req, res) => {
 
 usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) => {
   if (!RFID_BRIDGE_ENABLED) {
-    res.status(503).json({
-      erro: 'Login por cartão RFID não está disponível nesta implantação (nenhum leitor físico configurado).'
-    });
+    res.status(503).json({ erro: 'backend.usuarios.rfid_indisponivel' });
     return;
   }
 
@@ -64,7 +62,6 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) =
       throw new Error(`Bridge HTTP status: ${bridgeResponse.status}`);
     }
 
-    // Persiste no banco de dados apenas após a confirmação do bridge
     await prisma.usuario.update({
       where: { id },
       data: { rfidTokenHash: hashRfidToken(tokenHex) },
@@ -78,9 +75,7 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) =
     const expirouPorTimeout = hardwareError instanceof Error && hardwareError.name === 'AbortError';
 
     res.status(502).json({
-      error: expirouPorTimeout
-        ? 'Hardware RFID não respondeu a tempo. Verifique se o serviço eduassets-rfid está rodando.'
-        : 'Hardware RFID indisponível. Verifique se o serviço eduassets-rfid está rodando.'
+      erro: expirouPorTimeout ? 'backend.usuarios.rfid_timeout' : 'backend.usuarios.rfid_hardware_indisponivel'
     });
   } finally {
     clearTimeout(timeoutId);

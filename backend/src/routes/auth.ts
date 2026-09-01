@@ -19,13 +19,13 @@ authRouter.post('/login', loginRateLimiter, validateBody(loginSchema), async (re
 
   const usuario = await prisma.usuario.findUnique({ where: { login } });
   if (!usuario) {
-    res.status(401).json({ erro: 'Credenciais inválidas.' });
+    res.status(401).json({ erro: 'backend.auth.credenciais_invalidas' });
     return;
   }
 
   const senhaValida = await bcrypt.compare(password, usuario.passwordHash);
   if (!senhaValida) {
-    res.status(401).json({ erro: 'Credenciais inválidas.' });
+    res.status(401).json({ erro: 'backend.auth.credenciais_invalidas' });
     return;
   }
 
@@ -46,7 +46,7 @@ authRouter.get('/me', requireAuth, async (req, res) => {
   const usuario = await prisma.usuario.findUnique({ where: { id: req.user!.sub } });
 
   if (!usuario) {
-    res.status(401).json({ erro: 'Usuário não existe mais.' });
+    res.status(401).json({ erro: 'backend.auth.usuario_nao_existe' });
     return;
   }
 
@@ -63,13 +63,13 @@ authRouter.patch('/senha', requireAuth, validateBody(alterarSenhaSchema), async 
 
   const usuario = await prisma.usuario.findUnique({ where: { id: req.user!.sub } });
   if (!usuario) {
-    res.status(401).json({ erro: 'Usuário não existe mais.' });
+    res.status(401).json({ erro: 'backend.auth.usuario_nao_existe' });
     return;
   }
 
   const senhaValida = await bcrypt.compare(senhaAtual, usuario.passwordHash);
   if (!senhaValida) {
-    res.status(401).json({ erro: 'Senha atual incorreta.' });
+    res.status(401).json({ erro: 'backend.auth.senha_atual_incorreta' });
     return;
   }
 
@@ -85,14 +85,13 @@ function ehLoopback(remoteAddress: string | undefined): boolean {
 }
 
 authRouter.post('/rfid', loginRateLimiter, validateBody(rfidScanSchema), async (req, res) => {
-  // Só o serviço rodando no próprio Pi pode chamar esta rota.
   if (!ehLoopback(req.socket.remoteAddress)) {
-    res.status(403).json({ erro: 'Origem não permitida.' });
+    res.status(403).json({ erro: 'backend.auth.origem_nao_permitida' });
     return;
   }
 
   if (!RFID_BRIDGE_SECRET || req.headers['x-rfid-bridge-secret'] !== RFID_BRIDGE_SECRET) {
-    res.status(401).json({ erro: 'Não autorizado.' });
+    res.status(401).json({ erro: 'backend.auth.nao_autorizado' });
     return;
   }
 
@@ -101,7 +100,7 @@ authRouter.post('/rfid', loginRateLimiter, validateBody(rfidScanSchema), async (
 
   const usuario = await prisma.usuario.findUnique({ where: { rfidTokenHash: hash } });
   if (!usuario) {
-    res.status(401).json({ erro: 'Cartão não reconhecido.' });
+    res.status(401).json({ erro: 'backend.auth.cartao_nao_reconhecido' });
     return;
   }
 

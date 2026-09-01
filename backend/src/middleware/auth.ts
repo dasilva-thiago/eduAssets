@@ -15,7 +15,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   const header = req.headers.authorization;
 
   if (!header?.startsWith('Bearer ')) {
-    res.status(401).json({ erro: 'Autenticação necessária.' });
+    res.status(401).json({ erro: 'backend.auth.autenticacao_necessaria' });
     return;
   }
 
@@ -23,14 +23,14 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
   try {
     payload = verifyToken(header.slice(7));
   } catch {
-    res.status(401).json({ erro: 'Token inválido ou expirado.' });
+    res.status(401).json({ erro: 'backend.auth.token_invalido' });
     return;
   }
 
   if (payload.nivelAcesso === 'ADMINISTRADOR') {
     if (sessaoAdminExpirada(payload.sub)) {
       limparAtividadeAdmin(payload.sub);
-      res.status(401).json({ erro: 'Sessão expirada por inatividade. Faça login novamente.', sessaoExpirada: true });
+      res.status(401).json({ erro: 'backend.auth.sessao_expirada', sessaoExpirada: true });
       return;
     }
     registrarAtividadeAdmin(payload.sub);
@@ -43,7 +43,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 export function requireAdmin(req: Request, res: Response, next: NextFunction) {
   requireAuth(req, res, () => {
     if (req.user?.nivelAcesso !== 'ADMINISTRADOR') {
-      res.status(403).json({ erro: 'Acesso restrito a administradores.' });
+      res.status(403).json({ erro: 'backend.auth.acesso_restrito_admin' });
       return;
     }
     next();

@@ -8,7 +8,7 @@ export const globalRateLimiter = rateLimit({
   limit: 300,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { erro: 'Muitas requisições. Tente novamente em alguns minutos.' },
+  message: { erro: 'backend.seguranca.muitas_requisicoes' },
 });
 
 export const loginRateLimiter = rateLimit({
@@ -16,5 +16,5 @@ export const loginRateLimiter = rateLimit({
   limit: 10,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { erro: 'Muitas tentativas de login. Tente novamente em alguns minutos.' },
+  message: { erro: 'backend.seguranca.muitas_tentativas_login' },
 });

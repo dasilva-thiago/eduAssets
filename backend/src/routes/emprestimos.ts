@@ -7,9 +7,9 @@ import { emprestimoCreateSchema, emprestimoUpdateItensSchema } from '../schemas/
 
 export const emprestimosRouter = Router();
 
-class EmprestimoNaoEncontradoError extends Error {}
-class EmprestimoNaoEditavelError extends Error {}
-class EmprestimoJaDevolvidoError extends Error {}
+class EmprestimoNaoEncontradoError extends Error { }
+class EmprestimoNaoEditavelError extends Error { }
+class EmprestimoJaDevolvidoError extends Error { }
 
 emprestimosRouter.get('/', async (req, res) => {
   const emprestimos = await prisma.emprestimo.findMany({
@@ -117,11 +117,11 @@ emprestimosRouter.patch(
         return;
       }
       if (err instanceof EmprestimoNaoEncontradoError) {
-        res.status(404).json({ erro: 'Empréstimo não encontrado.' });
+        res.status(404).json({ erro: 'backend.emprestimos.nao_encontrado' });
         return;
       }
       if (err instanceof EmprestimoNaoEditavelError) {
-        res.status(409).json({ erro: 'Este empréstimo já foi devolvido e não pode mais ser editado.' });
+        res.status(409).json({ erro: 'backend.emprestimos.nao_editavel' });
         return;
       }
       throw err;
@@ -162,11 +162,11 @@ emprestimosRouter.patch('/:id/devolver', requireAuth, requireIntParam('id'), asy
     res.json(devolvido);
   } catch (err) {
     if (err instanceof EmprestimoNaoEncontradoError) {
-      res.status(404).json({ erro: 'Empréstimo não encontrado.' });
+      res.status(404).json({ erro: 'backend.emprestimos.nao_encontrado' });
       return;
     }
     if (err instanceof EmprestimoJaDevolvidoError) {
-      res.status(409).json({ erro: 'Este empréstimo já foi devolvido.' });
+      res.status(409).json({ erro: 'backend.emprestimos.ja_devolvido' });
       return;
     }
     throw err;
