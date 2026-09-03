@@ -23,7 +23,21 @@ authRouter.post('/login', loginRateLimiter, validateBody(loginSchema), async (re
     return;
   }
 
-  const senhaValida = await bcrypt.compare(password, usuario.passwordHash);
+  if (!usuario.passwordHash || !usuario.passwordHash.startsWith('$2')) {
+    console.error(`Hash de senha inválida para o usuário ${usuario.login}`);
+    res.status(401).json({ erro: 'backend.auth.credenciais_invalidas' });
+    return;
+  }
+
+  let senhaValida = false;
+  try {
+    senhaValida = await bcrypt.compare(password, usuario.passwordHash);
+  } catch (error) {
+    console.error(`Falha ao validar senha do usuário ${usuario.login}:`, error);
+    res.status(401).json({ erro: 'backend.auth.credenciais_invalidas' });
+    return;
+  }
+
   if (!senhaValida) {
     res.status(401).json({ erro: 'backend.auth.credenciais_invalidas' });
     return;
