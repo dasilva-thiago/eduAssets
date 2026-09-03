@@ -5,6 +5,7 @@ import { requireAdmin } from '../middleware/auth.js';
 import { validateBody, requireIntParam } from '../lib/validate.js';
 import { usuarioCreateSchema } from '../schemas/index.js';
 import { gerarRfidToken, hashRfidToken } from '../lib/rfidToken.js';
+import { rfidProvisionRateLimiter } from '../middleware/security.js';
 
 export const usuariosRouter = Router();
 usuariosRouter.use(requireAdmin);
@@ -43,7 +44,7 @@ usuariosRouter.get('/', async (req, res, next) => {
   }
 });
 
-usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) => {
+usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), rfidProvisionRateLimiter, async (req, res) => {
   if (!RFID_BRIDGE_ENABLED) {
     res.status(503).json({ erro: 'backend.usuarios.rfid_indisponivel' });
     return;

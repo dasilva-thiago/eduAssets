@@ -16,6 +16,7 @@ import { initRfidBridge } from './lib/rfidBridge.js';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
+const HOST = process.env.HOST ?? '127.0.0.1';
 
 app.set('trust proxy', 1);
 
@@ -27,16 +28,18 @@ const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
   .filter(Boolean);
 
 const isProduction = process.env.NODE_ENV === 'production';
+const isLoopbackHost = HOST === 'localhost' || HOST === '127.0.0.1' || HOST === '::1';
+const isLocalDevelopment = !isProduction && !process.env.NODE_ENV && isLoopbackHost;
 
-if (isProduction && allowedOrigins.length === 0) {
+if (!isLocalDevelopment && allowedOrigins.length === 0) {
   throw new Error(
-    'CORS_ORIGIN não definida em produção. Configure a variável de ambiente com as origens permitidas (ex: https://eduassets.vercel.app) antes de iniciar o servidor.'
+    'CORS_ORIGIN não definida fora do desenvolvimento local. Configure a variável de ambiente com as origens permitidas (ex: https://eduassets.vercel.app) antes de iniciar o servidor.'
   );
 }
 
 app.use(
   cors({
-    origin: allowedOrigins.length > 0 ? allowedOrigins : !isProduction,
+    origin: allowedOrigins.length > 0 ? allowedOrigins : false,
   })
 );
 
@@ -59,4 +62,4 @@ app.use(errorHandler);
 const server = createServer(app);
 initRfidBridge(server);
 
-server.listen(PORT, () => console.log(`Servidor rodando em http://localhost:${PORT}`));
+server.listen(PORT, HOST, () => console.log(`Servidor rodando em http://${HOST}:${PORT}`));

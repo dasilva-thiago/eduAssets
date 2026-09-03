@@ -1,5 +1,5 @@
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 
 export const securityHeaders = helmet();
 
@@ -25,4 +25,13 @@ export const rfidLoginRateLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { erro: 'backend.seguranca.muitas_tentativas_rfid' },
+});
+
+export const rfidProvisionRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  keyGenerator: (req) => `admin:${req.user?.sub ?? 'unknown'}:ip:${ipKeyGenerator(req.ip ?? '')}`,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { erro: 'backend.seguranca.muitas_provisionamentos_rfid' },
 });
