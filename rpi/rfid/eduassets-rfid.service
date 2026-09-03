@@ -10,6 +10,10 @@ ExecStart=/home/dasilva-thiago/Projetos/eduAssets/rpi/venv/bin/python3 /opt/edua
 Restart=on-failure
 RestartSec=3
 User=pi
+ExecStartPre=/bin/sh -c '[ "$(stat -c %a /etc/eduassets/rfid_bridge.env)" = 600 ]'
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
 
 [Install]
 WantedBy=multi-user.target

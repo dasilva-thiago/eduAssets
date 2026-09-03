@@ -16,8 +16,8 @@ BLOCK = 8
 BACKEND_URL = os.environ.get("EDUASSETS_BACKEND_URL", "http://localhost:3000")
 BRIDGE_SECRET = os.environ.get("RFID_BRIDGE_SECRET")
 
-if not BRIDGE_SECRET:
-    raise SystemExit("RFID_BRIDGE_SECRET não definida no ambiente do serviço.")
+if not BRIDGE_SECRET or len(BRIDGE_SECRET) < 32:
+    raise SystemExit("RFID_BRIDGE_SECRET deve ser um segredo aleatório com pelo menos 32 caracteres.")
 
 provision_queue = queue.Queue()
 

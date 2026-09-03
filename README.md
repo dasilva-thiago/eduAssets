@@ -361,11 +361,15 @@ Only needed if you want physical card login. Run on the same machine as the back
 ```
 2. Set the required environment variables (matching `RFID_BRIDGE_SECRET` on the backend):
 ```
-   RFID_BRIDGE_SECRET=<same secret as the backend>
+   RFID_BRIDGE_SECRET=<unique random secret, at least 32 characters>
    EDUASSETS_BACKEND_URL=http://localhost:3000
    RFID_BACKEND=spi        # or "serial" to relay through an Arduino Nano
    RFID_SERIAL_PORT=/dev/ttyUSB0   # only used when RFID_BACKEND=serial
    RFID_SOUND_DEVICE=<optional ALSA device for audio feedback>
+```
+Generate the secret with `python3 -c "import secrets; print(secrets.token_hex(32))"`. Do not reuse `JWT_SECRET` or commit the bridge environment file. For the systemd installation, create the file with owner-only permissions:
+```bash
+   sudo install -o root -g pi -m 600 rfid_bridge.env /etc/eduassets/rfid_bridge.env
 ```
 3. Run the bridge:
 ```bash
