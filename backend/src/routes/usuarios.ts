@@ -9,7 +9,8 @@ import { gerarRfidToken, hashRfidToken } from '../lib/rfidToken.js';
 export const usuariosRouter = Router();
 usuariosRouter.use(requireAdmin);
 
-const RFID_BRIDGE_TIMEOUT_MS = 5000;
+const RFID_BRIDGE_TIMEOUT_MS = 40000;
+const RFID_BRIDGE_SECRET = process.env.RFID_BRIDGE_SECRET;
 // Só tenta contatar o bridge físico se a variável de ambiente indicar
 // explicitamente que ele está disponível nesta implantação.
 
@@ -17,24 +18,28 @@ const RFID_BRIDGE_TIMEOUT_MS = 5000;
 // that it is available in this deployment.
 const RFID_BRIDGE_ENABLED = process.env.RFID_BRIDGE_ENABLED === 'true';
 
-usuariosRouter.get('/', async (req, res) => {
+if (RFID_BRIDGE_ENABLED && !RFID_BRIDGE_SECRET) {
+  throw new Error('RFID_BRIDGE_SECRET não definida no ambiente do backend com RFID_BRIDGE_ENABLED=true.');
+}
+
+usuariosRouter.get('/', async (req, res, next) => {
   try {
     const usuarios = await prisma.usuario.findMany({
       orderBy: { nome: 'asc' },
       select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true, rfidTokenHash: true },
     });
 
-    res.json(usuarios.map((u: any) => ({
-      id: u.id,
-      nome: u.nome,
-      login: u.login,
-      nivelAcesso: u.nivelAcesso,
-      createdAt: u.createdAt,
-      possuiCartaoRfid: u.rfidTokenHash !== null,
+    res.json(usuarios.map((usuario) => ({
+      id: usuario.id,
+      nome: usuario.nome,
+      login: usuario.login,
+      nivelAcesso: usuario.nivelAcesso,
+      createdAt: usuario.createdAt,
+      possuiCartaoRfid: usuario.rfidTokenHash !== null,
     })));
   } catch (error) {
     console.error('Erro ao buscar usuários (Prisma):', error);
-    res.status(500).json({ erro: 'Falha ao consultar o banco de dados.' });
+    next(error);
   }
 });
 
@@ -53,7 +58,10 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), async (req, res) =
   try {
     const bridgeResponse = await fetch('http://127.0.0.1:3001/provision', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-RFID-Bridge-Secret': RFID_BRIDGE_SECRET ?? ''
+      },
       body: JSON.stringify({ token: tokenHex }),
       signal: controller.signal
     });

@@ -18,3 +18,11 @@ export const loginRateLimiter = rateLimit({
   legacyHeaders: false,
   message: { erro: 'backend.seguranca.muitas_tentativas_login' },
 });
+
+export const rfidLoginRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { erro: 'backend.seguranca.muitas_tentativas_rfid' },
+});

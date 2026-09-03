@@ -5,7 +5,7 @@ import { signToken } from '../lib/jwt.js';
 import { requireAuth } from '../middleware/auth.js';
 import { validateBody } from '../lib/validate.js';
 import { loginSchema, alterarSenhaSchema } from '../schemas/index.js';
-import { loginRateLimiter } from '../middleware/security.js';
+import { loginRateLimiter, rfidLoginRateLimiter } from '../middleware/security.js';
 import { hashRfidToken } from '../lib/rfidToken.js';
 import { publicarLoginRfid } from '../lib/rfidBridge.js';
 import { rfidScanSchema } from '../schemas/index.js';
@@ -84,7 +84,7 @@ function ehLoopback(remoteAddress: string | undefined): boolean {
   return remoteAddress === '127.0.0.1' || remoteAddress === '::1' || remoteAddress === '::ffff:127.0.0.1';
 }
 
-authRouter.post('/rfid', loginRateLimiter, validateBody(rfidScanSchema), async (req, res) => {
+authRouter.post('/rfid', rfidLoginRateLimiter, validateBody(rfidScanSchema), async (req, res) => {
   if (!ehLoopback(req.socket.remoteAddress)) {
     res.status(403).json({ erro: 'backend.auth.origem_nao_permitida' });
     return;

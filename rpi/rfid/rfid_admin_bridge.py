@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import hmac
 import os
 import time
 import requests
@@ -8,6 +9,8 @@ import threading
 import queue
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from rfid_reader import get_reader
+from dataclasses import dataclass
+from typing import Optional
 
 BLOCK = 8
 BACKEND_URL = os.environ.get("EDUASSETS_BACKEND_URL", "http://localhost:3000")
@@ -18,20 +21,48 @@ if not BRIDGE_SECRET:
 
 provision_queue = queue.Queue()
 
+
+@dataclass
+class ProvisionRequest:
+    token: str
+    event: threading.Event
+    success: Optional[bool] = None
+
 class ProvisionHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         if self.path == '/provision':
+            request_secret = self.headers.get('X-RFID-Bridge-Secret')
+            if not request_secret or not hmac.compare_digest(request_secret, BRIDGE_SECRET):
+                self.send_response(401)
+                self.end_headers()
+                return
+
             content_length = int(self.headers.get('Content-Length', 0))
             post_data = self.rfile.read(content_length)
             try:
                 data = json.loads(post_data)
                 token = data.get('token')
                 if token and len(token) == 32:
-                    provision_queue.put(token)
-                    self.send_response(202)
+                    pedido = ProvisionRequest(token=token, event=threading.Event())
+                    provision_queue.put(pedido)
+
+                    if pedido.event.wait(timeout=35.0):
+                        if pedido.success:
+                            self.send_response(201)
+                            self.send_header('Content-type', 'application/json')
+                            self.end_headers()
+                            self.wfile.write(b'{"status": "written"}')
+                        else:
+                            self.send_response(500)
+                            self.send_header('Content-type', 'application/json')
+                            self.end_headers()
+                            self.wfile.write(b'{"status": "write_failed"}')
+                        return
+
+                    self.send_response(504)
                     self.send_header('Content-type', 'application/json')
                     self.end_headers()
-                    self.wfile.write(b'{"status": "queued"}')
+                    self.wfile.write(b'{"status": "timeout"}')
                 else:
                     self.send_response(400)
                     self.end_headers()
@@ -81,12 +112,14 @@ def main():
         while True:
             # 1. Verifica se há pedido de gravação pendente (sem bloquear)
             try:
-                token_hex = provision_queue.get_nowait()
+                token_request = provision_queue.get_nowait()
                 print("Iniciando modo de gravação via API...")
-                token_bytes = bytes.fromhex(token_hex)
+                token_bytes = bytes.fromhex(token_request.token)
                 
                 # Aguarda até 30 segundos por um cartão para gravar
                 ok = reader.aguardar_e_escrever_bloco(BLOCK, token_bytes, timeout_s=30.0)
+                token_request.success = ok
+                token_request.event.set()
                 
                 if ok:
                     print("Cartão gravado com sucesso.")
