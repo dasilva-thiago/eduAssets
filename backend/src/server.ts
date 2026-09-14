@@ -29,7 +29,10 @@ const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
 
 const isProduction = process.env.NODE_ENV === 'production';
 const isLoopbackHost = HOST === 'localhost' || HOST === '127.0.0.1' || HOST === '::1';
-const isLocalDevelopment = !isProduction && !process.env.NODE_ENV && isLoopbackHost;
+const isLocalDevelopment =
+  !isProduction &&
+  (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) &&
+  isLoopbackHost;
 
 if (!isLocalDevelopment && allowedOrigins.length === 0) {
   throw new Error(

@@ -5,10 +5,11 @@ import { signToken } from '../lib/jwt.js';
 import { requireAuth } from '../middleware/auth.js';
 import { validateBody } from '../lib/validate.js';
 import { loginSchema, alterarSenhaSchema } from '../schemas/index.js';
-import { loginRateLimiter, rfidLoginRateLimiter } from '../middleware/security.js';
+import { loginRateLimiter, rfidLoginRateLimiter, changePasswordRateLimiter } from '../middleware/security.js';
 import { hashRfidToken } from '../lib/rfidToken.js';
 import { publicarLoginRfid } from '../lib/rfidBridge.js';
 import { rfidScanSchema } from '../schemas/index.js';
+
 
 export const authRouter = Router();
 
@@ -72,7 +73,7 @@ authRouter.get('/me', requireAuth, async (req, res) => {
   });
 });
 
-authRouter.patch('/senha', requireAuth, validateBody(alterarSenhaSchema), async (req, res) => {
+authRouter.patch('/senha', changePasswordRateLimiter, requireAuth, validateBody(alterarSenhaSchema), async (req, res) => {
   const { senhaAtual, novaSenha } = req.body;
 
   const usuario = await prisma.usuario.findUnique({ where: { id: req.user!.sub } });
