@@ -12,8 +12,6 @@ usuariosRouter.use(requireAdmin);
 
 const RFID_BRIDGE_TIMEOUT_MS = 40000;
 const RFID_BRIDGE_SECRET = process.env.RFID_BRIDGE_SECRET;
-// Só tenta contatar o bridge físico se a variável de ambiente indicar
-// explicitamente que ele está disponível nesta implantação.
 
 // Only attempt to contact the physical bridge if the environment variable explicitly indicates
 // that it is available in this deployment.
@@ -51,6 +49,13 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), rfidProvisionRateL
   }
 
   const id = Number(req.params.id);
+
+  const usuarioExistente = await prisma.usuario.findUnique({ where: { id }, select: { id: true } });
+  if (!usuarioExistente) {
+    res.status(404).json({ erro: 'backend.usuarios.nao_encontrado' });
+    return;
+  }
+
   const tokenHex = gerarRfidToken();
 
   const controller = new AbortController();
@@ -80,9 +85,7 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), rfidProvisionRateL
     res.status(201).json({ message: 'Modo de gravação ativo com sucesso.', token: tokenHex });
   } catch (hardwareError) {
     console.error('Falha ao contatar eduassets-rfid:', hardwareError);
-
     const expirouPorTimeout = hardwareError instanceof Error && hardwareError.name === 'AbortError';
-
     res.status(502).json({
       erro: expirouPorTimeout ? 'backend.usuarios.rfid_timeout' : 'backend.usuarios.rfid_hardware_indisponivel'
     });

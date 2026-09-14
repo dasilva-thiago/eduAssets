@@ -88,7 +88,7 @@ As an optional hardware extension, any registered user (Administrator or Editor)
 - **Login propagation:** on a valid scan, the backend issues a JWT and broadcasts a login event over a WebSocket (`/ws/rfid`, also loopback-only) to every open browser tab pointed at the app, so the person is logged in automatically wherever the app is open on that machine.
 - **Feedback:** the Pi/Arduino bridge plays distinct synthesized tones for card detection, successful login, and errors (unrecognized card, backend unreachable), so no screen is needed to know a scan worked.
 
-This is entirely optional — the web app works fully without any RFID hardware attached, using password login instead.
+> **Deployment note:** RFID login is an optional, hardware-bound feature intended for the Raspberry Pi or Arduino Nano (eduStation) setups. Public deployments without a physical reader attached are expected to run with `RFID_BRIDGE_ENABLED` unset/false; in that case the app correctly reports the limitation via the warning toast and password login remains fully functional. This is expected behavior, not a defect — RFID is never required for the system to operate.
 
 ---
 
