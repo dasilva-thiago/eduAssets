@@ -24,6 +24,7 @@ emprestimosRouter.get('/', async (req, res) => {
 
 emprestimosRouter.post('/', requireAuth, validateBody(emprestimoCreateSchema), async (req, res) => {
   const { solicitanteNome, responsavelId, dataRetirada, observacao, itens } = req.body;
+  const dataRetiradaFinal = dataRetirada ? new Date(dataRetirada) : new Date();
 
   try {
     const criado = await prisma.$transaction(async (tx) => {
@@ -34,7 +35,7 @@ emprestimosRouter.post('/', requireAuth, validateBody(emprestimoCreateSchema), a
         data: {
           solicitanteNome,
           responsavelId,
-          dataRetirada: new Date(dataRetirada),
+          dataRetirada: dataRetiradaFinal,
           observacao,
           itens: {
             create: itens.map((item: { equipamentoId: number; quantidade: number }) => ({

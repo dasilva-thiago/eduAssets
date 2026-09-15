@@ -61,7 +61,7 @@ const itemEmprestimoSchema = z.object({
 export const emprestimoCreateSchema = z.object({
   solicitanteNome: z.string().trim().min(1).max(150),
   responsavelId: z.number().int().positive(),
-  dataRetirada: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Data inválida.'),
+  dataRetirada: z.string().refine((v) => !Number.isNaN(Date.parse(v)), 'Data inválida.').optional(),
   observacao: z.string().max(2000).optional(),
   itens: z.array(itemEmprestimoSchema).min(1, 'É necessário informar ao menos um item.'),
 });
