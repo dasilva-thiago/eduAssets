@@ -17,7 +17,11 @@ import { initPerfil } from './features/perfil/index.js';
 import { initRfidListener } from './core/rfid/rfidListener.js';
 import { initDocumentation } from './features/sobre/index.js';
 
+// init demo banner (from demo branch)
+import { initDemoBanner } from './features/demoBanner/index.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
+    if (import.meta.env.VITE_IS_DEMO === 'true') initDemoBanner();
     initTheme();
     initI18n();
     const [_, ...cargasIniciais] = await Promise.allSettled([initAuth(), carregarEquipamentos(), carregarResponsaveis(), carregarEmprestimos(), carregarOcorrencias()]);
