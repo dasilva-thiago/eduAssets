@@ -6,6 +6,7 @@ import { validateBody, requireIntParam } from '../lib/validate.js';
 import { usuarioCreateSchema } from '../schemas/index.js';
 import { gerarRfidToken, hashRfidToken } from '../lib/rfidToken.js';
 import { rfidProvisionRateLimiter } from '../middleware/security.js';
+import { logger } from '../lib/logger.js';
 
 export const usuariosRouter = Router();
 usuariosRouter.use(requireAdmin);
@@ -28,16 +29,17 @@ usuariosRouter.get('/', async (req, res, next) => {
       select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true, rfidTokenHash: true },
     });
 
-    res.json(usuarios.map((usuario) => ({
-      id: usuario.id,
-      nome: usuario.nome,
-      login: usuario.login,
-      nivelAcesso: usuario.nivelAcesso,
-      createdAt: usuario.createdAt,
-      possuiCartaoRfid: usuario.rfidTokenHash !== null,
+    res.json(usuarios.map((usuario: {
+      id: number;
+      nome: string;
+      login: string;
+      nivelAcesso: string;
+      createdAt: Date;
+      rfidTokenHash: string | null;
+    }) => ({
     })));
   } catch (error) {
-    console.error('Erro ao buscar usuários (Prisma):', error);
+    logger.error('Erro ao buscar usuários (Prisma):', { error });
     next(error);
   }
 });
@@ -84,7 +86,7 @@ usuariosRouter.post('/:id/rfid-token', requireIntParam('id'), rfidProvisionRateL
 
     res.status(201).json({ message: 'Modo de gravação ativo com sucesso.', token: tokenHex });
   } catch (hardwareError) {
-    console.error('Falha ao contatar eduassets-rfid:', hardwareError);
+    logger.error('Falha ao contatar eduassets-rfid:', { error: hardwareError });
     const expirouPorTimeout = hardwareError instanceof Error && hardwareError.name === 'AbortError';
     res.status(502).json({
       erro: expirouPorTimeout ? 'backend.usuarios.rfid_timeout' : 'backend.usuarios.rfid_hardware_indisponivel'
