@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 import type { NextFunction, Request, Response } from 'express';
+import { logger } from '../lib/logger.js';
 
 export function errorHandler(err: unknown, req: Request, res: Response, next: NextFunction) {
   if (res.headersSent) {
@@ -8,6 +9,8 @@ export function errorHandler(err: unknown, req: Request, res: Response, next: Ne
   }
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    logger.warn(`Prisma known error [${err.code}] em ${req.method} ${req.originalUrl}: ${err.message}`);
+
     switch (err.code) {
       case 'P2025':
         res.status(404).json({ erro: 'backend.geral.registro_nao_encontrado' });
@@ -24,6 +27,10 @@ export function errorHandler(err: unknown, req: Request, res: Response, next: Ne
     }
   }
 
-  console.error(err);
+  const erroFormatado = err instanceof Error
+    ? { message: err.message, stack: err.stack }
+    : { message: String(err) };
+
+  logger.error(`Erro não tratado em ${req.method} ${req.originalUrl}`, { error: erroFormatado });
   res.status(500).json({ erro: 'backend.geral.erro_interno' });
 }
