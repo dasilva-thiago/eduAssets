@@ -9,7 +9,7 @@ async function main() {
     console.error('Erro: SEED_ADMIN_PASSWORD não está definida.');
     process.exit(1);
   }
-  const senhaHash = await bcrypt.hash(senhaAdminInicial, 10);
+  const senhaHash = await bcrypt.hash(senhaAdminInicial, 12);
 
   await prisma.usuario.upsert({
     where: { login: 'admin@eduassets.com' },
@@ -24,7 +24,7 @@ async function main() {
 
   const senhaEditorInicial = process.env.SEED_EDITOR_PASSWORD;
   if (senhaEditorInicial) {
-    const senhaEditorHash = await bcrypt.hash(senhaEditorInicial, 10);
+    const senhaEditorHash = await bcrypt.hash(senhaEditorInicial, 12);
 
     await prisma.usuario.upsert({
       where: { login: 'editor@eduassets.com' },
