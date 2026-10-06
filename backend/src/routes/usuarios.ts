@@ -29,14 +29,10 @@ usuariosRouter.get('/', async (req, res, next) => {
       select: { id: true, nome: true, login: true, nivelAcesso: true, createdAt: true, rfidTokenHash: true },
     });
 
-    res.json(usuarios.map((usuario: {
-      id: number;
-      nome: string;
-      login: string;
-      nivelAcesso: string;
-      createdAt: Date;
-      rfidTokenHash: string | null;
-    }) => ({
+    // Never expose the stored RFID hash: only whether a card is linked.
+    res.json(usuarios.map(({ rfidTokenHash, ...usuario }) => ({
+      ...usuario,
+      possuiCartaoRfid: rfidTokenHash !== null,
     })));
   } catch (error) {
     logger.error('Erro ao buscar usuários (Prisma):', { error });

@@ -53,9 +53,16 @@ UI/UX decisions follow a set of internal design guidelines focused on functional
 - Local audio feedback (tone synthesis + `aplay`, no external sound files) for card detection, success, and error states
 - `provision_card.py` for writing a freshly generated token onto a physical card
 - Ships as a `systemd` unit (`eduassets-rfid.service`) for always-on operation on the Pi
-### Hosting (planned)
-- **Frontend:** Vercel
-- **Backend:** Render
+### Hosting
+| Domain | Role | Platform |
+|---|---|---|
+| `eduassets.tech` | Public landing page and articles (separate repository, `eduassets-site`) | Vercel |
+| `app.eduassets.tech` | This interactive application (Vite SPA, Guest Mode by default) | Vercel |
+| `api.eduassets.tech` | REST API (Express + Prisma) | Oracle Cloud Free Tier, behind a Cloudflare Tunnel |
+
+- **Database:** Supabase (PostgreSQL)
+- The app is served with `X-Robots-Tag: noindex` so the landing page is the indexed entry point; `robots.txt` deliberately does not block it.
+- The landing page does not call the API, so `CORS_ORIGIN` only needs `https://app.eduassets.tech` in production.
 
 ---
 
@@ -280,8 +287,8 @@ Access-level restrictions are expressed declaratively: any control tagged `data-
 - [x] Implement optional RFID physical card login (Raspberry Pi / Arduino bridge + WebSocket push)
 - [ ] Accessibility improvements: focus trap in modals, `role="dialog"`
 - [ ] Unit tests with Vitest for pure utility and service functions
-- [ ] Properly configure CORS for production (currently a `TODO` in `server.ts`)
-- [ ] First public deployment (Vercel + Render)
+- [x] Require an explicit `CORS_ORIGIN` outside local development
+- [ ] Move the app to `app.eduassets.tech` and publish the landing page on `eduassets.tech`
 - [ ] Migrate to React + TypeScript (v2)
 
 ---
@@ -293,7 +300,6 @@ Access-level restrictions are expressed declaratively: any control tagged `data-
 - Individual asset tracking (per-unit serial numbers) is out of scope for v1.
 - `nivelAcesso` distinguishes `ADMINISTRADOR` and `EDITOR` with genuinely different permissions on both frontend and backend, but no finer-grained roles (e.g. per-panel permissions) exist yet.
 - Dark Mode ships with a single alternate palette; the token structure supports additional themes in the future, but no theme picker beyond Light/Dark/System exists yet.
-- CORS configuration is currently permissive by default when `CORS_ORIGIN` is unset — needs to be locked down before production deployment.
 
 ---
 

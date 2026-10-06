@@ -52,7 +52,7 @@ const allowedOrigins = (process.env.CORS_ORIGIN ?? '')
 
 if (!isLocalDevelopment && allowedOrigins.length === 0) {
   throw new Error(
-    'CORS_ORIGIN não definida fora do desenvolvimento local. Configure a variável de ambiente com as origens permitidas (ex: https://eduassets.vercel.app) antes de iniciar o servidor.'
+    'CORS_ORIGIN não definida fora do desenvolvimento local. Configure a variável de ambiente com as origens permitidas (ex: https://app.eduassets.tech) antes de iniciar o servidor.'
   );
 }
 
