@@ -21,6 +21,8 @@ export function validateBody(schema: ZodSchema) {
   };
 }
 
+export const validate = validateBody;
+
 export function requireIntParam(paramName: string) {
   return (req: Request, res: Response, next: NextFunction): void => {
     const value = Number(req.params[paramName]);

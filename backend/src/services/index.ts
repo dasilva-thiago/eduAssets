@@ -1,0 +1,8 @@
+export * as authService from './auth.service.js';
+export * as categoriaService from './categoria.service.js';
+export * as equipamentoService from './equipamento.service.js';
+export * as responsavelService from './responsavel.service.js';
+export * as usuarioService from './usuario.service.js';
+export * as emprestimoService from './emprestimo.service.js';
+export * as ocorrenciaService from './ocorrencia.service.js';
+export * as estoqueService from './estoque.service.js';

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import * as usuariosService from '../services/usuarios.service.js';
+import * as usuariosService from '../services/usuario.service.js';
 
 export async function listar(req: Request, res: Response): Promise<void> {
   const usuarios = await usuariosService.listarUsuarios();

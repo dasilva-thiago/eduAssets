@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import * as responsaveisService from '../services/responsaveis.service.js';
+import * as responsaveisService from '../services/responsavel.service.js';
 
 export async function listar(req: Request, res: Response): Promise<void> {
   const responsaveis = await responsaveisService.listarResponsaveis();

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import * as ocorrenciasService from '../services/ocorrencias.service.js';
+import * as ocorrenciasService from '../services/ocorrencia.service.js';
 
 export async function listar(req: Request, res: Response): Promise<void> {
   const ocorrencias = await ocorrenciasService.listarOcorrencias();

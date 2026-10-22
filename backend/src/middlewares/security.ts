@@ -1,5 +1,5 @@
 import helmet from 'helmet';
-import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
+import cors from 'cors';
 
 export const securityHeaders = helmet({
   frameguard: false, // Permite renderização dentro do iframe do Google AI Studio
@@ -7,43 +7,14 @@ export const securityHeaders = helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 });
 
-export const globalRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 300,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { erro: 'backend.seguranca.muitas_requisicoes' },
-});
+export function configureCors(options?: { isLocalDevelopment: boolean; allowedOrigins: string[] }) {
+  const isLocalDevelopment = options?.isLocalDevelopment ?? true;
+  const allowedOrigins = options?.allowedOrigins ?? [];
 
-export const changePasswordRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { erro: 'backend.seguranca.muitas_tentativas_senha' },
-});
+  return cors({
+    origin: isLocalDevelopment ? true : (allowedOrigins.length > 0 ? allowedOrigins : false),
+  });
+}
 
-export const loginRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { erro: 'backend.seguranca.muitas_tentativas_login' },
-});
-
-export const rfidLoginRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 60,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { erro: 'backend.seguranca.muitas_tentativas_rfid' },
-});
-
-export const rfidProvisionRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 5,
-  keyGenerator: (req) => `admin:${req.user?.sub ?? 'unknown'}:ip:${ipKeyGenerator(req.ip ?? '')}`,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { erro: 'backend.seguranca.muitas_provisionamentos_rfid' },
-});
+// Re-exporta rate limiters para compatibilidade
+export * from './rateLimit.js';
