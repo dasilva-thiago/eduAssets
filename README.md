@@ -39,23 +39,31 @@ UI/UX decisions follow a set of internal design guidelines focused on functional
 - Migrate to React + TypeScript (v2), building on the current feature-first, layered structure so the migration only touches the rendering layer
 ### Backend
 - Node.js + **Express 5**
-- **Prisma ORM** 6, PostgreSQL, hosted via Supabase
+- **Prisma ORM** 6, PostgreSQL
 - **TypeScript**, strict mode
-- JWT-based authentication (`jsonwebtoken`), bcrypt password hashing
+- **Layered Architecture**: Clean separation across `server.ts` (bootstrap), `app.ts` (Express config), `routes/`, `controllers/`, `services/`, `schemas/`, `middlewares/`, `errors/` (`AppError`), and `lib/`
+- Centralized 15-second transaction timeout helper for atomic stock operations
+- JWT-based authentication (`jsonwebtoken`, explicit `HS256` algorithm), bcrypt password hashing
 - **`ws`** for a loopback-only WebSocket bridge (`/ws/rfid`) that pushes RFID login events to connected browser tabs
-- **Security middleware**: `helmet` for HTTP security headers, `express-rate-limit` for both a global request limiter and a dedicated, stricter limiter on the login endpoints (password login and RFID login share the same limiter)
-- Zod schemas for request validation on every mutating route
-- Centralized Prisma-aware error handler (`errorHandler.ts`) mapping known Prisma error codes to appropriate HTTP responses
+- **Security & Logging**: `helmet` for HTTP security headers, `express-rate-limit` rate limiters, Winston centralized logging and Morgan HTTP request logging
+- Zod schemas for request validation on mutating routes
+- Centralized `AppError` and Prisma-aware error handler (`middlewares/errorHandler.ts`)
 - In-memory idle-session tracking for administrator accounts (`lib/adminActivity.ts`), enforced on every authenticated request
+
 ### Hardware bridge (optional — `rpi/`)
 - **Python 3** service (`rfid_admin_bridge.py`) that runs on a Raspberry Pi (native SPI, via `spidev`) or relays through an **Arduino Nano** connected over USB serial, abstracted behind a common `RfidReaderBase` interface (`rfid_reader.py`)
-- Talks to the backend over a shared-secret-protected, loopback-only HTTP endpoint (`POST /auth/rfid`)
+- Talks to the backend over a shared-secret-protected, loopback-only HTTP endpoint (`POST /auth/rfid`) with constant-time secret verification
 - Local audio feedback (tone synthesis + `aplay`, no external sound files) for card detection, success, and error states
 - `provision_card.py` for writing a freshly generated token onto a physical card
 - Ships as a `systemd` unit (`eduassets-rfid.service`) for always-on operation on the Pi
-### Hosting (planned)
-- **Frontend:** Vercel
-- **Backend:** Render
+
+### Hosting & Domains (Planned)
+The planned hosting architecture targets:
+- `eduassets.tech`: public landing page (separate Astro project, outside this repository).
+- `app.eduassets.tech`: frontend web application (public static hosting).
+- `api.eduassets.tech`: backend API (Oracle Free Tier instance, potentially fronted by Cloudflare).
+
+> *Note: Hosting and domain routing are currently planned targets and not yet operational.*
 
 ---
 

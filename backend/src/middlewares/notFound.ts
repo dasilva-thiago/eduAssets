@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
 
-export function notFoundHandler(req: Request, res: Response) {
+export function notFoundHandler(req: Request, res: Response): void {
   res.status(404).json({ erro: 'backend.geral.rota_nao_encontrada' });
 }

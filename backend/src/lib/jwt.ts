@@ -18,11 +18,16 @@ export interface AppJwtPayload {
 }
 
 export function signToken(payload: AppJwtPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return jwt.sign(payload, JWT_SECRET, {
+    algorithm: 'HS256',
+    expiresIn: JWT_EXPIRES_IN,
+  });
 }
 
 export function verifyToken(token: string): AppJwtPayload {
-  const decoded = jwt.verify(token, JWT_SECRET);
+  const decoded = jwt.verify(token, JWT_SECRET, {
+    algorithms: ['HS256'],
+  });
 
   if (
     typeof decoded !== 'object' ||

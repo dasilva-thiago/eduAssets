@@ -1,134 +1,39 @@
 import { Router } from 'express';
-import { prisma } from '../prisma.js';
-import { requireAuth, requireAdmin } from '../middleware/auth.js';
-import { validateBody, requireIntParam } from '../lib/validate.js';
-import { ocorrenciaCreateSchema, ocorrenciaUpdateSchema, ocorrenciaResolverSchema } from '../schemas/index.js';
-import { decrementarComSeguranca, EstoqueInsuficienteError } from '../lib/estoque.js';
+import { requireAuth, requireAdmin } from '../middlewares/auth.js';
+import { validateBody, requireIntParam } from '../middlewares/validate.js';
+import {
+  ocorrenciaCreateSchema,
+  ocorrenciaUpdateSchema,
+  ocorrenciaResolverSchema,
+} from '../schemas/index.js';
+import * as ocorrenciasController from '../controllers/ocorrencias.controller.js';
 
 export const ocorrenciasRouter = Router();
 
-const ocorrenciaInclude = {
-  equipamento: { include: { categoria: true } },
-};
-
-ocorrenciasRouter.get('/', async (req, res) => {
-  const ocorrencias = await prisma.ocorrencia.findMany({
-    include: ocorrenciaInclude,
-    orderBy: { createdAt: 'desc' },
-  });
-  res.json(ocorrencias);
-});
-
-ocorrenciasRouter.post('/', requireAuth, validateBody(ocorrenciaCreateSchema), async (req, res) => {
-  const { equipamentoId, tipo, problema, descricao, numeros } = req.body;
-  const quantidade = numeros.length;
-
-  try {
-    const criadas = await prisma.$transaction(async (tx) => {
-      if (tipo === 'MANUTENCAO' || tipo === 'QUEBRADO') {
-        await decrementarComSeguranca(tx, new Map([[equipamentoId, quantidade]]));
-      }
-
-      const ocorrencias = await Promise.all(
-        numeros.map((numero: string) =>
-          tx.ocorrencia.create({
-            data: { equipamentoId, tipo, problema, descricao, numero },
-            include: ocorrenciaInclude,
-          })
-        )
-      );
-
-      if (tipo === 'QUEBRADO') {
-        await tx.equipamento.update({
-          where: { id: equipamentoId },
-          data: { quantidadeQuebrada: { increment: quantidade } },
-        });
-      }
-
-      return ocorrencias;
-    });
-
-    res.status(201).json(criadas);
-  } catch (err) {
-    if (err instanceof EstoqueInsuficienteError) {
-      res.status(400).json({ erro: err.message, itens: err.itens });
-      return;
-    }
-    throw err;
-  }
-});
-
+ocorrenciasRouter.get('/', ocorrenciasController.listar);
+ocorrenciasRouter.post(
+  '/',
+  requireAuth,
+  validateBody(ocorrenciaCreateSchema),
+  ocorrenciasController.criar
+);
 ocorrenciasRouter.patch(
   '/:id',
   requireAuth,
   requireIntParam('id'),
   validateBody(ocorrenciaUpdateSchema),
-  async (req, res) => {
-    const id = Number(req.params.id);
-    const { problema, descricao, numero, medidasTomadas } = req.body;
-
-    const atualizada = await prisma.ocorrencia.update({
-      where: { id },
-      data: { problema, descricao, numero, ...(medidasTomadas !== undefined ? { medidasTomadas } : {}) },
-      include: ocorrenciaInclude,
-    });
-
-    res.json(atualizada);
-  }
+  ocorrenciasController.atualizar
 );
-
 ocorrenciasRouter.patch(
   '/:id/resolver',
   requireAuth,
   requireIntParam('id'),
   validateBody(ocorrenciaResolverSchema),
-  async (req, res) => {
-    const id = Number(req.params.id);
-    const { medidasTomadas } = req.body;
-
-    const resolvida = await prisma.$transaction(async (tx) => {
-      const ocorrencia = await tx.ocorrencia.update({
-        where: { id },
-        data: { status: 'RESOLVIDO', resolvidoEm: new Date(), medidasTomadas },
-        include: ocorrenciaInclude,
-      });
-
-      if (ocorrencia.tipo === 'MANUTENCAO' || ocorrencia.tipo === 'QUEBRADO') {
-        await tx.equipamento.update({
-          where: { id: ocorrencia.equipamentoId },
-          data: {
-            quantidadeDisponivel: { increment: 1 },
-            ...(ocorrencia.tipo === 'QUEBRADO' ? { quantidadeQuebrada: { decrement: 1 } } : {}),
-          },
-        });
-      }
-
-      return ocorrencia;
-    });
-
-    res.json(resolvida);
-  }
+  ocorrenciasController.resolver
 );
-
-ocorrenciasRouter.delete('/:id', requireAdmin, requireIntParam('id'), async (req, res) => {
-  const id = Number(req.params.id);
-
-  await prisma.$transaction(async (tx) => {
-    const ocorrencia = await tx.ocorrencia.findUnique({ where: { id } });
-    if (!ocorrencia) return;
-
-    if (ocorrencia.status === 'ABERTO' && (ocorrencia.tipo === 'MANUTENCAO' || ocorrencia.tipo === 'QUEBRADO')) {
-      await tx.equipamento.update({
-        where: { id: ocorrencia.equipamentoId },
-        data: {
-          quantidadeDisponivel: { increment: 1 },
-          ...(ocorrencia.tipo === 'QUEBRADO' ? { quantidadeQuebrada: { decrement: 1 } } : {}),
-        },
-      });
-    }
-
-    await tx.ocorrencia.delete({ where: { id } });
-  });
-
-  res.status(204).send();
-});
+ocorrenciasRouter.delete(
+  '/:id',
+  requireAdmin,
+  requireIntParam('id'),
+  ocorrenciasController.excluir
+);

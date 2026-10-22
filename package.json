@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\""
+    "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\"",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build"
   },
   "repository": {
     "type": "git",

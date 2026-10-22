@@ -11,9 +11,10 @@ async function main() {
   }
   const senhaHash = await bcrypt.hash(senhaAdminInicial, 12);
 
+  // Idempotente: se já existir, preserva a senha atual sem sobrescrever
   await prisma.usuario.upsert({
     where: { login: 'admin@eduassets.com' },
-    update: { passwordHash: senhaHash },
+    update: {},
     create: {
       nome: 'Thiago da Silva',
       login: 'admin@eduassets.com',
@@ -28,7 +29,7 @@ async function main() {
 
     await prisma.usuario.upsert({
       where: { login: 'editor@eduassets.com' },
-      update: { passwordHash: senhaEditorHash },
+      update: {},
       create: {
         nome: 'Editor de Teste',
         login: 'editor@eduassets.com',

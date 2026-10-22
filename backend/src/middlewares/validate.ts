@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import type { ZodSchema } from 'zod';
 
 export function validateBody(schema: ZodSchema) {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const result = schema.safeParse(req.body);
 
     if (!result.success) {
@@ -22,7 +22,7 @@ export function validateBody(schema: ZodSchema) {
 }
 
 export function requireIntParam(paramName: string) {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     const value = Number(req.params[paramName]);
 
     if (!Number.isInteger(value) || value <= 0) {

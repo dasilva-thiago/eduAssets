@@ -1,4 +1,5 @@
 import type { Prisma } from '@prisma/client';
+import { AppError } from '../errors/AppError.js';
 
 type TxClient = Prisma.TransactionClient;
 
@@ -10,11 +11,11 @@ export interface ItemInsuficiente {
   disponivel: number;
 }
 
-export class EstoqueInsuficienteError extends Error {
-  itens: ItemInsuficiente[];
+export class EstoqueInsuficienteError extends AppError {
+  readonly itens: ItemInsuficiente[];
 
   constructor(itens: ItemInsuficiente[]) {
-    super(`Estoque insuficiente para ${itens.length} equipamento(s).`);
+    super(400, `Estoque insuficiente para ${itens.length} equipamento(s).`, { itens });
     this.name = 'EstoqueInsuficienteError';
     this.itens = itens;
   }
@@ -48,7 +49,13 @@ export async function validarEstoqueDisponivel(
     const equipamento = equipamentos.find((e) => e.id === equipamentoId);
 
     if (!equipamento) {
-      insuficientes.push({ equipamentoId, nome: 'Equipamento não encontrado', categoria: '', solicitado, disponivel: 0 });
+      insuficientes.push({
+        equipamentoId,
+        nome: 'Equipamento não encontrado',
+        categoria: '',
+        solicitado,
+        disponivel: 0,
+      });
       continue;
     }
 
@@ -71,7 +78,11 @@ export async function validarEstoqueDisponivel(
   }
 }
 
-async function decrementarDisponivelAtomic(tx: TxClient, equipamentoId: number, quantidade: number): Promise<boolean> {
+async function decrementarDisponivelAtomic(
+  tx: TxClient,
+  equipamentoId: number,
+  quantidade: number
+): Promise<boolean> {
   const resultado = await tx.equipamento.updateMany({
     where: { id: equipamentoId, quantidadeDisponivel: { gte: quantidade } },
     data: { quantidadeDisponivel: { decrement: quantidade } },
