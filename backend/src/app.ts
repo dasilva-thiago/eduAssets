@@ -44,7 +44,7 @@ if (!isLocalDevelopment && allowedOrigins.length === 0) {
 
 app.use(
   cors({
-    origin: allowedOrigins.length > 0 ? allowedOrigins : false,
+    origin: isLocalDevelopment ? true : (allowedOrigins.length > 0 ? allowedOrigins : false),
   })
 );
 

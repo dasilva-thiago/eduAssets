@@ -2,13 +2,8 @@ import helmet from 'helmet';
 import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 
 export const securityHeaders = helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'none'"],
-      frameAncestors: ["'none'"],
-      baseUri: ["'none'"],
-    },
-  },
+  frameguard: false, // Permite renderização dentro do iframe do Google AI Studio
+  contentSecurityPolicy: false,
   crossOriginResourcePolicy: { policy: 'cross-origin' },
 });
 

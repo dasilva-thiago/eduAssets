@@ -32,12 +32,21 @@ export async function listarUsuarios() {
     },
   });
 
-  return usuarios.map((u) => ({
+  return (
+    usuarios as Array<{
+      id: number;
+      nome: string;
+      login: string;
+      nivelAcesso: 'ADMINISTRADOR' | 'EDITOR';
+      createdAt: Date;
+      rfidTokenHash: string | null;
+    }>
+  ).map((u) => ({
     id: u.id,
     nome: u.nome,
     login: u.login,
     nivelAcesso: u.nivelAcesso,
-    createdAt: u.createdAt.toISOString(),
+    createdAt: u.createdAt instanceof Date ? u.createdAt.toISOString() : String(u.createdAt),
     possuiCartaoRfid: Boolean(u.rfidTokenHash),
   }));
 }

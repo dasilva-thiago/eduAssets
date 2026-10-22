@@ -78,13 +78,16 @@ export async function atualizarItensEmprestimo(id: number, itens: ItemEmprestimo
     const itensAntigos = await tx.itemEmprestimo.findMany({ where: { emprestimoId: id } });
 
     const quantidadesDevolvidas = agruparQuantidades(
-      itensAntigos.map((item) => ({ equipamentoId: item.equipamentoId, quantidade: item.quantidade }))
+      itensAntigos.map((item: { equipamentoId: number; quantidade: number }) => ({
+        equipamentoId: item.equipamentoId,
+        quantidade: item.quantidade,
+      }))
     );
     const quantidadesSolicitadas = agruparQuantidades(itens);
 
     await validarEstoqueDisponivel(tx, quantidadesSolicitadas, quantidadesDevolvidas);
 
-    for (const item of itensAntigos) {
+    for (const item of itensAntigos as Array<{ equipamentoId: number; quantidade: number }>) {
       await tx.equipamento.update({
         where: { id: item.equipamentoId },
         data: { quantidadeDisponivel: { increment: item.quantidade } },

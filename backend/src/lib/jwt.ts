@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET_RAW = process.env.JWT_SECRET;
+const JWT_SECRET_RAW =
+  process.env.JWT_SECRET ||
+  (process.env.NODE_ENV !== 'production'
+    ? 'dev_jwt_secret_must_be_at_least_32_characters_long_for_eduassets_local'
+    : undefined);
 
 if (!JWT_SECRET_RAW || JWT_SECRET_RAW.length < 32) {
   throw new Error(
